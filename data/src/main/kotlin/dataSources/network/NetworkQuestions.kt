@@ -1,7 +1,7 @@
 package dataSources.network
 
 import base.BaseResponse
-import entity.questions.Category
+import database.entity.CategoryEntity
 import helper.Endpoints
 import helper.asData
 import io.ktor.client.*
@@ -10,15 +10,15 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 internal interface NetworkQuestions {
-    suspend fun getAllCategories(): List<Category>
+    suspend fun getAllCategories(): List<CategoryEntity>
 }
 
 internal class NetworkQuestionsDataSource(
     private val httpClient: HttpClient
 ) : NetworkQuestions {
-    override suspend fun getAllCategories(): List<Category> =
+    override suspend fun getAllCategories(): List<CategoryEntity> =
         httpClient.get {
             url { path(Endpoints.Questions.getAllCategory) }
             contentType(ContentType.Application.Json)
-        }.body<BaseResponse<List<Category>>>().asData()
+        }.body<BaseResponse<List<CategoryEntity>>>().asData()
 }

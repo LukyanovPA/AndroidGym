@@ -1,4 +1,4 @@
-package entity.error
+package error
 
 sealed class ApiExceptions(override val message: String? = null) : Exception(message) {
     class ExpectedException(val errorCode: Int, val errorMessage: String) : ApiExceptions()

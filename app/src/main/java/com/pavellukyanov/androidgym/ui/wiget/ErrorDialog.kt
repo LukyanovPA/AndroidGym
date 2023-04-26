@@ -1,5 +1,6 @@
 package com.pavellukyanov.androidgym.ui.wiget
 
+import Constants.EMPTY_STRING
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
@@ -9,12 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.ui.theme.AndroidGymTheme
-import helper.Constants.EMPTY_STRING
 
 @Composable
 fun ErrorDialog(
@@ -33,7 +35,7 @@ fun ErrorDialog(
             onDismissRequest = {
                 showDialog.value = false
             },
-            title = { Text(text = "Ошибка $errorCode") },
+            title = { Text(text = stringResource(R.string.any_screen_error, errorCode)) },
             text = { Text(errorText) },
             buttons = {
                 Button(
@@ -42,7 +44,7 @@ fun ErrorDialog(
                         navController.popBackStack()
                     }
                 ) {
-                    Text(text = "OK", fontSize = 22.sp)
+                    Text(text = stringResource(id = R.string.any_screen_ok), fontSize = 22.sp)
                 }
             }
         )

@@ -2,7 +2,7 @@ package com.pavellukyanov.androidgym.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import entity.error.ApiExceptions
+import error.ApiExceptions
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

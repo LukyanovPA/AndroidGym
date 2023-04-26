@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AndroidGym</string>
+
+    //Common
+    <string name="any_screen_error">Ошибка: $s</string>
+    <string name="any_screen_ok">OK</string>
 </resources>

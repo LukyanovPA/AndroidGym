@@ -1,7 +1,7 @@
 package com.pavellukyanov.androidgym.common
 
 import android.app.Application
-import com.pavellukyanov.androidgym.BuildConfig
+import com.pavellukyanov.androidgym.app.BuildConfig
 import com.pavellukyanov.androidgym.common.di.reducerModule
 import com.pavellukyanov.androidgym.common.di.storageModule
 import di.getModules

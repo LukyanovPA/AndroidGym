@@ -17,3 +17,4 @@ rootProject.name = "AndroidGym"
 include(":app")
 include(":data")
 include(":domain")
+include(":utils")

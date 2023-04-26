@@ -1,8 +1,8 @@
 package repository
 
-import entity.questions.Category
+import database.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 interface QuestionRepository {
-    suspend fun getAllCategories(): Flow<List<Category>>
+    suspend fun getAllCategories(): Flow<List<CategoryEntity>>
 }

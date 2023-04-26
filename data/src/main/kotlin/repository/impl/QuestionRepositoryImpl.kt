@@ -2,7 +2,7 @@ package repository.impl
 
 import dataSources.local.LocalQuestions
 import dataSources.network.NetworkQuestions
-import entity.questions.Category
+import database.entity.CategoryEntity
 import helper.NetworkMonitor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +18,7 @@ internal class QuestionRepositoryImpl(
         runBlocking(Dispatchers.IO) { updateLocalCache() }
     }
 
-    override suspend fun getAllCategories(): Flow<List<Category>> =
+    override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
         local.getAllCategories()
 
     private suspend fun updateLocalCache() {

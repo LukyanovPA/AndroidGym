@@ -3,11 +3,11 @@ package database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import database.dao.CategoryDao
-import entity.questions.Category
+import database.entity.CategoryEntity
 
 @Database(
     entities = [
-        Category::class
+        CategoryEntity::class
     ],
     version = 1,
     exportSchema = false

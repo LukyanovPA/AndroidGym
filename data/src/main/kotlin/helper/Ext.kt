@@ -1,8 +1,8 @@
 package helper
 
 import base.BaseResponse
-import entity.error.ApiExceptions
-import entity.error.HttpResponseCode
+import error.ApiExceptions
+import error.HttpResponseCode
 import timber.log.Timber
 
 internal fun <D> BaseResponse<D>.asData(): D =

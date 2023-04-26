@@ -1,16 +1,12 @@
-val serialization_version: String by project
-val koin_version: String by project
-val timber_version: String by project
 val desugar_version: String by project
 
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
-    namespace = "com.pavellukyanov.domain"
+    namespace = "com.pavellukyanov.utils"
     compileSdk = 33
 
     defaultConfig {
@@ -43,16 +39,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":utils"))
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
-
-    //Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
-
-    //Koin
-    implementation("io.insert-koin:koin-core:$koin_version")
-
-    //Timber
-    implementation("com.jakewharton.timber:timber:$timber_version")
 }
