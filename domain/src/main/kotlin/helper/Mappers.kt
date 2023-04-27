@@ -1,9 +1,11 @@
 package helper
 
 import Constants.INT_ZERO
+import database.entity.AnswerEntity
 import database.entity.CategoryEntity
 import database.entity.QuestionEntity
 import database.entity.SubcategoryEntity
+import entity.questions.Answer
 import entity.questions.Category
 import entity.questions.Question
 import entity.questions.Subcategory
@@ -31,4 +33,16 @@ fun QuestionEntity.map(): Question =
         subcategoryId = subcategoryId,
         subcategoryName = subcategoryName,
         question = question
+    )
+
+fun AnswerEntity.map(): Answer =
+    Answer(
+        id = id,
+        categoryId = categoryId,
+        categoryName = categoryName,
+        subcategoryId = subcategoryId,
+        subcategoryName = subcategoryName,
+        questionId = questionId,
+        question = question,
+        answer = answer
     )
