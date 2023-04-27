@@ -7,11 +7,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
 class CoroutineHelper(private val scope: CoroutineScope) {
-    private val errorStorage by KoinJavaComponent.inject<ErrorStorage>(ErrorStorage::class.java)
+    private val errorStorage by inject<ErrorStorage>(ErrorStorage::class.java)
+
+    fun launchUI(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.Main, action)
 
     fun launchIO(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.IO, action)
 
@@ -33,6 +35,7 @@ class CoroutineHelper(private val scope: CoroutineScope) {
                     )
 
                     is ApiExceptions.UndefinedException -> errorStorage.error.emit(Errors.UndefinedError(message = e.errorMessage))
+                    //TODO переделать на обработку отсутствия интернета
                     is InternetConnectionException -> errorStorage.error.emit(Errors.UndefinedError(message = e.message!!))
                     else -> errorStorage.error.emit(Errors.OtherError(error = e))
                 }
