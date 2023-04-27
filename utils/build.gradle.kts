@@ -1,4 +1,6 @@
 val desugar_version: String by project
+val koin_version: String by project
+val timber_version: String by project
 
 plugins {
     id("com.android.library")
@@ -37,4 +39,11 @@ android {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
+
+    //Koin
+    implementation("io.insert-koin:koin-core:$koin_version")
+    implementation("io.insert-koin:koin-android:$koin_version")
+
+    //Timber
+    implementation("com.jakewharton.timber:timber:$timber_version")
 }

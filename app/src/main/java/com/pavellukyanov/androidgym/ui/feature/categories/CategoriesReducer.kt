@@ -20,7 +20,7 @@ class CategoriesReducer(
         }
     }
 
-    private fun fetchCategories() = launchIO {
+    private fun fetchCategories() = coroutineHelper.launchIO {
         getAllCategories()
             .collect { categories ->
                 sendAction(CategoriesAction.Categories(categories = categories))

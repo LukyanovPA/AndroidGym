@@ -1,6 +1,6 @@
 package dataSources.local
 
-import database.LocalDatabase
+import database.dao.CategoryDao
 import database.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -11,12 +11,12 @@ internal interface LocalQuestions {
 }
 
 internal class LocalQuestionsDataSource(
-    private val db: LocalDatabase
+    private val dao: CategoryDao
 ) : LocalQuestions {
     override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
-        db.category().getAll()
+        dao.getAll()
 
     override suspend fun insertCategories(categories: List<CategoryEntity>) {
-        db.category().insert(newList = categories)
+        dao.insert(newList = categories)
     }
 }

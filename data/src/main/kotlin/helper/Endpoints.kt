@@ -8,4 +8,10 @@ internal object Endpoints {
 
         const val getAllCategory = question + "getAllCategories"
     }
+
+    object Cache {
+        private const val cache = "cache/"
+
+        const val lastUpdate = cache + "lastUpdate"
+    }
 }

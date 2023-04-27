@@ -1,31 +1,29 @@
 package repository.impl
 
+import base.CacheHelper
 import dataSources.local.LocalQuestions
 import dataSources.network.NetworkQuestions
 import database.entity.CategoryEntity
-import helper.NetworkMonitor
-import kotlinx.coroutines.Dispatchers
+import dto.CachePoint
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.runBlocking
 import repository.QuestionRepository
 
 internal class QuestionRepositoryImpl(
-    private val networkMonitor: NetworkMonitor,
-    private val local: LocalQuestions,
-    private val network: NetworkQuestions
+    private val localQuestions: LocalQuestions,
+    private val networkQuestions: NetworkQuestions,
 ) : QuestionRepository {
     init {
-        runBlocking(Dispatchers.IO) { updateLocalCache() }
+        CacheHelper().checkUpdates(point = CachePoint.CATEGORY) { isUpdate ->
+            if (isUpdate) updateCategoryCache()
+        }
     }
 
     override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
-        local.getAllCategories()
+        localQuestions.getAllCategories()
 
-    private suspend fun updateLocalCache() {
-        if (networkMonitor.isNetworkAvailable()) {
-            local.insertCategories(
-                categories = network.getAllCategories()
-            )
-        }
+    private suspend fun updateCategoryCache() {
+        localQuestions.insertCategories(
+            categories = networkQuestions.getAllCategories()
+        )
     }
 }

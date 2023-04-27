@@ -7,11 +7,11 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.pavellukyanov.androidgym.base.ErrorState
-import com.pavellukyanov.androidgym.base.ErrorStorage
 import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.ui.theme.AndroidGymTheme
 import com.pavellukyanov.androidgym.ui.wiget.NavigationGraph
+import error.ErrorState
+import error.ErrorStorage
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject

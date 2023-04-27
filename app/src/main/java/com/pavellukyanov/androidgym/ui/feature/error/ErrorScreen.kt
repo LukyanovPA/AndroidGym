@@ -5,9 +5,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
-import com.pavellukyanov.androidgym.base.ErrorStorage
-import com.pavellukyanov.androidgym.base.Errors
 import com.pavellukyanov.androidgym.ui.wiget.ErrorDialog
+import error.ErrorStorage
+import error.Errors
 import org.koin.androidx.compose.get
 
 @Composable
@@ -25,11 +25,13 @@ fun ErrorScreen(
                 navController = navController,
                 padding = padding
             )
+
             is Errors.OtherError -> ErrorDialog(
                 errorText = currentError.error.message ?: EMPTY_STRING,
                 navController = navController,
                 padding = padding
             )
+
             is Errors.UndefinedError -> ErrorDialog(
                 errorText = currentError.message,
                 navController = navController,

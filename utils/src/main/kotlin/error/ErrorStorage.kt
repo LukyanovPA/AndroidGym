@@ -1,4 +1,4 @@
-package com.pavellukyanov.androidgym.base
+package error
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
