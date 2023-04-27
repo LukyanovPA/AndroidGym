@@ -4,12 +4,12 @@ import database.entity.CacheEntity
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CacheDto(
+internal data class CacheDto(
     val point: CachePoint,
     val update: Long
 )
 
-enum class CachePoint { CATEGORY, SUBCATEGORY, QUESTIONS, ANSWERS }
+internal enum class CachePoint { CATEGORY, SUBCATEGORY, QUESTIONS, ANSWERS }
 
 internal fun CacheDto.map(): CacheEntity =
     CacheEntity(
