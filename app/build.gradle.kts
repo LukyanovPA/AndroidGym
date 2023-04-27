@@ -59,7 +59,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
+        kotlinCompilerExtensionVersion = "1.4.6"
     }
     packagingOptions {
         resources {
@@ -73,22 +73,25 @@ dependencies {
     implementation(project(":utils"))
 
     //Android
-    implementation("androidx.compose.ui:ui:$compose_version")
+    val composeBom = platform("androidx.compose:compose-bom:2023.04.01")
+    implementation(composeBom)
+    implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling:$compose_version")
-    implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
-    implementation("androidx.compose.foundation:foundation:$compose_version")
-    implementation("androidx.compose.material:material:$compose_version")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material:material")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$compose_lifecycle_version")
     implementation("androidx.compose.runtime:runtime:$compose_version")
     implementation("androidx.compose.foundation:foundation-layout:$compose_version")
     implementation("com.google.android.material:compose-theme-adapter:$material_dapter_version")
-    implementation("androidx.activity:activity-compose:$compose_version")
+    implementation("androidx.activity:activity-compose:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
 
     //Kotlin
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
 
     //Koin
     implementation("io.insert-koin:koin-core:$koin_version")

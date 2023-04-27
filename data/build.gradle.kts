@@ -10,6 +10,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -39,9 +40,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
     }
 }
 
@@ -75,5 +73,5 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     implementation("androidx.room:room-paging:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 }

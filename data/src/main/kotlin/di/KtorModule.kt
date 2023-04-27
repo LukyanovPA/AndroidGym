@@ -19,7 +19,7 @@ internal val ktorModule = module {
             val baseUrl = Endpoints.BASE_URL_DEBUG
 
             install(Logging) {
-                logger = Logger.DEFAULT
+                logger = Logger.SIMPLE
                 level = LogLevel.ALL
             }
 

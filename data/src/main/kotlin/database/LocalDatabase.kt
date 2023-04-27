@@ -9,7 +9,7 @@ import database.entity.CategoryEntity
     entities = [
         CategoryEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class LocalDatabase : RoomDatabase() {

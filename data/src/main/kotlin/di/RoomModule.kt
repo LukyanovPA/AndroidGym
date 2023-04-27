@@ -2,15 +2,16 @@ package di
 
 import androidx.room.Room
 import database.LocalDatabase
-import org.koin.android.ext.koin.androidContext
+import database.dao.CategoryDao
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 private const val dbName = "AndroidGymDatabase.db"
 
 internal val roomModule = module {
-    single {
+    single<LocalDatabase> {
         Room.databaseBuilder(
-            androidContext(),
+            androidApplication(),
             LocalDatabase::class.java,
             dbName
         )
@@ -19,8 +20,7 @@ internal val roomModule = module {
             .build()
     }
 
-    single {
-        val database = get<LocalDatabase>()
-        database.category()
+    single<CategoryDao> {
+        get<LocalDatabase>().category()
     }
 }
