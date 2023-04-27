@@ -20,7 +20,8 @@ internal class QuestionRepositoryImpl(
         CacheHelper().checkUpdates()
     }
 
-    override suspend fun getAllCategories(): Flow<List<CategoryEntity>> = localQuestions.getAllCategories()
+    override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
+        localQuestions.getAllCategories()
 
     override suspend fun getAllSubcategories(categoryId: Int): Flow<List<SubcategoryEntity>> =
         localQuestions.getAllSubcategories(categoryId = categoryId)
