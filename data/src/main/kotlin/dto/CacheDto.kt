@@ -9,7 +9,7 @@ data class CacheDto(
     val update: Long
 )
 
-enum class CachePoint { CATEGORY, SUBCATEGORY, QUESTIONS }
+enum class CachePoint { CATEGORY, SUBCATEGORY, QUESTIONS, ANSWERS }
 
 internal fun CacheDto.map(): CacheEntity =
     CacheEntity(

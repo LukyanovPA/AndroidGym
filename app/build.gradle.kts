@@ -8,7 +8,6 @@ val koin_version: String by project
 val koin_compose_version: String by project
 val timber_version: String by project
 val glide_compose_version: String by project
-val paging_version: String by project
 val desugar_version: String by project
 
 plugins {
@@ -103,8 +102,4 @@ dependencies {
 
     //Glide
     implementation("com.github.bumptech.glide:compose:$glide_compose_version")
-
-    //Paging
-    implementation("androidx.paging:paging-runtime:$paging_version")
-    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
 }

@@ -9,8 +9,6 @@ import helper.asData
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 import io.ktor.http.path
 
 internal interface NetworkCache {
@@ -26,6 +24,5 @@ internal class NetworkCacheImpl(
                 parameters.append(ApiParams.POINT, point.name)
                 path(Endpoints.Cache.lastUpdate)
             }
-            contentType(ContentType.Application.Json)
         }.body<BaseResponse<CacheDto>>().asData()
 }

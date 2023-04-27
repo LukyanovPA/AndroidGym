@@ -2,8 +2,10 @@ package di
 
 import androidx.room.Room
 import database.LocalDatabase
+import database.dao.AnswersDao
 import database.dao.CategoryDao
 import database.dao.LastUpdateDao
+import database.dao.QuestionsDao
 import database.dao.SubcategoryDao
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
@@ -29,4 +31,8 @@ internal val roomModule = module {
     single<LastUpdateDao> { get<LocalDatabase>().lastUpdate() }
 
     single<SubcategoryDao> { get<LocalDatabase>().subcategories() }
+
+    single<QuestionsDao> { get<LocalDatabase>().questions() }
+
+    single<AnswersDao> { get<LocalDatabase>().answers() }
 }

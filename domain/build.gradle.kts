@@ -40,8 +40,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":utils"))
+    api(project(":data"))
+    api(project(":utils"))
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
 
     //Serialization

@@ -2,6 +2,7 @@ import error.ApiExceptions
 import error.ErrorState
 import error.ErrorStorage
 import error.Errors
+import error.InternetConnectionException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +33,7 @@ class CoroutineHelper(private val scope: CoroutineScope) {
                     )
 
                     is ApiExceptions.UndefinedException -> errorStorage.error.emit(Errors.UndefinedError(message = e.errorMessage))
+                    is InternetConnectionException -> errorStorage.error.emit(Errors.UndefinedError(message = e.message!!))
                     else -> errorStorage.error.emit(Errors.OtherError(error = e))
                 }
             }

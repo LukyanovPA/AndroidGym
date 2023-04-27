@@ -5,6 +5,8 @@ sealed class ApiExceptions(override val message: String? = null) : Exception(mes
     class UndefinedException(val errorMessage: String) : ApiExceptions(errorMessage)
 }
 
+class InternetConnectionException(private val mess: String?) : java.lang.Exception(mess)
+
 enum class HttpResponseCode(val errorCode: IntRange) {
     EXPECTED(10000..19000),
     UNDEFINED(90000..90000)

@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":utils"))
+    api(project(":utils"))
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
 
     //Serialization
@@ -72,6 +72,5 @@ dependencies {
     //Room
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
-    implementation("androidx.room:room-paging:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
 }

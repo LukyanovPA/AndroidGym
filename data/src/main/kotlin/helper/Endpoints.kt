@@ -7,6 +7,12 @@ internal object Endpoints {
         private const val question = "questions/"
 
         const val getAllCategory = question + "getAllCategories"
+        const val getAllSubcategoriesByCategoryId = question + "getAllSubcategoriesByCategoryId"
+        const val getAllSubcategories = question + "getAllSubcategories"
+        const val getAllQuestionsBySubcategoryId = question + "getAllQuestionsBySubcategoryId"
+        const val getAllQuestions = question + "getAllQuestions"
+        const val getAllAnswersByQuestionId = question + "getAllAnswersByQuestionId"
+        const val getAllAnswers = question + "getAllAnswers"
     }
 
     object Cache {
