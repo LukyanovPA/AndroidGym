@@ -24,7 +24,7 @@ import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.ui.theme.Tesla
 
 @Composable
-fun HideableSearchTextField(
+fun SearchTextField(
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -33,7 +33,7 @@ fun HideableSearchTextField(
         OutlinedTextField(
             value = text,
             onValueChange = onTextChange,
-            shape = RoundedCornerShape(40.dp),
+            shape = RoundedCornerShape(20.dp),
             textStyle = TextStyle(
                 color = Tesla,
                 fontFamily = FontFamily(
@@ -60,7 +60,7 @@ fun HideableSearchTextField(
 @Preview
 @Composable
 fun HideableSearchTextFieldPreview() {
-    HideableSearchTextField(
+    SearchTextField(
         text = "tt",
         onTextChange = {},
         modifier = Modifier.background(color = Color.White)

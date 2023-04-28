@@ -16,60 +16,57 @@ class MainReducer(
     private val getSubcategoriesByCategoryId: GetSubcategoriesByCategoryId,
     private val getQuestionsBySubcategoryId: GetQuestionsBySubcategoryId,
     private val search: Search
-) : Reducer<CategoriesState, CategoriesAction, CategoriesEffect>(CategoriesState()) {
+) : Reducer<MainState, MainAction, MainEffect>(MainState()) {
     private val searchQuery = MutableStateFlow(EMPTY_STRING)
 
-    init {
-        onSearch()
-    }
-
-    override suspend fun reduce(oldState: CategoriesState, action: CategoriesAction) {
+    override suspend fun reduce(oldState: MainState, action: MainAction) {
         when (action) {
-            is CategoriesAction.FetchCategories -> {
+            is MainAction.FetchMain -> {
                 saveState(oldState.copy(isLoading = true))
                 onFetchCategories()
             }
 
-            is CategoriesAction.FetchSubcategories -> {
+            is MainAction.FetchSubcategories -> {
                 saveState(oldState.copy(isLoading = true))
                 onFetchSubcategories(categoryId = action.categoryId)
             }
 
-            is CategoriesAction.FetchQuestions -> {
+            is MainAction.FetchQuestions -> {
                 saveState(oldState.copy(isLoading = true))
                 onFetchQuestions(subcategoryId = action.subcategoryId)
             }
 
-            is CategoriesAction.Search -> {
+            is MainAction.Search -> {
                 saveState(oldState.copy(isLoading = true, searchQuery = action.query))
                 searchQuery.emit(action.query)
+                onSearch()
             }
 
-            is CategoriesAction.Items -> saveState(oldState.copy(isLoading = false, items = action.items))
-            is CategoriesAction.OnCategoryClick -> {}
-            is CategoriesAction.OnSubcategoryClick -> {}
-            is CategoriesAction.OnQuestionClick -> {}
+            is MainAction.Items -> saveState(oldState.copy(isLoading = false, items = action.items))
+            is MainAction.OnCategoryClick -> {}
+            is MainAction.OnSubcategoryClick -> {}
+            is MainAction.OnQuestionClick -> {}
         }
     }
 
     private fun onFetchCategories() = coroutineHelper.launchIO {
         getAllCategories()
             .collect { categories ->
-                sendAction(CategoriesAction.Items(items = categories))
+                sendAction(MainAction.Items(items = categories))
             }
     }
 
     private fun onFetchSubcategories(categoryId: Int) = coroutineHelper.launchIO {
         getSubcategoriesByCategoryId(categoryId)
             .collect { subcategories ->
-                sendAction(CategoriesAction.Items(items = subcategories))
+                sendAction(MainAction.Items(items = subcategories))
             }
     }
 
     private fun onFetchQuestions(subcategoryId: Int) = coroutineHelper.launchIO {
         getQuestionsBySubcategoryId(subcategoryId)
             .collect { questions ->
-                sendAction(CategoriesAction.Items(items = questions))
+                sendAction(MainAction.Items(items = questions))
             }
     }
 
@@ -79,7 +76,7 @@ class MainReducer(
             .debounce(300L)
             .flatMapMerge { query -> search(query) }
             .collect { result ->
-                sendAction(CategoriesAction.Items(items = result))
+                sendAction(MainAction.Items(items = result))
             }
     }
 }

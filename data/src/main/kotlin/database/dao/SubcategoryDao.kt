@@ -13,8 +13,8 @@ interface SubcategoryDao {
     suspend fun insert(subcategories: List<SubcategoryEntity>)
 
     @Query("SELECT * FROM subcategory WHERE categoryId = :categoryId")
-    suspend fun getAllByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>>
+    fun getAllByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>>
 
     @Query("SELECT * FROM subcategory")
-    suspend fun getAll(): Flow<List<SubcategoryEntity>>
+    fun getAll(): Flow<List<SubcategoryEntity>>
 }
