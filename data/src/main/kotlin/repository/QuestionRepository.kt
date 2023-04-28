@@ -14,4 +14,8 @@ interface QuestionRepository {
     suspend fun getAllQuestions(subcategoryId: Int): Flow<List<QuestionEntity>>
 
     suspend fun getAnswer(questionId: Int): Flow<AnswerEntity>
+
+    suspend fun searchSubcategories(query: String): Flow<List<SubcategoryEntity>>
+
+    suspend fun searchQuestions(query: String): Flow<List<QuestionEntity>>
 }

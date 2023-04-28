@@ -8,18 +8,26 @@ import database.entity.SubcategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 internal interface LocalQuestions {
+    //Category
     suspend fun getAllCategories(): Flow<List<CategoryEntity>>
 
     suspend fun insertCategories(categories: List<CategoryEntity>)
 
-    suspend fun getAllSubcategories(categoryId: Int): Flow<List<SubcategoryEntity>>
+    //Subcategory
+    suspend fun getAllSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>>
+
+    suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>>
 
     suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>)
 
-    suspend fun getAllQuestions(subcategoryId: Int): Flow<List<QuestionEntity>>
+    //Question
+    suspend fun getAllQuestionsBySubcategoryId(subcategoryId: Int): Flow<List<QuestionEntity>>
+
+    suspend fun getAllQuestions(): Flow<List<QuestionEntity>>
 
     suspend fun insertQuestions(questions: List<QuestionEntity>)
 
+    //Answer
     suspend fun getAnswers(questionId: Int): Flow<List<AnswerEntity>>
 
     suspend fun insertAnswers(answers: List<AnswerEntity>)
@@ -35,15 +43,21 @@ internal class LocalQuestionsDataSource(
         db.category().insert(newList = categories)
     }
 
-    override suspend fun getAllSubcategories(categoryId: Int): Flow<List<SubcategoryEntity>> =
-        db.subcategories().getAll(categoryId = categoryId)
+    override suspend fun getAllSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>> =
+        db.subcategories().getAllByCategoryId(categoryId = categoryId)
+
+    override suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>> =
+        db.subcategories().getAll()
 
     override suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>) {
         db.subcategories().insert(subcategories = subcategories)
     }
 
-    override suspend fun getAllQuestions(subcategoryId: Int): Flow<List<QuestionEntity>> =
-        db.questions().getAll(subcategoryId = subcategoryId)
+    override suspend fun getAllQuestionsBySubcategoryId(subcategoryId: Int): Flow<List<QuestionEntity>> =
+        db.questions().getAllBySubcategoryId(subcategoryId = subcategoryId)
+
+    override suspend fun getAllQuestions(): Flow<List<QuestionEntity>> =
+        db.questions().getAll()
 
     override suspend fun insertQuestions(questions: List<QuestionEntity>) {
         db.questions().insert(questions = questions)

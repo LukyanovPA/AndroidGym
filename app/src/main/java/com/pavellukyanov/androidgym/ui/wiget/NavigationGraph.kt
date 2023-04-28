@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pavellukyanov.androidgym.helper.Destinations
-import com.pavellukyanov.androidgym.ui.feature.categories.CategoriesScreen
+import com.pavellukyanov.androidgym.ui.feature.main.MainScreen
 import com.pavellukyanov.androidgym.ui.feature.error.ErrorScreen
 
 @Composable
@@ -19,7 +19,7 @@ fun NavigationGraph(
             ErrorScreen(navController = navController)
         }
         composable(route = Destinations.Categories.CATEGORIES) {
-            CategoriesScreen(navController = navController)
+            MainScreen(navController = navController)
         }
     }
 }

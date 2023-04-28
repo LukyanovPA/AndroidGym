@@ -4,4 +4,5 @@
     //Common
     <string name="any_screen_error">Ошибка: $s</string>
     <string name="any_screen_ok">OK</string>
+    <string name="search_placeholder">Поиск...</string>
 </resources>

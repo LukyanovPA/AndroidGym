@@ -20,11 +20,11 @@ abstract class Reducer<STATE : State, ACTION : Action, EFFECT : Effect>(initStat
         reduce(_state.value, action)
     }
 
-    protected fun saveState(newState: STATE) = coroutineHelper.launchCPU {
+    protected fun saveState(newState: STATE) = coroutineHelper.launchUI {
         _state.emit(newState)
     }
 
-    protected fun sendEffect(newEffect: EFFECT) = coroutineHelper.launchCPU {
+    protected fun sendEffect(newEffect: EFFECT) = coroutineHelper.launchUI {
         effect.send(newEffect)
     }
 }

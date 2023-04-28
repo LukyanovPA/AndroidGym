@@ -8,6 +8,6 @@ object Destinations {
     }
 
     object Categories {
-        const val CATEGORIES = ui + "categories"
+        const val CATEGORIES = ui + "main"
     }
 }
