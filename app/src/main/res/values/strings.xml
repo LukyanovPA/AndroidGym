@@ -5,4 +5,5 @@
     <string name="any_screen_error">Ошибка: $s</string>
     <string name="any_screen_ok">OK</string>
     <string name="search_placeholder">Поиск...</string>
+    <string name="search_not_found">По вашему запросу ничего не найдено</string>
 </resources>

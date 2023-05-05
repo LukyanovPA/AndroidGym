@@ -103,7 +103,7 @@ fun MainScreenContent(
                     .fillMaxSize()
                     .background(color = Color.White)
             ) {
-                QuestionsList(
+                ItemsList(
                     categories = state.items
                 ) { onAction(it) }
             }
@@ -112,7 +112,7 @@ fun MainScreenContent(
 }
 
 @Composable
-fun QuestionsList(
+fun ItemsList(
     categories: List<MainItems>,
     onAction: (MainAction) -> Unit
 ) {
@@ -145,15 +145,45 @@ fun QuestionsList(
                     }
                 }
 
-                is MainItems.SubcategoryItem -> {}
-                is MainItems.QuestionItem -> {
-                    Text(
-                        text = item.question.question,
+                is MainItems.SubcategoryItem -> {
+                    Row(
                         modifier = Modifier
-                            .padding(start = 16.dp)
-                    )
+                            .clickable { onAction(MainAction.OnSubcategoryClick(subcategoryId = item.subcategory.id)) }
+                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    ) {
+                        Text(
+                            text = item.subcategory.name,
+                            modifier = Modifier
+                                .padding(start = 16.dp)
+                        )
+                    }
                 }
-                is MainItems.NotFoundItem -> {}
+
+                is MainItems.QuestionItem -> {
+                    Row(
+                        modifier = Modifier
+                            .clickable { onAction(MainAction.OnQuestionClick(questionId = item.question.id)) }
+                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    ) {
+                        Text(
+                            text = item.question.question,
+                            modifier = Modifier
+                                .padding(start = 16.dp)
+                        )
+                    }
+                }
+
+                is MainItems.NotFoundItem -> {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.search_not_found)
+                        )
+                    }
+                }
             }
         }
     }
