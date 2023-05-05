@@ -89,8 +89,8 @@ fun MainScreenContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 SearchTextField(
-                    text = state.searchQuery,
-                    onTextChange = { onAction(MainAction.Search(query = it)) },
+                    onSearchClick = { onAction(MainAction.Search(query = it)) },
+                    onClearClick = { onAction(MainAction.FetchMain) },
                     modifier = Modifier
                         .padding(start = 8.dp, end = 8.dp)
                         .clip(RoundedCornerShape(20.dp))
@@ -146,7 +146,13 @@ fun QuestionsList(
                 }
 
                 is MainItems.SubcategoryItem -> {}
-                is MainItems.QuestionItem -> {}
+                is MainItems.QuestionItem -> {
+                    Text(
+                        text = item.question.question,
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                    )
+                }
                 is MainItems.NotFoundItem -> {}
             }
         }

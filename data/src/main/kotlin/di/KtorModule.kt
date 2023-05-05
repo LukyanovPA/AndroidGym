@@ -1,6 +1,7 @@
 package di
 
-import helper.Endpoints
+
+import helper.Endpoints.BASE_URL_DEVICE
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -22,7 +23,7 @@ internal val ktorModule = module {
     single {
         HttpClient {
 
-            val baseUrl = Endpoints.BASE_URL_DEBUG
+            val baseUrl = BASE_URL_DEVICE
 
             install(Logging) {
                 logger = Logger.SIMPLE

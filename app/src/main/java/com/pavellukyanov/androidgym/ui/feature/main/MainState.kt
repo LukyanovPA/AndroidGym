@@ -1,6 +1,5 @@
 package com.pavellukyanov.androidgym.ui.feature.main
 
-import Constants.EMPTY_STRING
 import com.pavellukyanov.androidgym.base.Action
 import com.pavellukyanov.androidgym.base.Effect
 import com.pavellukyanov.androidgym.base.State
@@ -9,8 +8,7 @@ import entity.questions.MainItems
 
 data class MainState(
     override val isLoading: Boolean = false,
-    val items: List<MainItems> = listOf(),
-    val searchQuery: String = EMPTY_STRING
+    val items: List<MainItems> = listOf()
 ) : State()
 
 sealed class MainAction : Action() {

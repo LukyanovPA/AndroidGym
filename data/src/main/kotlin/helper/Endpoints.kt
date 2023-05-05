@@ -1,7 +1,9 @@
 package helper
 
 internal object Endpoints {
-    const val BASE_URL_DEBUG = "http://10.0.2.2:8080/api/"
+    private const val API = ":8080/api/"
+    const val BASE_URL_DEBUG = "http://10.0.2.2$API"
+    const val BASE_URL_DEVICE = "http://192.168.1.65$API"
 
     object Questions {
         private const val question = "questions/"

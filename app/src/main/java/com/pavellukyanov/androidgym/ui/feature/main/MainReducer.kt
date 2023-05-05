@@ -37,7 +37,7 @@ class MainReducer(
             }
 
             is MainAction.Search -> {
-                saveState(oldState.copy(isLoading = true, searchQuery = action.query))
+                saveState(oldState.copy(isLoading = true))
                 searchQuery.emit(action.query)
                 onSearch()
             }
