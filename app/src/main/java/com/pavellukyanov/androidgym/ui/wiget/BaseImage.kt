@@ -16,7 +16,8 @@ import com.bumptech.glide.integration.compose.GlideImage
 fun BaseImage(
     url: Any?,
     size: Dp,
-    isCircle: Boolean = false
+    isCircle: Boolean = false,
+    modifier: Modifier
 ) {
     GlideImage(
         model = url,

@@ -15,8 +15,8 @@ internal class SearchImpl(
 ) : Search {
     override suspend fun invoke(query: String): Flow<List<MainItems>> =
         combine(
-            repo.searchSubcategories(query = query),
-            repo.searchQuestions(query = query)
+            repo.getAllSubcategories(),
+            repo.getAllQuestions()
         ) { sub, question ->
             mutableListOf<MainItems>().apply {
                 if (sub.isEmpty() && question.isEmpty()) {
@@ -24,12 +24,20 @@ internal class SearchImpl(
                 } else {
                     addAll(
                         MainItems.SubcategoryItem.map(
-                            sub.map { s ->
-                                s.map(question.filter { it.subcategoryId == s.id }.map { it.map() })
-                            }
+                            sub
+                                .filter { it.name.contains(query, ignoreCase = true) }
+                                .map { s ->
+                                    s.map(question.filter { it.subcategoryId == s.id }.map { it.map() })
+                                }
                         )
                     )
-                    addAll(MainItems.QuestionItem.map(question.map { it.map() }))
+                    addAll(
+                        MainItems.QuestionItem.map(
+                            question
+                                .filter { it.question.contains(query, ignoreCase = true) }
+                                .map { it.map() }
+                        )
+                    )
                 }
             }
         }

@@ -12,9 +12,6 @@ interface SubcategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(subcategories: List<SubcategoryEntity>)
 
-    @Query("SELECT * FROM subcategory WHERE categoryId = :categoryId")
-    fun getAllByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>>
-
     @Query("SELECT * FROM subcategory")
     fun getAll(): Flow<List<SubcategoryEntity>>
 }

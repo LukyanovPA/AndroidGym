@@ -5,7 +5,9 @@ import database.entity.AnswerEntity
 import database.entity.CategoryEntity
 import database.entity.QuestionEntity
 import database.entity.SubcategoryEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 
 internal interface LocalQuestions {
     //Category
@@ -14,15 +16,11 @@ internal interface LocalQuestions {
     suspend fun insertCategories(categories: List<CategoryEntity>)
 
     //Subcategory
-    suspend fun getAllSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>>
-
     suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>>
 
     suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>)
 
     //Question
-    suspend fun getAllQuestionsBySubcategoryId(subcategoryId: Int): Flow<List<QuestionEntity>>
-
     suspend fun getAllQuestions(): Flow<List<QuestionEntity>>
 
     suspend fun insertQuestions(questions: List<QuestionEntity>)
@@ -38,26 +36,23 @@ internal class LocalQuestionsDataSource(
 ) : LocalQuestions {
     override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
         db.category().getAll()
+            .flowOn(Dispatchers.IO)
 
     override suspend fun insertCategories(categories: List<CategoryEntity>) {
         db.category().insert(newList = categories)
     }
 
-    override suspend fun getAllSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>> =
-        db.subcategories().getAllByCategoryId(categoryId = categoryId)
-
     override suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>> =
         db.subcategories().getAll()
+            .flowOn(Dispatchers.IO)
 
     override suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>) {
         db.subcategories().insert(subcategories = subcategories)
     }
 
-    override suspend fun getAllQuestionsBySubcategoryId(subcategoryId: Int): Flow<List<QuestionEntity>> =
-        db.questions().getAllBySubcategoryId(subcategoryId = subcategoryId)
-
     override suspend fun getAllQuestions(): Flow<List<QuestionEntity>> =
         db.questions().getAll()
+            .flowOn(Dispatchers.IO)
 
     override suspend fun insertQuestions(questions: List<QuestionEntity>) {
         db.questions().insert(questions = questions)
@@ -65,6 +60,7 @@ internal class LocalQuestionsDataSource(
 
     override suspend fun getAnswers(questionId: Int): Flow<List<AnswerEntity>> =
         db.answers().getAll(questionId = questionId)
+            .flowOn(Dispatchers.IO)
 
     override suspend fun insertAnswers(answers: List<AnswerEntity>) {
         db.answers().insert(answers = answers)

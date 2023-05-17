@@ -119,7 +119,7 @@ fun MainScreenContent(
 @Composable
 fun ItemsList(
     categories: List<MainItems>,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onAction: (MainAction) -> Unit
 ) {
     Column(
@@ -135,74 +135,26 @@ fun ItemsList(
                 items = categories,
                 key = { it.id }
             ) { item ->
-//                BoxWithConstraints {
                 when (item) {
                     is MainItems.CategoryItem -> {
                         CategoryItemContent(
                             category = item.category,
                             onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
                         )
-//                    Row(
-//                        modifier = Modifier
-//                            .clickable {  }
-//                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-//                    ) {
-//                        BaseImage(
-//                            url = when (item.category.id) {
-//                                1 -> R.drawable.ic_java
-//                                2 -> R.drawable.ic_kotlin
-//                                3 -> R.drawable.ic_android
-//                                else -> R.drawable.ic_other
-//                            },
-//                            size = 30.dp,
-//                        )
-//                        Text(
-//                            text = item.category.name,
-//                            modifier = Modifier
-//                                .padding(start = 16.dp)
-//                        )
-//                    }
                     }
 
                     is MainItems.SubcategoryItem -> {
                         SubcategoryItemContent(
                             subcategory = item.subcategory,
-//                                modifier = modifier
-//                                    .height(20.dp),
                             onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
                         )
-//                    Row(
-//                        modifier = Modifier
-//                            .clickable { }
-//                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-//                    ) {
-//                        Text(
-//                            text = item.subcategory.name,
-//                            modifier = Modifier
-//                                .padding(start = 16.dp)
-//                        )
-//                    }
                     }
 
                     is MainItems.QuestionItem -> {
                         QuestionItemContent(
                             question = item.question,
-//                                modifier = modifier
-//                                    .height(20.dp),
                             onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
                         )
-
-//                    Row(
-//                        modifier = Modifier
-//                            .clickable { onAction(MainAction.OnQuestionClick(questionId = item.question.id)) }
-//                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-//                    ) {
-//                        Text(
-//                            text = item.question.question,
-//                            modifier = Modifier
-//                                .padding(start = 16.dp)
-//                        )
-//                    }
                     }
 
                     is MainItems.NotFoundItem -> {
