@@ -1,11 +1,10 @@
 package useCase.questions
 
 import entity.questions.MainItems
+import ext.CPU
 import helper.map
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import repository.QuestionRepository
 
@@ -31,5 +30,5 @@ internal class GetAllCategoriesImpl(
             }
         }
             .map { list -> MainItems.CategoryItem.map(list) }
-            .flowOn(Dispatchers.Default)
+            .CPU()
 }

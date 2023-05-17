@@ -1,6 +1,7 @@
 package useCase.questions
 
 import entity.questions.Answer
+import ext.CPU
 import helper.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -12,5 +13,7 @@ internal class GetAnswerImpl(
     private val repo: QuestionRepository
 ) : GetAnswer {
     override suspend fun invoke(questionId: Int): Flow<Answer> =
-        repo.getAnswer(questionId = questionId).map { it.map() }
+        repo.getAnswer(questionId = questionId)
+            .map { it.map() }
+            .CPU()
 }

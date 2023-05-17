@@ -9,21 +9,18 @@ import dto.CachePoint
 import dto.map
 import error.InternetConnectionException
 import helper.NetworkMonitor
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
 
-internal class CacheHelper {
-    private val networkMonitor by inject<NetworkMonitor>(NetworkMonitor::class.java)
-    private val localCache by inject<LocalCache>(LocalCache::class.java)
-    private val networkCache by inject<NetworkCache>(NetworkCache::class.java)
-    private val localQuestions by inject<LocalQuestions>(LocalQuestions::class.java)
-    private val networkQuestions by inject<NetworkQuestions>(NetworkQuestions::class.java)
+internal class CacheHelper(
+    private val networkMonitor: NetworkMonitor,
+    private val localCache: LocalCache,
+    private val networkCache: NetworkCache,
+    private val localQuestions: LocalQuestions,
+    private val networkQuestions: NetworkQuestions
+) {
+    private val scope = CoroutineHelper()
 
-    private val coroutineHelper = CoroutineHelper(CoroutineScope(Dispatchers.Default))
-
-    suspend fun checkUpdates(point: CachePoint) = coroutineHelper.launchIO {
+    suspend fun checkUpdates(point: CachePoint) = scope.launchIO {
         if (networkMonitor.isNetworkAvailable()) {
             val local = localCache.lastUpdate(point = point)
             val network = networkCache.lastUpdate(point = point).map()

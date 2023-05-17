@@ -10,22 +10,22 @@ import kotlinx.coroutines.flow.asStateFlow
 
 abstract class Reducer<STATE : State, ACTION : Action, EFFECT : Effect>(initState: STATE) : ViewModel() {
     private val _state: MutableStateFlow<STATE> = MutableStateFlow(initState)
-    protected val coroutineHelper = CoroutineHelper(viewModelScope)
+    protected val scope = CoroutineHelper(scope = viewModelScope)
 
     val state: StateFlow<STATE> = _state.asStateFlow()
     val effect: Channel<EFFECT> = Channel()
 
     protected abstract suspend fun reduce(oldState: STATE, action: ACTION)
 
-    fun sendAction(action: ACTION) = coroutineHelper.launchCPU {
+    fun sendAction(action: ACTION) = scope.launchCPU {
         reduce(_state.value, action)
     }
 
-    protected fun saveState(newState: STATE) = coroutineHelper.launchUI {
+    protected fun saveState(newState: STATE) = scope.launchUI {
         _state.value = newState
     }
 
-    protected fun sendEffect(newEffect: EFFECT) = coroutineHelper.launchUI {
+    protected fun sendEffect(newEffect: EFFECT) = scope.launchUI {
         effect.send(newEffect)
     }
 }

@@ -5,9 +5,8 @@ import database.entity.AnswerEntity
 import database.entity.CategoryEntity
 import database.entity.QuestionEntity
 import database.entity.SubcategoryEntity
-import kotlinx.coroutines.Dispatchers
+import ext.IO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 
 internal interface LocalQuestions {
     //Category
@@ -36,7 +35,7 @@ internal class LocalQuestionsDataSource(
 ) : LocalQuestions {
     override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
         db.category().getAll()
-            .flowOn(Dispatchers.IO)
+            .IO()
 
     override suspend fun insertCategories(categories: List<CategoryEntity>) {
         db.category().insert(newList = categories)
@@ -44,7 +43,7 @@ internal class LocalQuestionsDataSource(
 
     override suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>> =
         db.subcategories().getAll()
-            .flowOn(Dispatchers.IO)
+            .IO()
 
     override suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>) {
         db.subcategories().insert(subcategories = subcategories)
@@ -52,7 +51,7 @@ internal class LocalQuestionsDataSource(
 
     override suspend fun getAllQuestions(): Flow<List<QuestionEntity>> =
         db.questions().getAll()
-            .flowOn(Dispatchers.IO)
+            .IO()
 
     override suspend fun insertQuestions(questions: List<QuestionEntity>) {
         db.questions().insert(questions = questions)
@@ -60,7 +59,7 @@ internal class LocalQuestionsDataSource(
 
     override suspend fun getAnswers(questionId: Int): Flow<List<AnswerEntity>> =
         db.answers().getAll(questionId = questionId)
-            .flowOn(Dispatchers.IO)
+            .IO()
 
     override suspend fun insertAnswers(answers: List<AnswerEntity>) {
         db.answers().insert(answers = answers)

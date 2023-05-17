@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapMerge
 import useCase.questions.GetAllCategories
 import useCase.questions.Search
+import kotlin.time.Duration.Companion.milliseconds
 
 class MainReducer(
     private val getAllCategories: GetAllCategories,
@@ -33,7 +34,7 @@ class MainReducer(
         }
     }
 
-    private fun onFetchCategories() = coroutineHelper.launchIO {
+    private fun onFetchCategories() = scope.launchIO {
         getAllCategories()
             .collect { categories ->
                 sendAction(MainAction.Items(items = categories))
@@ -41,9 +42,9 @@ class MainReducer(
     }
 
     @OptIn(FlowPreview::class)
-    private fun onSearch() = coroutineHelper.launchIO {
+    private fun onSearch() = scope.launchIO {
         searchQuery
-            .debounce(300L)
+            .debounce(300.milliseconds)
             .flatMapMerge { query -> search(query) }
             .collect { result ->
                 sendAction(MainAction.Items(items = result))

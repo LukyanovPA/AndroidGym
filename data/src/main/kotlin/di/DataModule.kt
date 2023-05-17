@@ -5,5 +5,6 @@ fun dataModule() = listOf(
     roomModule,
     dataSourceModule,
     repositoryModule,
-    networkMonitorModule
+    networkMonitorModule,
+    cacheHelperModule
 )

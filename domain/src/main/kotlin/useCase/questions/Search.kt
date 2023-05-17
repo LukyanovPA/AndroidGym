@@ -1,11 +1,10 @@
 package useCase.questions
 
 import entity.questions.MainItems
+import ext.CPU
 import helper.map
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import repository.QuestionRepository
 
 interface Search : suspend (String) -> Flow<List<MainItems>>
@@ -41,5 +40,5 @@ internal class SearchImpl(
                 }
             }
         }
-            .flowOn(Dispatchers.Default)
+            .CPU()
 }

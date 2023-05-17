@@ -15,7 +15,8 @@ import kotlinx.coroutines.flow.onStart
 import repository.QuestionRepository
 
 internal class QuestionRepositoryImpl(
-    private val localQuestions: LocalQuestions
+    private val localQuestions: LocalQuestions,
+    private val cacheHelper: CacheHelper
 ) : QuestionRepository {
 
     override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
@@ -41,6 +42,6 @@ internal class QuestionRepositoryImpl(
             }
 
     private suspend fun checkUpdates(point: CachePoint) {
-        CacheHelper().checkUpdates(point = point)
+        cacheHelper.checkUpdates(point = point)
     }
 }
