@@ -17,7 +17,7 @@ fun BaseImage(
     url: Any?,
     size: Dp,
     isCircle: Boolean = false,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     GlideImage(
         model = url,
