@@ -14,17 +14,9 @@ data class MainState(
 sealed class MainAction : Action() {
     object FetchMain : MainAction()
 
-    data class FetchSubcategories(val categoryId: Int) : MainAction()
-
-    data class FetchQuestions(val subcategoryId: Int) : MainAction()
-
     data class Search(val query: String) : MainAction()
 
     data class Items(val items: List<MainItems>) : MainAction()
-
-    data class OnCategoryClick(val categoryId: Int) : MainAction()
-
-    data class OnSubcategoryClick(val subcategoryId: Int) : MainAction()
 
     data class OnQuestionClick(val questionId: Int) : MainAction()
 }

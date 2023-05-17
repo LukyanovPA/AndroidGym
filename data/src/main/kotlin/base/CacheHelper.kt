@@ -9,8 +9,8 @@ import dto.CachePoint
 import dto.map
 import error.InternetConnectionException
 import helper.NetworkMonitor
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 
@@ -21,26 +21,23 @@ internal class CacheHelper {
     private val localQuestions by inject<LocalQuestions>(LocalQuestions::class.java)
     private val networkQuestions by inject<NetworkQuestions>(NetworkQuestions::class.java)
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private val coroutineHelper = CoroutineHelper(GlobalScope)
+    private val coroutineHelper = CoroutineHelper(CoroutineScope(Dispatchers.Default))
 
-    fun checkUpdates() = coroutineHelper.launchIO {
+    suspend fun checkUpdates(point: CachePoint) = coroutineHelper.launchIO {
         if (networkMonitor.isNetworkAvailable()) {
-            CachePoint.values().forEach { point ->
-                val local = localCache.lastUpdate(point = point)
-                val network = networkCache.lastUpdate(point = point).map()
+            val local = localCache.lastUpdate(point = point)
+            val network = networkCache.lastUpdate(point = point).map()
 
-                if (local == null) {
+            if (local == null) {
+                launch {
+                    localCache.insert(cacheEntity = network)
+                    update(point = point)
+                }
+            } else {
+                if (local.update != network.update) {
                     launch {
-                        localCache.insert(cacheEntity = network)
                         update(point = point)
-                    }
-                } else {
-                    if (local.update != network.update) {
-                        launch {
-                            update(point = point)
-                            localCache.update(cacheEntity = network)
-                        }
+                        localCache.update(cacheEntity = network)
                     }
                 }
             }

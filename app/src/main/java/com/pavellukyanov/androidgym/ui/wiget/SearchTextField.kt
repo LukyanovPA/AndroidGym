@@ -2,6 +2,9 @@ package com.pavellukyanov.androidgym.ui.wiget
 
 import Constants.EMPTY_STRING
 import Constants.INT_ONE
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -51,7 +54,7 @@ fun SearchTextField(
             value = text,
             onValueChange = {
                 text = it
-                if (it.isEmpty()) onClearClick()
+                if (it.isEmpty()) onClearClick() else onSearchClick(it)
             },
             maxLines = INT_ONE,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -89,16 +92,23 @@ fun SearchTextField(
                 )
             },
             trailingIcon = {
-                Icon(Icons.Default.Clear,
-                    contentDescription = "clear text",
-                    tint = Tesla,
-                    modifier = Modifier
-                        .clickable {
-                            text = EMPTY_STRING
-                            keyboardController?.hide()
-                            onClearClick()
-                        }
-                )
+                AnimatedVisibility(
+                    visible = text.isNotEmpty(),
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = "clear text",
+                        tint = Tesla,
+                        modifier = Modifier
+                            .clickable {
+                                text = EMPTY_STRING
+                                keyboardController?.hide()
+                                onClearClick()
+                            }
+                    )
+                }
             },
             modifier = Modifier
                 .background(color = Color.White)

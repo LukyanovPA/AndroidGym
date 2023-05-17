@@ -10,19 +10,21 @@ import entity.questions.Category
 import entity.questions.Question
 import entity.questions.Subcategory
 
-fun CategoryEntity.map(): Category =
+fun CategoryEntity.map(subcategories: List<Subcategory>): Category =
     Category(
         id = id,
         name = name,
-        questionsCount = questionsCount ?: INT_ZERO
+        questionsCount = questionsCount ?: INT_ZERO,
+        subcategories = subcategories
     )
 
-fun SubcategoryEntity.map(): Subcategory =
+fun SubcategoryEntity.map(questions: List<Question>): Subcategory =
     Subcategory(
         id = id,
         categoryId = categoryId,
         categoryName = categoryName,
-        name = name
+        name = name,
+        questions = questions
     )
 
 fun QuestionEntity.map(): Question =

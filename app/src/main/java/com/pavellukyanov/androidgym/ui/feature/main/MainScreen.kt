@@ -1,7 +1,6 @@
 package com.pavellukyanov.androidgym.ui.feature.main
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,9 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +34,6 @@ import androidx.navigation.NavController
 import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
-import com.pavellukyanov.androidgym.ui.wiget.BaseImage
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
 import entity.questions.MainItems
 import org.koin.androidx.compose.koinViewModel
@@ -104,7 +105,11 @@ fun MainScreenContent(
                     .background(color = Color.White)
             ) {
                 ItemsList(
-                    categories = state.items
+                    categories = state.items,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .wrapContentHeight()
                 ) { onAction(it) }
             }
         }
@@ -114,76 +119,105 @@ fun MainScreenContent(
 @Composable
 fun ItemsList(
     categories: List<MainItems>,
+    modifier: Modifier,
     onAction: (MainAction) -> Unit
 ) {
-    LazyColumn {
-        items(
-            items = categories,
-            key = { it.id }
-        ) { item ->
-            when (item) {
-                is MainItems.CategoryItem -> {
-                    Row(
-                        modifier = Modifier
-                            .clickable { onAction(MainAction.OnCategoryClick(categoryId = item.category.id)) }
-                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                    ) {
-                        BaseImage(
-                            url = when (item.category.id) {
-                                1 -> R.drawable.ic_java
-                                2 -> R.drawable.ic_kotlin
-                                3 -> R.drawable.ic_android
-                                else -> R.drawable.ic_other
-                            },
-                            size = 30.dp,
-                        )
-                        Text(
-                            text = item.category.name,
-                            modifier = Modifier
-                                .padding(start = 16.dp)
-                        )
-                    }
-                }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
 
-                is MainItems.SubcategoryItem -> {
-                    Row(
-                        modifier = Modifier
-                            .clickable { onAction(MainAction.OnSubcategoryClick(subcategoryId = item.subcategory.id)) }
-                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                    ) {
-                        Text(
-                            text = item.subcategory.name,
-                            modifier = Modifier
-                                .padding(start = 16.dp)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(
+                items = categories,
+                key = { it.id }
+            ) { item ->
+//                BoxWithConstraints {
+                when (item) {
+                    is MainItems.CategoryItem -> {
+                        CategoryItemContent(
+                            category = item.category,
+                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
                         )
+//                    Row(
+//                        modifier = Modifier
+//                            .clickable {  }
+//                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+//                    ) {
+//                        BaseImage(
+//                            url = when (item.category.id) {
+//                                1 -> R.drawable.ic_java
+//                                2 -> R.drawable.ic_kotlin
+//                                3 -> R.drawable.ic_android
+//                                else -> R.drawable.ic_other
+//                            },
+//                            size = 30.dp,
+//                        )
+//                        Text(
+//                            text = item.category.name,
+//                            modifier = Modifier
+//                                .padding(start = 16.dp)
+//                        )
+//                    }
                     }
-                }
 
-                is MainItems.QuestionItem -> {
-                    Row(
-                        modifier = Modifier
-                            .clickable { onAction(MainAction.OnQuestionClick(questionId = item.question.id)) }
-                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                    ) {
-                        Text(
-                            text = item.question.question,
-                            modifier = Modifier
-                                .padding(start = 16.dp)
+                    is MainItems.SubcategoryItem -> {
+                        SubcategoryItemContent(
+                            subcategory = item.subcategory,
+//                                modifier = modifier
+//                                    .height(20.dp),
+                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
                         )
+//                    Row(
+//                        modifier = Modifier
+//                            .clickable { }
+//                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+//                    ) {
+//                        Text(
+//                            text = item.subcategory.name,
+//                            modifier = Modifier
+//                                .padding(start = 16.dp)
+//                        )
+//                    }
                     }
-                }
 
-                is MainItems.NotFoundItem -> {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.search_not_found)
+                    is MainItems.QuestionItem -> {
+                        QuestionItemContent(
+                            question = item.question,
+//                                modifier = modifier
+//                                    .height(20.dp),
+                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
                         )
+
+//                    Row(
+//                        modifier = Modifier
+//                            .clickable { onAction(MainAction.OnQuestionClick(questionId = item.question.id)) }
+//                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+//                    ) {
+//                        Text(
+//                            text = item.question.question,
+//                            modifier = Modifier
+//                                .padding(start = 16.dp)
+//                        )
+//                    }
+                    }
+
+                    is MainItems.NotFoundItem -> {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.search_not_found)
+                            )
+                        }
                     }
                 }
+//                }
             }
         }
     }
