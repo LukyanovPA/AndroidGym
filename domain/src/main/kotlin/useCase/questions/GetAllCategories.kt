@@ -24,7 +24,10 @@ internal class GetAllCategoriesImpl(
                 category.map(
                     subcategories.filter { it.categoryId == category.id }
                         .map { sub ->
-                            sub.map(questions.filter { it.subcategoryId == sub.id }.map { it.map() })
+                            sub.map(
+                                questions.filter { it.subcategoryId == sub.id }
+                                    .map { it.map() }
+                            )
                         }
                 )
             }
