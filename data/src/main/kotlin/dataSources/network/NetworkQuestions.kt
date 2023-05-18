@@ -14,11 +14,8 @@ import io.ktor.http.path
 
 internal interface NetworkQuestions {
     suspend fun getAllCategories(): List<CategoryEntity>
-
     suspend fun getAllSubcategories(): List<SubcategoryEntity>
-
     suspend fun getAllQuestions(): List<QuestionEntity>
-
     suspend fun getAllAnswers(): List<AnswerEntity>
 }
 

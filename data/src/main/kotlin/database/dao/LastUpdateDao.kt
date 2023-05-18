@@ -10,7 +10,7 @@ import database.entity.CacheEntity
 @Dao
 interface LastUpdateDao {
     @Query("SELECT * FROM last_update WHERE point = :point")
-    suspend fun lastUpdate(point: String): CacheEntity?
+    suspend fun getLastTimestamp(point: String): CacheEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(cacheEntity: CacheEntity): Long

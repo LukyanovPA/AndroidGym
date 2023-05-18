@@ -18,7 +18,6 @@ internal class QuestionRepositoryImpl(
     private val localQuestions: LocalQuestions,
     private val cacheHelper: CacheHelper
 ) : QuestionRepository {
-
     override suspend fun getAllCategories(): Flow<List<CategoryEntity>> =
         localQuestions.getAllCategories()
             .onStart { checkUpdates(point = CachePoint.CATEGORY) }

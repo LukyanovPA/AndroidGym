@@ -23,8 +23,6 @@ internal val ktorModule = module {
     single {
         HttpClient {
 
-            val baseUrl = BASE_URL_DEVICE
-
             install(Logging) {
                 logger = Logger.SIMPLE
                 level = LogLevel.ALL
@@ -43,7 +41,7 @@ internal val ktorModule = module {
             }
 
             defaultRequest {
-                url(baseUrl)
+                url(BASE_URL_DEVICE)
                 contentType(ContentType.Application.Json)
             }
         }

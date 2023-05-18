@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuestionRepository {
     suspend fun getAllCategories(): Flow<List<CategoryEntity>>
-
     suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>>
-
     suspend fun getAllQuestions(): Flow<List<QuestionEntity>>
-
     suspend fun getAnswer(questionId: Int): Flow<AnswerEntity>
 }

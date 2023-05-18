@@ -12,7 +12,7 @@ interface GetAnswer : suspend (Int) -> Flow<Answer>
 internal class GetAnswerImpl(
     private val repo: QuestionRepository
 ) : GetAnswer {
-    override suspend fun invoke(questionId: Int): Flow<Answer> =
+    override suspend operator fun invoke(questionId: Int): Flow<Answer> =
         repo.getAnswer(questionId = questionId)
             .map { it.map() }
             .CPU()

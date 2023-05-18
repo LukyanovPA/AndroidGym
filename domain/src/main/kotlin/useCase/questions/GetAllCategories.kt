@@ -14,7 +14,7 @@ internal class GetAllCategoriesImpl(
     private val repo: QuestionRepository
 ) : GetAllCategories {
 
-    override suspend fun invoke(): Flow<List<MainItems>> =
+    override suspend operator fun invoke(): Flow<List<MainItems>> =
         combine(
             repo.getAllCategories(),
             repo.getAllSubcategories(),

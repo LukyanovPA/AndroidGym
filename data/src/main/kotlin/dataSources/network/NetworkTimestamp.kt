@@ -11,13 +11,13 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.path
 
-internal interface NetworkCache {
+internal interface NetworkTimestamp {
     suspend fun lastUpdate(point: CachePoint): CacheDto
 }
 
-internal class NetworkCacheImpl(
+internal class NetworkTimestampImpl(
     private val httpClient: HttpClient
-) : NetworkCache {
+) : NetworkTimestamp {
     override suspend fun lastUpdate(point: CachePoint): CacheDto =
         httpClient.get {
             url {

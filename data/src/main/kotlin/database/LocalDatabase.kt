@@ -26,12 +26,8 @@ import database.entity.SubcategoryEntity
 )
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun category(): CategoryDao
-
     abstract fun lastUpdate(): LastUpdateDao
-
     abstract fun subcategories(): SubcategoryDao
-
     abstract fun questions(): QuestionsDao
-
     abstract fun answers(): AnswersDao
 }

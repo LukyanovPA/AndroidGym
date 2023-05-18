@@ -11,22 +11,18 @@ import kotlinx.coroutines.flow.Flow
 internal interface LocalQuestions {
     //Category
     suspend fun getAllCategories(): Flow<List<CategoryEntity>>
-
     suspend fun insertCategories(categories: List<CategoryEntity>)
 
     //Subcategory
     suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>>
-
     suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>)
 
     //Question
     suspend fun getAllQuestions(): Flow<List<QuestionEntity>>
-
     suspend fun insertQuestions(questions: List<QuestionEntity>)
 
     //Answer
     suspend fun getAnswers(questionId: Int): Flow<List<AnswerEntity>>
-
     suspend fun insertAnswers(answers: List<AnswerEntity>)
 }
 

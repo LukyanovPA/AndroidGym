@@ -5,18 +5,16 @@ import database.entity.CacheEntity
 import dto.CachePoint
 
 internal interface LocalCache {
-    suspend fun lastUpdate(point: CachePoint): CacheEntity?
-
+    suspend fun getLastTimestamp(point: CachePoint): CacheEntity?
     suspend fun insert(cacheEntity: CacheEntity): Long
-
     suspend fun update(cacheEntity: CacheEntity)
 }
 
 internal class LocalCacheImpl(
     private val dao: LastUpdateDao
 ) : LocalCache {
-    override suspend fun lastUpdate(point: CachePoint): CacheEntity? =
-        dao.lastUpdate(point = point.name)
+    override suspend fun getLastTimestamp(point: CachePoint): CacheEntity? =
+        dao.getLastTimestamp(point = point.name)
 
     override suspend fun insert(cacheEntity: CacheEntity): Long =
         dao.insert(cacheEntity = cacheEntity)

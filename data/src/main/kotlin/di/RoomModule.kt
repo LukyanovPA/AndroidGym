@@ -13,7 +13,7 @@ import org.koin.dsl.module
 private const val dbName = "AndroidGymDatabase.db"
 
 internal val roomModule = module {
-    single<LocalDatabase> {
+    single {
         Room.databaseBuilder(
             androidApplication(),
             LocalDatabase::class.java,
@@ -24,15 +24,15 @@ internal val roomModule = module {
             .build()
     }
 
-    single<CategoryDao> {
+    single {
         get<LocalDatabase>().category()
     }
 
-    single<LastUpdateDao> { get<LocalDatabase>().lastUpdate() }
+    single { get<LocalDatabase>().lastUpdate() }
 
-    single<SubcategoryDao> { get<LocalDatabase>().subcategories() }
+    single { get<LocalDatabase>().subcategories() }
 
-    single<QuestionsDao> { get<LocalDatabase>().questions() }
+    single { get<LocalDatabase>().questions() }
 
-    single<AnswersDao> { get<LocalDatabase>().answers() }
+    single { get<LocalDatabase>().answers() }
 }

@@ -3,8 +3,8 @@ package base
 import CoroutineHelper
 import dataSources.local.LocalCache
 import dataSources.local.LocalQuestions
-import dataSources.network.NetworkCache
 import dataSources.network.NetworkQuestions
+import dataSources.network.NetworkTimestamp
 import dto.CachePoint
 import dto.map
 import error.InternetConnectionException
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 internal class CacheHelper(
     private val networkMonitor: NetworkMonitor,
     private val localCache: LocalCache,
-    private val networkCache: NetworkCache,
+    private val networkTimestamp: NetworkTimestamp,
     private val localQuestions: LocalQuestions,
     private val networkQuestions: NetworkQuestions
 ) {
@@ -22,22 +22,21 @@ internal class CacheHelper(
 
     suspend fun checkUpdates(point: CachePoint) = scope.launchIO {
         if (networkMonitor.isNetworkAvailable()) {
-            val local = localCache.lastUpdate(point = point)
-            val network = networkCache.lastUpdate(point = point).map()
+            val local = localCache.getLastTimestamp(point = point)
+            val network = networkTimestamp.lastUpdate(point = point).map()
 
             if (local == null) {
                 launch {
                     localCache.insert(cacheEntity = network)
-                    update(point = point)
                 }
             } else {
                 if (local.update != network.update) {
                     launch {
-                        update(point = point)
                         localCache.update(cacheEntity = network)
                     }
                 }
             }
+            update(point = point)
         } else {
             throw InternetConnectionException(mess = "Отсутствует интернет соединение")
         }
