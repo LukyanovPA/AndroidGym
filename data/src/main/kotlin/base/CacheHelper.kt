@@ -28,15 +28,16 @@ internal class CacheHelper(
             if (local == null) {
                 launch {
                     localCache.insert(cacheEntity = network)
+                    update(point = point)
                 }
             } else {
                 if (local.update != network.update) {
                     launch {
+                        update(point = point)
                         localCache.update(cacheEntity = network)
                     }
                 }
             }
-            update(point = point)
         } else {
             throw InternetConnectionException(mess = "Отсутствует интернет соединение")
         }
