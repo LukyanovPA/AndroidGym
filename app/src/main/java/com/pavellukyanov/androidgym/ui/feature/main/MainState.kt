@@ -30,5 +30,5 @@ sealed class MainAction : Action() {
 }
 
 sealed class MainEffect : Effect() {
-    data class OnClick(val id: Int) : MainEffect()
+    object GoToAnswer : MainEffect()
 }

@@ -5,7 +5,7 @@ import database.entity.AnswerEntity
 import database.entity.CategoryEntity
 import database.entity.QuestionEntity
 import database.entity.SubcategoryEntity
-import entity.questions.Answer
+import entity.answer.Answer
 import entity.questions.Category
 import entity.questions.Question
 import entity.questions.Subcategory

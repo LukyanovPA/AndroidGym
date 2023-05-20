@@ -12,6 +12,9 @@ interface AnswersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(answers: List<AnswerEntity>)
 
+    @Query("DELETE FROM answers")
+    suspend fun deleteAll()
+
     @Query("SELECT * FROM answers WHERE questionId = :questionId")
     fun getAll(questionId: Int): Flow<List<AnswerEntity>>
 }

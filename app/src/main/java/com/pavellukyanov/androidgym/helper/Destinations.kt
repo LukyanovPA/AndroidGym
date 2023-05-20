@@ -10,4 +10,8 @@ object Destinations {
     object Categories {
         const val CATEGORIES = ui + "main"
     }
+
+    object Answer {
+        const val ANSWER = ui + "answer"
+    }
 }

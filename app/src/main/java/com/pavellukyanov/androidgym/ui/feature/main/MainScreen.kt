@@ -33,10 +33,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pavellukyanov.androidgym.app.R
+import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
+import com.pavellukyanov.androidgym.ui.theme.Tesla
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
 import entity.questions.MainItems
+import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -48,6 +51,11 @@ fun MainScreen(
 
     LaunchedEffect(key1 = true) {
         vm.sendAction(MainAction.FetchMain)
+        vm.effect.receiveAsFlow().collect { effect ->
+            when (effect) {
+                is MainEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
+            }
+        }
     }
 
     Scaffold { padding ->
@@ -64,7 +72,9 @@ fun MainScreenContent(
     onAction: (MainAction) -> Unit
 ) {
     Box(
-        modifier = Modifier.padding(padding)
+        modifier = Modifier
+            .padding(padding)
+            .background(color = Tesla)
     ) {
         Column(
             modifier = Modifier

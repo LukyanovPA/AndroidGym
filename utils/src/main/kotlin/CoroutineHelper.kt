@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
-class CoroutineHelper(private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)) {
+class CoroutineHelper(private val scope: CoroutineScope) {
     private val errorStorage by inject<ErrorStorage>(ErrorStorage::class.java)
 
     fun launchUI(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.Main, action)

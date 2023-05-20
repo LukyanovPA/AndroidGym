@@ -24,6 +24,7 @@ internal interface LocalQuestions {
     //Answer
     suspend fun getAnswers(questionId: Int): Flow<List<AnswerEntity>>
     suspend fun insertAnswers(answers: List<AnswerEntity>)
+    suspend fun deleteAllAnswers()
 }
 
 internal class LocalQuestionsDataSource(
@@ -59,5 +60,9 @@ internal class LocalQuestionsDataSource(
 
     override suspend fun insertAnswers(answers: List<AnswerEntity>) {
         db.answers().insert(answers = answers)
+    }
+
+    override suspend fun deleteAllAnswers() {
+        db.answers().deleteAll()
     }
 }

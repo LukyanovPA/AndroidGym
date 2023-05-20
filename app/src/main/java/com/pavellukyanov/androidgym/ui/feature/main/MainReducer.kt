@@ -7,13 +7,15 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapMerge
+import useCase.answer.SendQuestionId
 import useCase.questions.GetAllCategories
 import useCase.questions.Search
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainReducer(
     private val getAllCategories: GetAllCategories,
-    private val search: Search
+    private val search: Search,
+    private val sendQuestionId: SendQuestionId
 ) : Reducer<MainState, MainAction, MainEffect>(MainState()) {
     private val searchQuery = MutableStateFlow(EMPTY_STRING)
 
@@ -31,7 +33,8 @@ class MainReducer(
             }
 
             is MainAction.Items -> saveState(oldState.copy(isLoading = false, items = action.items))
-            is MainAction.OnQuestionClick -> {}
+            is MainAction.OnQuestionClick -> sendQuestion(questionId = action.questionId)
+
             is MainAction.CategoryExpand -> {
                 val newItems = oldState.items.toMutableList()
                 val item = newItems.filterIsInstance<MainItems.CategoryItem>().find { it.category.id == action.category.id }!!
@@ -75,5 +78,11 @@ class MainReducer(
             .collect { result ->
                 sendAction(MainAction.Items(items = result))
             }
+    }
+
+    private fun sendQuestion(questionId: Int) = scope.launchCPU {
+        sendQuestionId(questionId).also {
+            sendEffect(MainEffect.GoToAnswer)
+        }
     }
 }

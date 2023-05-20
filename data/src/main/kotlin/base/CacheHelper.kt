@@ -9,7 +9,9 @@ import dto.CachePoint
 import dto.map
 import error.InternetConnectionException
 import helper.NetworkMonitor
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 internal class CacheHelper(
     private val networkMonitor: NetworkMonitor,
@@ -18,7 +20,10 @@ internal class CacheHelper(
     private val localQuestions: LocalQuestions,
     private val networkQuestions: NetworkQuestions
 ) {
-    private val scope = CoroutineHelper()
+    private val job = SupervisorJob()
+    private val _scope = CoroutineScope(Dispatchers.Default + job)
+
+    private val scope = CoroutineHelper(_scope)
 
     suspend fun checkUpdates(point: CachePoint) = scope.launchIO {
         if (networkMonitor.isNetworkAvailable()) {
@@ -26,16 +31,12 @@ internal class CacheHelper(
             val network = networkTimestamp.lastUpdate(point = point).map()
 
             if (local == null) {
-                launch {
-                    localCache.insert(cacheEntity = network)
-                    update(point = point)
-                }
+                localCache.insert(cacheEntity = network)
+                update(point = point)
             } else {
                 if (local.update != network.update) {
-                    launch {
-                        update(point = point)
-                        localCache.update(cacheEntity = network)
-                    }
+                    update(point = point)
+                    localCache.update(cacheEntity = network)
                 }
             }
         } else {
@@ -71,6 +72,7 @@ internal class CacheHelper(
     }
 
     private suspend fun updateAnswersCache() {
+        localQuestions.deleteAllAnswers()
         localQuestions.insertAnswers(
             answers = networkQuestions.getAllAnswers()
         )
