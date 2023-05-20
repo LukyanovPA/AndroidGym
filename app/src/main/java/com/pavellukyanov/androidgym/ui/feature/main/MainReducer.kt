@@ -2,6 +2,7 @@ package com.pavellukyanov.androidgym.ui.feature.main
 
 import Constants.EMPTY_STRING
 import com.pavellukyanov.androidgym.base.Reducer
+import entity.questions.MainItems
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -31,6 +32,31 @@ class MainReducer(
 
             is MainAction.Items -> saveState(oldState.copy(isLoading = false, items = action.items))
             is MainAction.OnQuestionClick -> {}
+            is MainAction.CategoryExpand -> {
+                val newItems = oldState.items.toMutableList()
+                val item = newItems.filterIsInstance<MainItems.CategoryItem>().find { it.category.id == action.category.id }!!
+                newItems[newItems.indexOf(item)] = item.copy(category = action.category)
+
+                saveState(oldState.copy(items = newItems))
+            }
+
+            is MainAction.SubcategoryExpand -> {
+                val newItems = oldState.items.toMutableList()
+                val item = newItems.filterIsInstance<MainItems.CategoryItem>().find { it.category.id == action.categoryId }!!
+                val newList = item.category.subcategories.toMutableList()
+                newList[newList.indexOf(newList.find { it.id == action.subcategory.id }!!)] = action.subcategory
+                newItems[newItems.indexOf(item)] = item.copy(category = item.category.copy(subcategories = newList))
+
+                saveState(oldState.copy(items = newItems))
+            }
+
+            is MainAction.SearchSubcategoryExpand -> {
+                val newItems = oldState.items.toMutableList()
+                val item = newItems.filterIsInstance<MainItems.SubcategoryItem>().find { it.subcategory.id == action.subcategory.id }!!
+                newItems[newItems.indexOf(item)] = item.copy(subcategory = action.subcategory)
+
+                saveState(oldState.copy(items = newItems))
+            }
         }
     }
 

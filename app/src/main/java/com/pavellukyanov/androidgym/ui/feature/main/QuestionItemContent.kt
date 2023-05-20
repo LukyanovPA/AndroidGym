@@ -17,7 +17,7 @@ fun QuestionItemContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            .padding(top = 4.dp, bottom = 4.dp)
     ) {
         Row(
             modifier = Modifier

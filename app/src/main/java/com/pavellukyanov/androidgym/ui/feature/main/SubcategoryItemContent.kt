@@ -30,18 +30,22 @@ import entity.questions.Subcategory
 @Composable
 fun SubcategoryItemContent(
     subcategory: Subcategory,
-    onQuestionClick: (Int) -> Unit
+    onQuestionClick: (Int) -> Unit,
+    onSubcategoryExpandedClick: (Subcategory) -> Unit
 ) {
-    var subcategoriesIsExpanded by remember { mutableStateOf(false) }
+    var subcategoriesIsExpanded by remember { mutableStateOf(subcategory.isExpanded) }
 
     Column(
         modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            .padding(top = 4.dp, bottom = 4.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { subcategoriesIsExpanded = !subcategoriesIsExpanded }
+                .clickable {
+                    subcategoriesIsExpanded = !subcategoriesIsExpanded
+                    onSubcategoryExpandedClick(subcategory.copy(isExpanded = subcategoriesIsExpanded))
+                }
         ) {
             Text(
                 text = subcategory.name,
@@ -51,18 +55,23 @@ fun SubcategoryItemContent(
                     .padding(start = 16.dp)
             )
         }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            this@Column.AnimatedVisibility(
-                visible = subcategoriesIsExpanded,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                val height = subcategory.questions.size * 40
 
-                LazyColumn(modifier = Modifier.height(height.dp)) {
+        AnimatedVisibility(
+            visible = subcategoriesIsExpanded,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                val height = subcategory.questions.size * 32
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(height.dp)
+                        .padding(start = 16.dp)
+                ) {
                     items(
                         items = subcategory.questions,
                         key = { it.id }

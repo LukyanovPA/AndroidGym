@@ -32,22 +32,28 @@ import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.ui.theme.Tesla
 import com.pavellukyanov.androidgym.ui.wiget.BaseImage
 import entity.questions.Category
+import entity.questions.Subcategory
 
 @Composable
 fun CategoryItemContent(
     category: Category,
-    onQuestionClick: (Int) -> Unit
+    onQuestionClick: (Int) -> Unit,
+    onCategoryExpandedClick: (Category) -> Unit,
+    onSubcategoryExpandedClick: (Int, Subcategory) -> Unit
 ) {
-    var categoriesIsExpanded by remember { mutableStateOf(false) }
+    var categoriesIsExpanded by remember { mutableStateOf(category.isExpanded) }
 
     Column(
         modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            .padding(top = 4.dp, bottom = 4.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { categoriesIsExpanded = !categoriesIsExpanded },
+                .clickable {
+                    categoriesIsExpanded = !categoriesIsExpanded
+                    onCategoryExpandedClick(category.copy(isExpanded = categoriesIsExpanded))
+                },
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             BaseImage(
@@ -76,21 +82,22 @@ fun CategoryItemContent(
                 modifier = Modifier.weight(2f)
             )
         }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
+
+        AnimatedVisibility(
+            visible = categoriesIsExpanded,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            this@Column.AnimatedVisibility(
-                visible = categoriesIsExpanded,
-                enter = fadeIn(),
-                exit = fadeOut()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-                val height = category.subcategories.size * 40
+                val height = category.subcategories.size * 30
 
                 LazyColumn(
                     modifier = Modifier
                         .height(height.dp)
-                        .padding(start = 32.dp)
+                        .padding(start = 48.dp)
                 ) {
                     items(
                         items = category.subcategories,
@@ -99,7 +106,8 @@ fun CategoryItemContent(
                         BoxWithConstraints {
                             SubcategoryItemContent(
                                 subcategory = subcategory,
-                                onQuestionClick = onQuestionClick
+                                onQuestionClick = onQuestionClick,
+                                onSubcategoryExpandedClick = { onSubcategoryExpandedClick(category.id, it) }
                             )
                         }
                     }

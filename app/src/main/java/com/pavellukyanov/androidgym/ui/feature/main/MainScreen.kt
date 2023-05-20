@@ -130,6 +130,7 @@ fun ItemsList(
 
         LazyColumn(
             modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                 .fillMaxSize()
         ) {
             items(
@@ -140,14 +141,19 @@ fun ItemsList(
                     is MainItems.CategoryItem -> {
                         CategoryItemContent(
                             category = item.category,
-                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
+                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) },
+                            onCategoryExpandedClick = { onAction(MainAction.CategoryExpand(it)) },
+                            onSubcategoryExpandedClick = { catId, sub ->
+                                onAction(MainAction.SubcategoryExpand(catId, sub))
+                            }
                         )
                     }
 
                     is MainItems.SubcategoryItem -> {
                         SubcategoryItemContent(
                             subcategory = item.subcategory,
-                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
+                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) },
+                            onSubcategoryExpandedClick = { onAction(MainAction.SearchSubcategoryExpand(it)) }
                         )
                     }
 
