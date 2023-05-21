@@ -7,5 +7,8 @@
     <string name="search_placeholder">Поиск...</string>
     <string name="search_not_found">По вашему запросу ничего не найдено</string>
     <string name="question_count">вопросов: %s</string>
-    <string name="html_text"><![CDATA[%s]]></string>
+    <string name="answer_category_title">Категория: %s</string>
+    <string name="answer_subcategory_title">Подкатегория: %s</string>
+    <string name="answer_question_title">Вопрос: %s</string>
+    <string name="answer_title">Ответ:</string>
 </resources>

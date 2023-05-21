@@ -66,7 +66,7 @@ fun MainScreen(
 }
 
 @Composable
-fun MainScreenContent(
+private fun MainScreenContent(
     state: MainState,
     padding: PaddingValues,
     onAction: (MainAction) -> Unit
@@ -128,7 +128,7 @@ fun MainScreenContent(
 }
 
 @Composable
-fun ItemsList(
+private fun ItemsList(
     categories: List<MainItems>,
     modifier: Modifier = Modifier,
     onAction: (MainAction) -> Unit

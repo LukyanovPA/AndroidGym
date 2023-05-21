@@ -46,9 +46,9 @@ abstract class Reducer<STATE : State, ACTION : Action, EFFECT : Effect>(initStat
 
     private fun launchUI(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.Main, action)
 
-    fun launchIO(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.IO, action)
+    protected fun launchIO(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.IO, action)
 
-    fun launchCPU(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.Default, action)
+    protected fun launchCPU(action: suspend CoroutineScope.() -> Unit) = launch(Dispatchers.Default, action)
 
     private fun launch(dispatcher: CoroutineDispatcher, action: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(context = dispatcher + errorHandler, block = action)
