@@ -19,7 +19,7 @@ class AnswerReducer(
         }
     }
 
-    private fun fetchAnswer() = scope.launchIO {
+    private fun fetchAnswer() = launchIO {
         getAnswer().collect { sendAction(AnswerAction.Answer(it)) }
     }
 }

@@ -9,7 +9,6 @@ val koin_compose_version: String by project
 val timber_version: String by project
 val glide_compose_version: String by project
 val desugar_version: String by project
-val daily_tags: String by project
 val rich_editor: String by project
 
 plugins {
@@ -104,9 +103,6 @@ dependencies {
 
     //Glide
     implementation("com.github.bumptech.glide:compose:$glide_compose_version")
-
-    //DailyTags
-    implementation("com.github.DmytroShuba:DailyTags:$daily_tags")
 
     //RichEditor
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:$rich_editor")

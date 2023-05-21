@@ -63,7 +63,7 @@ class MainReducer(
         }
     }
 
-    private fun onFetchCategories() = scope.launchIO {
+    private fun onFetchCategories() = launchIO {
         getAllCategories()
             .collect { categories ->
                 sendAction(MainAction.Items(items = categories))
@@ -71,7 +71,7 @@ class MainReducer(
     }
 
     @OptIn(FlowPreview::class)
-    private fun onSearch() = scope.launchIO {
+    private fun onSearch() = launchIO {
         searchQuery
             .debounce(300.milliseconds)
             .flatMapMerge { query -> search(query) }
@@ -80,7 +80,7 @@ class MainReducer(
             }
     }
 
-    private fun sendQuestion(questionId: Int) = scope.launchCPU {
+    private fun sendQuestion(questionId: Int) = launchCPU {
         sendQuestionId(questionId).also {
             sendEffect(MainEffect.GoToAnswer)
         }
