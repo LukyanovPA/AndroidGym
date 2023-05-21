@@ -19,6 +19,7 @@ class MainReducer(
 ) : Reducer<MainState, MainAction, MainEffect>(MainState()) {
     private val searchQuery = MutableStateFlow(EMPTY_STRING)
 
+    //TODO переделать поиск
     override suspend fun reduce(oldState: MainState, action: MainAction) {
         when (action) {
             is MainAction.FetchMain -> {
@@ -27,9 +28,14 @@ class MainReducer(
             }
 
             is MainAction.Search -> {
-                saveState(oldState.copy(isLoading = true))
                 searchQuery.emit(action.query)
                 onSearch()
+            }
+
+            is MainAction.ClearSearch -> {
+                saveState(oldState.copy(items = listOf()))
+                searchQuery.emit(EMPTY_STRING)
+                onFetchCategories()
             }
 
             is MainAction.Items -> saveState(oldState.copy(isLoading = false, items = action.items))

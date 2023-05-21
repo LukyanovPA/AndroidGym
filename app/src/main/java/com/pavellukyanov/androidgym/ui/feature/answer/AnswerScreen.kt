@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,14 +51,14 @@ fun AnswerScreen(
 
     Scaffold { padding ->
         state.receive<AnswerState> { currentState ->
-            AnswerScreenContent(state = currentState.answer, padding = padding, onAction = { vm.sendAction(it) })
+            AnswerScreenContent(answer = currentState.answer, padding = padding, onAction = { vm.sendAction(it) })
         }
     }
 }
 
 @Composable
 private fun AnswerScreenContent(
-    state: Answer?,
+    answer: Answer?,
     padding: PaddingValues,
     onAction: (AnswerAction) -> Unit
 ) {
@@ -65,22 +69,27 @@ private fun AnswerScreenContent(
             .padding(start = 16.dp, end = 16.dp)
             .fillMaxSize()
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { onAction(AnswerAction.GoBack) }) {
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Button back")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(id = R.string.answer_category_title, state?.categoryName.orEmpty()),
+            text = stringResource(id = R.string.answer_category_title, answer?.categoryName.orEmpty()),
             fontWeight = FontWeight.Normal,
             color = Color.DarkGray,
             textAlign = TextAlign.Start
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(id = R.string.answer_subcategory_title, state?.subcategoryName.orEmpty()),
+            text = stringResource(id = R.string.answer_subcategory_title, answer?.subcategoryName.orEmpty()),
             fontWeight = FontWeight.Normal,
             color = Color.DarkGray,
             textAlign = TextAlign.Start
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(id = R.string.answer_question_title, state?.question.orEmpty()),
+            text = stringResource(id = R.string.answer_question_title, answer?.question.orEmpty()),
             fontWeight = FontWeight.Normal,
             color = Color.DarkGray,
             textAlign = TextAlign.Start
@@ -96,7 +105,7 @@ private fun AnswerScreenContent(
             modifier = Modifier
                 .fillMaxWidth(),
             factory = { context -> TextView(context) },
-            update = { it.text = HtmlCompat.fromHtml(state?.answer.orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT) }
+            update = { it.text = HtmlCompat.fromHtml(answer?.answer.orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT) }
         )
     }
 }

@@ -54,7 +54,12 @@ fun SearchTextField(
             value = text,
             onValueChange = {
                 text = it
-                if (it.isEmpty()) onClearClick() else onSearchClick(it)
+                if (text.isEmpty() || text.isBlank()) {
+                    keyboardController?.hide()
+                    onClearClick()
+                } else {
+                    onSearchClick(text)
+                }
             },
             maxLines = INT_ONE,
             keyboardOptions = KeyboardOptions.Default.copy(

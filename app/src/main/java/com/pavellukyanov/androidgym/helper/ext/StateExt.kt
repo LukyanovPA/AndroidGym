@@ -13,8 +13,11 @@ internal fun Flow<UiState>.asUiState(): State<UiState> =
 
 @Composable
 internal inline fun <reified STATE : UiState> UiState.receive(currentState: (STATE) -> Unit) {
-    if (isLoading) LoadingScreen()
-    when (this) {
-        is STATE -> currentState(this)
+    if (isLoading) {
+        LoadingScreen()
+    } else {
+        when (this) {
+            is STATE -> currentState(this)
+        }
     }
 }

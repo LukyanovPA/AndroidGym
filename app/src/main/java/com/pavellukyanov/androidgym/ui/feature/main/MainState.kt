@@ -18,6 +18,8 @@ sealed class MainAction : Action() {
 
     data class Search(val query: String) : MainAction()
 
+    object ClearSearch : MainAction()
+
     data class Items(val items: List<MainItems>) : MainAction()
 
     data class OnQuestionClick(val questionId: Int) : MainAction()

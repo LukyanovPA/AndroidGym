@@ -102,7 +102,7 @@ private fun MainScreenContent(
             ) {
                 SearchTextField(
                     onSearchClick = { onAction(MainAction.Search(query = it)) },
-                    onClearClick = { onAction(MainAction.FetchMain) },
+                    onClearClick = { onAction(MainAction.ClearSearch) },
                     modifier = Modifier
                         .padding(start = 8.dp, end = 8.dp)
                         .clip(RoundedCornerShape(20.dp))
