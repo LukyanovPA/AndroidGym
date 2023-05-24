@@ -1,6 +1,7 @@
 package com.pavellukyanov.androidgym.ui.feature.answer
 
 import android.widget.TextView
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -18,7 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -70,8 +78,17 @@ private fun AnswerScreenContent(
             .fillMaxSize()
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { onAction(AnswerAction.GoBack) }) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Button back")
+        Button(
+            modifier = Modifier.size(40.dp),
+            onClick = { onAction(AnswerAction.GoBack) },
+            shape = CircleShape,
+            contentPadding = PaddingValues(0.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Button back"
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(

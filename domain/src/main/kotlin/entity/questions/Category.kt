@@ -9,5 +9,6 @@ data class Category(
     val name: String,
     val questionsCount: Int = INT_ZERO,
     val icon: Int? = null,
-    val subcategories: List<Subcategory>
+    val subcategories: List<Subcategory>,
+    val isExpand: Boolean
 )

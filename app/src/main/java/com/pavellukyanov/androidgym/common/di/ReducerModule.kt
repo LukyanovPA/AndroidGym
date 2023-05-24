@@ -6,6 +6,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val reducerModule = module {
-    viewModel { MainReducer(getAllCategories = get(), sendQuestionId = get()) }
+    viewModel { MainReducer(search = get(), sendQuestionId = get()) }
     viewModel { AnswerReducer(getAnswer = get()) }
 }

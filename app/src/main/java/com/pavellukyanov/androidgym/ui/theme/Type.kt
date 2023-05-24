@@ -12,7 +12,7 @@ import com.pavellukyanov.androidgym.app.R
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily(
-            Font(R.font.roboto_slab_regular)
+            Font(R.font.ubuntu_regular)
         ),
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp

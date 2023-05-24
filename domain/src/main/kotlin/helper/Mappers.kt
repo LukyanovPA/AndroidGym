@@ -10,12 +10,13 @@ import entity.questions.Category
 import entity.questions.Question
 import entity.questions.Subcategory
 
-fun CategoryEntity.map(subcategories: List<Subcategory>): Category =
+fun CategoryEntity.map(subcategories: List<Subcategory>, isExpend: Boolean = false): Category =
     Category(
         id = id,
         name = name,
         questionsCount = questionsCount ?: INT_ZERO,
-        subcategories = subcategories
+        subcategories = subcategories,
+        isExpand = isExpend
     )
 
 fun SubcategoryEntity.map(questions: List<Question>): Subcategory =

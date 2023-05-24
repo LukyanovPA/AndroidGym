@@ -10,6 +10,7 @@ val timber_version: String by project
 val glide_compose_version: String by project
 val desugar_version: String by project
 val rich_editor: String by project
+val systemuicontroller: String by project
 
 plugins {
     id("com.android.application")
@@ -89,6 +90,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
+
+    //Accompanist
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$systemuicontroller")
 
     //Kotlin
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
