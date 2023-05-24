@@ -1,16 +1,16 @@
 package com.pavellukyanov.androidgym.ui.feature.main
 
+import Constants.EMPTY_STRING
 import com.pavellukyanov.androidgym.base.Action
 import com.pavellukyanov.androidgym.base.Effect
 import com.pavellukyanov.androidgym.base.State
-import entity.questions.Category
 import entity.questions.MainItems
-import entity.questions.Subcategory
 
 
 data class MainState(
-    override val isLoading: Boolean = false,
-    val items: List<MainItems> = listOf()
+    val items: List<MainItems> = listOf(),
+    val searchQuery: String = EMPTY_STRING,
+    val expendMap: HashMap<Int, Boolean> = hashMapOf()
 ) : State()
 
 sealed class MainAction : Action() {
@@ -24,11 +24,7 @@ sealed class MainAction : Action() {
 
     data class OnQuestionClick(val questionId: Int) : MainAction()
 
-    data class CategoryExpand(val category: Category) : MainAction()
-
-    data class SearchSubcategoryExpand(val subcategory: Subcategory) : MainAction()
-
-    data class SubcategoryExpand(val categoryId: Int, val subcategory: Subcategory) : MainAction()
+    data class OnExpandClick(val id: Int) : MainAction()
 }
 
 sealed class MainEffect : Effect() {

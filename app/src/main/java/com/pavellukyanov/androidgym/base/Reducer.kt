@@ -37,7 +37,7 @@ abstract class Reducer<STATE : State, ACTION : Action, EFFECT : Effect>(initStat
     }
 
     protected fun saveState(newState: STATE) = launchUI {
-        _state.value = newState
+        _state.emit(newState)
     }
 
     protected fun sendEffect(newEffect: EFFECT) = launchUI {

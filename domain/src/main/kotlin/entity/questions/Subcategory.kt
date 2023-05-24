@@ -8,6 +8,5 @@ data class Subcategory(
     val categoryId: Int,
     val categoryName: String,
     val name: String,
-    val questions: List<Question>,
-    val isExpanded: Boolean = false
+    val questions: List<Question>
 )

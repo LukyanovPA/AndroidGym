@@ -27,4 +27,6 @@ sealed class MainItems {
     }
 
     object NotFoundItem : MainItems()
+
+    object Loading : MainItems()
 }

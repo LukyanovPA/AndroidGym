@@ -32,16 +32,15 @@ import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.ui.theme.Tesla
 import com.pavellukyanov.androidgym.ui.wiget.BaseImage
 import entity.questions.Category
-import entity.questions.Subcategory
 
 @Composable
 fun CategoryItemContent(
     category: Category,
+    expendMap: HashMap<Int, Boolean>,
     onQuestionClick: (Int) -> Unit,
-    onCategoryExpandedClick: (Category) -> Unit,
-    onSubcategoryExpandedClick: (Int, Subcategory) -> Unit
+    onExpandedClick: (Int) -> Unit
 ) {
-    var categoriesIsExpanded by remember { mutableStateOf(category.isExpanded) }
+    var categoriesIsExpanded by remember { mutableStateOf(expendMap[category.id] ?: false) }
 
     Column(
         modifier = Modifier
@@ -52,7 +51,7 @@ fun CategoryItemContent(
                 .fillMaxWidth()
                 .clickable {
                     categoriesIsExpanded = !categoriesIsExpanded
-                    onCategoryExpandedClick(category.copy(isExpanded = categoriesIsExpanded))
+                    onExpandedClick(category.id)
                 },
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -106,8 +105,9 @@ fun CategoryItemContent(
                         BoxWithConstraints {
                             SubcategoryItemContent(
                                 subcategory = subcategory,
+                                isExpend = expendMap[subcategory.id] ?: false,
                                 onQuestionClick = onQuestionClick,
-                                onSubcategoryExpandedClick = { onSubcategoryExpandedClick(category.id, it) }
+                                onExpandedClick = onExpandedClick
                             )
                         }
                     }

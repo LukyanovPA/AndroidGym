@@ -42,11 +42,12 @@ import com.pavellukyanov.androidgym.ui.theme.Tesla
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchTextField(
+    searchQuery: String,
+    modifier: Modifier = Modifier,
     onSearchClick: (String) -> Unit,
-    onClearClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onClearClick: () -> Unit
 ) {
-    var text by remember { mutableStateOf(EMPTY_STRING) }
+    var text by remember { mutableStateOf(searchQuery) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Box(modifier = modifier) {
@@ -54,11 +55,12 @@ fun SearchTextField(
             value = text,
             onValueChange = {
                 text = it
+
                 if (text.isEmpty() || text.isBlank()) {
                     keyboardController?.hide()
                     onClearClick()
                 } else {
-                    onSearchClick(text)
+                    onSearchClick(it)
                 }
             },
             maxLines = INT_ONE,

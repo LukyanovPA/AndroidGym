@@ -37,6 +37,7 @@ import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.theme.Tesla
+import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
 import entity.questions.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -101,11 +102,12 @@ private fun MainScreenContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 SearchTextField(
-                    onSearchClick = { onAction(MainAction.Search(query = it)) },
-                    onClearClick = { onAction(MainAction.ClearSearch) },
+                    searchQuery = state.searchQuery,
                     modifier = Modifier
                         .padding(start = 8.dp, end = 8.dp)
-                        .clip(RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(20.dp)),
+                    onSearchClick = { onAction(MainAction.Search(query = it)) },
+                    onClearClick = { onAction(MainAction.ClearSearch) }
                 )
             }
             Spacer(modifier = Modifier.height(26.dp))
@@ -116,7 +118,7 @@ private fun MainScreenContent(
                     .background(color = Color.White)
             ) {
                 ItemsList(
-                    categories = state.items,
+                    state = state,
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
@@ -129,7 +131,7 @@ private fun MainScreenContent(
 
 @Composable
 private fun ItemsList(
-    categories: List<MainItems>,
+    state: MainState,
     modifier: Modifier = Modifier,
     onAction: (MainAction) -> Unit
 ) {
@@ -144,26 +146,26 @@ private fun ItemsList(
                 .fillMaxSize()
         ) {
             items(
-                items = categories,
+                items = state.items,
                 key = { it.id }
             ) { item ->
                 when (item) {
+                    is MainItems.Loading -> LoadingScreen()
                     is MainItems.CategoryItem -> {
                         CategoryItemContent(
                             category = item.category,
+                            expendMap = state.expendMap,
                             onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) },
-                            onCategoryExpandedClick = { onAction(MainAction.CategoryExpand(it)) },
-                            onSubcategoryExpandedClick = { catId, sub ->
-                                onAction(MainAction.SubcategoryExpand(catId, sub))
-                            }
+                            onExpandedClick = { onAction(MainAction.OnExpandClick(it)) }
                         )
                     }
 
                     is MainItems.SubcategoryItem -> {
                         SubcategoryItemContent(
                             subcategory = item.subcategory,
+                            isExpend = state.expendMap[item.subcategory.id] ?: false,
                             onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) },
-                            onSubcategoryExpandedClick = { onAction(MainAction.SearchSubcategoryExpand(it)) }
+                            onExpandedClick = { onAction(MainAction.OnExpandClick(it)) }
                         )
                     }
 

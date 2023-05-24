@@ -30,10 +30,11 @@ import entity.questions.Subcategory
 @Composable
 fun SubcategoryItemContent(
     subcategory: Subcategory,
+    isExpend: Boolean,
     onQuestionClick: (Int) -> Unit,
-    onSubcategoryExpandedClick: (Subcategory) -> Unit
+    onExpandedClick: (Int) -> Unit
 ) {
-    var subcategoriesIsExpanded by remember { mutableStateOf(subcategory.isExpanded) }
+    var subcategoriesIsExpanded by remember { mutableStateOf(isExpend) }
 
     Column(
         modifier = Modifier
@@ -44,7 +45,7 @@ fun SubcategoryItemContent(
                 .fillMaxWidth()
                 .clickable {
                     subcategoriesIsExpanded = !subcategoriesIsExpanded
-                    onSubcategoryExpandedClick(subcategory.copy(isExpanded = subcategoriesIsExpanded))
+                    onExpandedClick(subcategory.id)
                 }
         ) {
             Text(
