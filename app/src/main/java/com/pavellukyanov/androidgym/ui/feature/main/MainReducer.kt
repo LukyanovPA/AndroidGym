@@ -40,10 +40,10 @@ class MainReducer(
             is MainAction.OnQuestionClick -> sendQuestion(questionId = action.questionId)
 
             is MainAction.OnExpandClick -> {
-                val oldExpendState = oldState.expendMap[action.id]
-                val oldMap = oldState.expendMap
-                oldMap[action.id] = if (oldExpendState != null) !oldExpendState else false
-                saveState(oldState.copy(expendMap = oldMap))
+                val oldExpendState = oldState.expendMap[action.id] ?: false
+                val newMap = oldState.expendMap
+                newMap[action.id] = !oldExpendState
+                saveState(oldState.copy(expendMap = newMap))
             }
         }
     }
