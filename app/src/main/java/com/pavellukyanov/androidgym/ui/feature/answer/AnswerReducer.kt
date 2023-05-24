@@ -1,6 +1,7 @@
 package com.pavellukyanov.androidgym.ui.feature.answer
 
 import com.pavellukyanov.androidgym.base.Reducer
+import kotlinx.coroutines.flow.map
 import useCase.answer.GetAnswer
 
 class AnswerReducer(
@@ -9,17 +10,15 @@ class AnswerReducer(
 
     override suspend fun reduce(oldState: AnswerState, action: AnswerAction) {
         when (action) {
-            is AnswerAction.FetchAnswer -> {
-                saveState(oldState.copy(isLoading = true))
-                fetchAnswer()
-            }
-
-            is AnswerAction.Answer -> saveState(oldState.copy(isLoading = false, answer = action.answer))
+            is AnswerAction.FetchAnswer -> fetchAnswer()
+            is AnswerAction.Answer -> saveState(oldState.copy(answer = action.answer))
             is AnswerAction.GoBack -> sendEffect(AnsweEffect.GoBack)
         }
     }
 
     private fun fetchAnswer() = launchIO {
-        getAnswer().collect { sendAction(AnswerAction.Answer(it)) }
+        getAnswer()
+            .map { AnswerAction.Answer(it) }
+            .collect(::sendAction)
     }
 }

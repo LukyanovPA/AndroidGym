@@ -7,6 +7,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.map
 import useCase.answer.SendQuestionId
 import useCase.questions.GetAllCategories
 import kotlin.time.Duration.Companion.milliseconds
@@ -32,7 +33,6 @@ class MainReducer(
             is MainAction.ClearSearch -> {
                 saveState(oldState.copy(searchQuery = EMPTY_STRING, items = listOf(MainItems.Loading)))
                 searchQuery.emit(EMPTY_STRING)
-                onFetchCategories()
             }
 
             is MainAction.Items -> saveState(oldState.copy(items = action.items))
@@ -40,9 +40,9 @@ class MainReducer(
             is MainAction.OnQuestionClick -> sendQuestion(questionId = action.questionId)
 
             is MainAction.OnExpandClick -> {
-                val oldExpendState = oldState.expendMap[action.id] ?: false
+                val oldExpendState = oldState.expendMap[action.name] ?: false
                 val newMap = oldState.expendMap
-                newMap[action.id] = !oldExpendState
+                newMap[action.name] = !oldExpendState
                 saveState(oldState.copy(expendMap = newMap))
             }
         }
@@ -53,7 +53,8 @@ class MainReducer(
         searchQuery
             .debounce(300.milliseconds)
             .flatMapMerge { query -> getAllCategories(query) }
-            .collect { sendAction(MainAction.Items(items = it)) }
+            .map { MainAction.Items(items = it) }
+            .collect(::sendAction)
     }
 
     private fun sendQuestion(questionId: Int) = launchCPU {

@@ -6,7 +6,6 @@ import com.pavellukyanov.androidgym.base.State
 import entity.answer.Answer
 
 data class AnswerState(
-    override val isLoading: Boolean = false,
     val answer: Answer? = null
 ) : State()
 

@@ -36,11 +36,11 @@ import entity.questions.Category
 @Composable
 fun CategoryItemContent(
     category: Category,
-    expendMap: HashMap<Int, Boolean>,
+    expendMap: HashMap<String, Boolean>,
     onQuestionClick: (Int) -> Unit,
-    onExpandedClick: (Int) -> Unit
+    onExpandedClick: (String) -> Unit
 ) {
-    var categoriesIsExpanded by remember { mutableStateOf(expendMap[category.id] ?: false) }
+    var categoriesIsExpanded by remember { mutableStateOf(expendMap[category.name] ?: false) }
 
     Column(
         modifier = Modifier
@@ -51,7 +51,7 @@ fun CategoryItemContent(
                 .fillMaxWidth()
                 .clickable {
                     categoriesIsExpanded = !categoriesIsExpanded
-                    onExpandedClick(category.id)
+                    onExpandedClick(category.name)
                 },
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -105,7 +105,7 @@ fun CategoryItemContent(
                         BoxWithConstraints {
                             SubcategoryItemContent(
                                 subcategory = subcategory,
-                                isExpend = expendMap[subcategory.id] ?: false,
+                                isExpend = expendMap[subcategory.name] ?: false,
                                 onQuestionClick = onQuestionClick,
                                 onExpandedClick = onExpandedClick
                             )

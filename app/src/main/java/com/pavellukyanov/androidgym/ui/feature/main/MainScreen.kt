@@ -163,7 +163,7 @@ private fun ItemsList(
                     is MainItems.SubcategoryItem -> {
                         SubcategoryItemContent(
                             subcategory = item.subcategory,
-                            isExpend = state.expendMap[item.subcategory.id] ?: false,
+                            isExpend = state.expendMap[item.subcategory.name] ?: false,
                             onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) },
                             onExpandedClick = { onAction(MainAction.OnExpandClick(it)) }
                         )

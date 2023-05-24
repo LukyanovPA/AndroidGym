@@ -32,7 +32,7 @@ fun SubcategoryItemContent(
     subcategory: Subcategory,
     isExpend: Boolean,
     onQuestionClick: (Int) -> Unit,
-    onExpandedClick: (Int) -> Unit
+    onExpandedClick: (String) -> Unit
 ) {
     var subcategoriesIsExpanded by remember { mutableStateOf(isExpend) }
 
@@ -45,7 +45,7 @@ fun SubcategoryItemContent(
                 .fillMaxWidth()
                 .clickable {
                     subcategoriesIsExpanded = !subcategoriesIsExpanded
-                    onExpandedClick(subcategory.id)
+                    onExpandedClick(subcategory.name)
                 }
         ) {
             Text(

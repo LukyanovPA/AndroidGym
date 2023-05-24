@@ -10,7 +10,7 @@ import entity.questions.MainItems
 data class MainState(
     val items: List<MainItems> = listOf(),
     val searchQuery: String = EMPTY_STRING,
-    val expendMap: HashMap<Int, Boolean> = hashMapOf()
+    val expendMap: HashMap<String, Boolean> = hashMapOf()
 ) : State()
 
 sealed class MainAction : Action() {
@@ -24,7 +24,7 @@ sealed class MainAction : Action() {
 
     data class OnQuestionClick(val questionId: Int) : MainAction()
 
-    data class OnExpandClick(val id: Int) : MainAction()
+    data class OnExpandClick(val name: String) : MainAction()
 }
 
 sealed class MainEffect : Effect() {
