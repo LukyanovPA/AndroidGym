@@ -3,6 +3,7 @@ package com.pavellukyanov.androidgym.ui.feature.main
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -24,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.pavellukyanov.androidgym.ui.theme.Tesla
 import entity.questions.Subcategory
 
 @Composable
@@ -43,6 +43,7 @@ fun SubcategoryItemContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(if (subcategoriesIsExpanded) Color.Yellow else Color.Transparent)
                 .clickable {
                     subcategoriesIsExpanded = !subcategoriesIsExpanded
                     onExpandedClick(subcategory.name)
@@ -51,7 +52,6 @@ fun SubcategoryItemContent(
             Text(
                 text = subcategory.name,
                 fontWeight = if (subcategoriesIsExpanded) FontWeight.Bold else FontWeight.Normal,
-                color = if (subcategoriesIsExpanded) Tesla else Color.Black,
                 modifier = Modifier
                     .padding(start = 16.dp)
             )
