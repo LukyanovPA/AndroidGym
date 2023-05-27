@@ -118,7 +118,7 @@ private fun AnswerScreenContent(
             ) {
                 Icon(
                     modifier = Modifier
-                        .size(30.dp)
+                        .size(25.dp)
                         .padding(bottom = 2.dp)
                         .alpha(0.6f),
                     painter = painterResource(id = if (answer?.isFavourites == true) R.drawable.ic_favourites else R.drawable.ic_is_not_favourites),
@@ -138,7 +138,7 @@ private fun AnswerScreenContent(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(20.dp))
-                .background(color = ColorLightGreen)
+                .background(color = Color.Yellow)
         ) {
             AndroidView(
                 modifier = Modifier
@@ -153,7 +153,7 @@ private fun AnswerScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(20.dp))
-                .background(color = Color.Yellow)
+                .background(color = ColorLightGreen)
         ) {
             Text(
                 text = stringResource(id = R.string.answer_category_title, answer?.categoryName.orEmpty()),
