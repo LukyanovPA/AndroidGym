@@ -84,7 +84,7 @@ class MainReducer(
 
     private fun fetchCategories() = launchIO {
         getCategories()
-            .map { MainAction.Categories(categories = it) }
+            .map { categories -> MainAction.Categories(categories = categories) }
             .collect(::sendAction)
     }
 
@@ -93,7 +93,7 @@ class MainReducer(
         searchQuery
             .debounce(300.milliseconds)
             .flatMapMerge { query -> search(query) }
-            .map { MainAction.Items(items = it) }
+            .map { items -> MainAction.Items(items = items) }
             .collect(::sendAction)
     }
 

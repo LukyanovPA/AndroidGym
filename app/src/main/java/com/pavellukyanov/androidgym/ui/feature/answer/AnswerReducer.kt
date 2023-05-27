@@ -22,7 +22,7 @@ class AnswerReducer(
 
     private fun fetchAnswer() = launchIO {
         getAnswer()
-            .map { AnswerAction.Answer(it) }
+            .map { answer -> AnswerAction.Answer(answer = answer) }
             .collect(::sendAction)
     }
 
