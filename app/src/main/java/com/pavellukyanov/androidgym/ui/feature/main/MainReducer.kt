@@ -2,7 +2,6 @@ package com.pavellukyanov.androidgym.ui.feature.main
 
 import Constants.EMPTY_STRING
 import com.pavellukyanov.androidgym.base.Reducer
-import entity.questions.Category
 import entity.questions.MainItems
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,21 +42,25 @@ class MainReducer(
                 fetchCategories(isFirstLoad = false)
             }
 
-            is MainAction.Items -> saveState(oldState.copy(items = action.items))
-            is MainAction.Categories -> {
-                val expMap = oldState.expendMap
-                val categories = mutableListOf<Category>()
-
-                if (action.isFirstLoad) {
-                    action.categories.forEach { expMap[it.name] = it.isExpand }
-                    categories.addAll(action.categories)
+            is MainAction.Items -> {
+                val newItems = if (searchQuery.value.isEmpty()) {
+                    action.items
+                        .filterIsInstance<MainItems.SubcategoryItem>()
+                        .filter { item ->
+                            item.subcategory.categoryName.contains(oldState.categories.find { it.isExpand }?.name.orEmpty(), true)
+                        }
                 } else {
-                    categories.addAll(
-                        action.categories.map { it.copy(isExpand = expMap[it.name] ?: false) }
-                    )
+                    action.items
                 }
+                saveState(oldState.copy(items = newItems))
+            }
 
-                saveState(oldState.copy(categories = categories, expendMap = expMap))
+            is MainAction.Categories -> {
+                val newItems = action.categories.find { it.isExpand }
+                    ?.let { category ->
+                        if (category.subcategories.isNotEmpty()) MainItems.SubcategoryItem.map(category.subcategories) else listOf(MainItems.NotFoundItem)
+                    }
+                saveState(oldState.copy(categories = action.categories, items = (newItems as List<MainItems>)))
             }
 
             is MainAction.OnQuestionClick -> sendQuestion(questionId = action.questionId)
@@ -68,10 +71,8 @@ class MainReducer(
                 newMap[action.name] = !oldExpendState
 
                 if (action.isCategory) {
-                    val newCategories = oldState.categories.map { cat ->
-                        cat.copy(isExpand = cat.name == action.name)
-                    }
-                    saveState(oldState.copy(categories = newCategories, expendMap = newMap))
+                    val newCategories = oldState.categories.map { it.copy(isExpand = it.name == action.name) }
+                    sendAction(MainAction.Categories(categories = newCategories, isFirstLoad = true))
                 } else {
                     saveState(oldState.copy(expendMap = newMap))
                 }

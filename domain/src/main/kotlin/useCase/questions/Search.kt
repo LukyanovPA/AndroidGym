@@ -32,10 +32,8 @@ internal class SearchImpl(
                             }
                         )
                     )
-                    addAll(
-                        MainItems.QuestionItem.map(
-                            filteredQuestions.map { it.map() }
-                        )
+                    MainItems.QuestionItem.map(
+                        filteredQuestions.map { it.map() }
                     )
                 }
             }

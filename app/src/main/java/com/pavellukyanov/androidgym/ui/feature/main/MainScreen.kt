@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,9 +34,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -172,11 +170,9 @@ private fun ItemsList(
     modifier: Modifier = Modifier,
     onAction: (MainAction) -> Unit
 ) {
-    var subcategoryItems by remember { mutableStateOf(listOf<MainItems>()) }
-
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxHeight()
     ) {
         this@Column.AnimatedVisibility(
             visible = state.categoriesVisibility,
@@ -186,7 +182,7 @@ private fun ItemsList(
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    .padding(start = 4.dp, end = 4.dp, top = 8.dp, bottom = 8.dp)
             ) {
                 items(
                     items = state.categories,
@@ -196,7 +192,6 @@ private fun ItemsList(
                         category = item,
                         onExpandedClick = { category ->
                             onAction(MainAction.OnExpandClick(name = category.name, isCategory = true))
-                            subcategoryItems = if (category.isExpand) MainItems.SubcategoryItem.map(category.subcategories) else listOf()
                         }
                     )
                 }
@@ -209,7 +204,7 @@ private fun ItemsList(
                 .fillMaxSize()
         ) {
             items(
-                items = subcategoryItems,
+                items = state.items,
                 key = { it.id }
             ) { item ->
                 when (item) {
