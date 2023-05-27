@@ -1,87 +1,77 @@
+val serialization_version: String by project
+val coroutines_version: String by project
+val koin_version: String by project
+val ktor_version: String by project
+val timber_version: String by project
+val room_version: String by project
+val desugar_version: String by project
+
 plugins {
-    kotlin("kapt") version "1.8.20"
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("plugin.serialization").version("1.8.20").apply(false)
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
-    namespace = "com.pavellukyanov.androidgym"
+    namespace = "com.pavellukyanov.data"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.pavellukyanov.androidgym"
         minSdk = 26
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+
+        debug {
+            isJniDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
-    }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-}
-
-repositories {
-    google()
-    gradlePluginPortal()
-    mavenCentral()
 }
 
 dependencies {
-    implementation(project(":domain"))
+    api(project(":utils"))
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
 
     //Serialization
-    implementation(Deps.Kotlin.Serialization.serialization)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
 
     //Coroutines
-    implementation(Deps.Coroutines.core)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
 
     //Koin
-    implementation(Deps.Koin.core)
-    implementation(Deps.Koin.android)
+    implementation("io.insert-koin:koin-core:$koin_version")
+    implementation("io.insert-koin:koin-android:$koin_version")
 
     //Ktor
-    api(Deps.Ktor.core)
-    implementation(Deps.Ktor.cio)
-    implementation(Deps.Ktor.json)
-    implementation(Deps.Ktor.serialization)
-    implementation(Deps.Ktor.logging)
-    implementation(Deps.Ktor.contentNegotiation)
-    implementation(Deps.Ktor.okhttp)
+    api("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-json:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
 
     //Timber
-    implementation(Deps.Timber.timber)
+    implementation("com.jakewharton.timber:timber:$timber_version")
 
     //Room
-    implementation(Deps.Room.runtime)
-    implementation(Deps.Room.ktx)
-    implementation(Deps.Room.paging)
-    kapt(Deps.Room.compiler)
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 }

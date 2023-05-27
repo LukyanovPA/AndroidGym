@@ -1,13 +1,14 @@
 package entity.questions
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import Constants.INT_ZERO
 import kotlinx.serialization.Serializable
 
-@Entity(tableName = "category")
 @Serializable
 data class Category(
-    @PrimaryKey
     val id: Int,
-    val name: String
+    val name: String,
+    val questionsCount: Int = INT_ZERO,
+    val icon: Int? = null,
+    val subcategories: List<Subcategory>,
+    val isExpand: Boolean
 )

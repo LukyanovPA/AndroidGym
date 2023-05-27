@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">AndroidGym</string>
+
+    //Common
+    <string name="any_screen_error">Ошибка: %s</string>
+    <string name="any_screen_ok">OK</string>
+    <string name="search_placeholder">Поиск...</string>
+    <string name="search_not_found">По вашему запросу ничего не найдено</string>
+    <string name="question_count">/ вопросов</string>
+    <string name="answer_category_title">Категория: %s</string>
+    <string name="answer_subcategory_title">Подкатегория: %s</string>
+    <string name="answer_question_title">Вопрос: %s</string>
+    <string name="answer_title">Ответ:</string>
+    <string name="main_title">Вопросы с собеседований\nAndroid Developer</string>
 </resources>

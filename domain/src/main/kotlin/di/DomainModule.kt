@@ -1,6 +1,9 @@
 package di
 
+import entity.answer.QuestionIdStorage
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
 fun getModules() = mutableListOf<Module>().apply {
     addAll(dataModule())
@@ -8,5 +11,10 @@ fun getModules() = mutableListOf<Module>().apply {
 }
 
 internal fun domainModule() = listOf(
+    storageModule,
     useCaseModule
 )
+
+internal val storageModule = module {
+    singleOf(::QuestionIdStorage)
+}

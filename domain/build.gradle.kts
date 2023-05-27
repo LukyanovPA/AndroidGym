@@ -1,31 +1,56 @@
+val serialization_version: String by project
+val koin_version: String by project
+val timber_version: String by project
+val desugar_version: String by project
+
 plugins {
-    kotlin("kapt") version "1.8.20"
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("plugin.serialization").version("1.8.20").apply(false)
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
-repositories {
-    google()
-    gradlePluginPortal()
-    mavenCentral()
+android {
+    namespace = "com.pavellukyanov.domain"
+    compileSdk = 33
+
+    defaultConfig {
+        minSdk = 26
+        targetSdk = 33
+    }
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        debug {
+            isJniDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
+    }
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
-    implementation(project(":data"))
+    api(project(":data"))
+    api(project(":utils"))
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
 
     //Serialization
-    implementation(Deps.Kotlin.Serialization.serialization)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
 
     //Koin
-    implementation(Deps.Koin.core)
+    implementation("io.insert-koin:koin-core:$koin_version")
 
     //Timber
-    implementation(Deps.Timber.timber)
-
-    //Room
-    implementation(Deps.Room.runtime)
-    implementation(Deps.Room.ktx)
-    implementation(Deps.Room.paging)
-    kapt(Deps.Room.compiler)
+    implementation("com.jakewharton.timber:timber:$timber_version")
 }
