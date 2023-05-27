@@ -10,6 +10,10 @@
     <string name="answer_category_title">Категория: %s</string>
     <string name="answer_subcategory_title">Подкатегория: %s</string>
     <string name="answer_question_title">Вопрос: %s</string>
-    <string name="answer_title">Ответ:</string>
     <string name="main_title">Вопросы с собеседований\nAndroid Developer</string>
+    <string name="answer_title">Вопрос</string>
+
+    //Content Descriptions
+    <string name="decs_button_back">Кнопка назад</string>
+    <string name="decs_button_favourites">Кнопка добавить, или удалить из избранного</string>
 </resources>

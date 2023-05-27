@@ -47,5 +47,6 @@ fun AnswerEntity.map(): Answer =
         subcategoryName = subcategoryName,
         questionId = questionId,
         question = question,
-        answer = answer
+        answer = answer,
+        isFavourites = isFavourites
     )

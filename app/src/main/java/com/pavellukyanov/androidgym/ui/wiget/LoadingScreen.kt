@@ -8,8 +8,8 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.pavellukyanov.androidgym.ui.theme.Tesla
 
 @Composable
 fun LoadingScreen(
@@ -25,7 +25,7 @@ fun LoadingScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(20.dp),
-            color = Tesla,
+            color = Color.Yellow,
             strokeWidth = 4.dp
         )
     }

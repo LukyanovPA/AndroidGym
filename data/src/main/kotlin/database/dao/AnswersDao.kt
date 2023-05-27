@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import database.entity.AnswerEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -17,4 +18,10 @@ interface AnswersDao {
 
     @Query("SELECT * FROM answers WHERE questionId = :questionId")
     fun getAll(questionId: Int): Flow<List<AnswerEntity>>
+
+    @Query("SELECT * FROM answers WHERE id = :id")
+    suspend fun getAnswer(id: Int): AnswerEntity
+
+    @Update
+    suspend fun update(answer: AnswerEntity)
 }

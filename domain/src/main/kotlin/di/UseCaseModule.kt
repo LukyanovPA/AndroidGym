@@ -5,6 +5,8 @@ import useCase.answer.GetAnswer
 import useCase.answer.GetAnswerImpl
 import useCase.answer.SendQuestionId
 import useCase.answer.SendQuestionIdImpl
+import useCase.answer.UpdateFavouritesState
+import useCase.answer.UpdateFavouritesStateImpl
 import useCase.questions.GetCategories
 import useCase.questions.GetCategoriesImpl
 import useCase.questions.Search
@@ -18,4 +20,5 @@ internal val useCaseModule = module {
     //Answer
     single<SendQuestionId> { SendQuestionIdImpl(questionIdStorage = get()) }
     single<GetAnswer> { GetAnswerImpl(repo = get(), questionIdStorage = get()) }
+    single<UpdateFavouritesState> { UpdateFavouritesStateImpl(repo = get()) }
 }

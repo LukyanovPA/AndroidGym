@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -25,9 +28,7 @@ fun ErrorDialog(
     navController: NavController,
     padding: PaddingValues
 ) {
-    val showDialog = remember {
-        mutableStateOf(true)
-    }
+    val showDialog = remember { mutableStateOf(true) }
 
     if (showDialog.value) {
         AlertDialog(
@@ -39,10 +40,12 @@ fun ErrorDialog(
             text = { Text(errorText) },
             buttons = {
                 Button(
+                    modifier = Modifier.padding(8.dp),
                     onClick = {
                         showDialog.value = false
                         navController.popBackStack()
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
                 ) {
                     Text(text = stringResource(id = R.string.any_screen_ok), fontSize = 22.sp)
                 }

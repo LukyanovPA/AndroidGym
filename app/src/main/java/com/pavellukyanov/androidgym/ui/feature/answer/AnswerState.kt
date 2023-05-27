@@ -15,8 +15,10 @@ sealed class AnswerAction : Action() {
     data class Answer(val answer: entity.answer.Answer) : AnswerAction()
 
     object GoBack : AnswerAction()
+
+    data class OnFavouritesClick(val state: Boolean) : AnswerAction()
 }
 
-sealed class AnsweEffect : Effect() {
-    object GoBack : AnsweEffect()
+sealed class AnswerEffect : Effect() {
+    object GoBack : AnswerEffect()
 }

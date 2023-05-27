@@ -28,7 +28,7 @@ class MainReducer(
         when (action) {
             is MainAction.FetchMain -> {
                 saveState(oldState.copy(items = listOf(MainItems.Loading)))
-                fetchCategories(isFirstLoad = true)
+                fetchCategories()
             }
 
             is MainAction.Search -> {
@@ -39,7 +39,7 @@ class MainReducer(
             is MainAction.ClearSearch -> {
                 saveState(oldState.copy(categoriesVisibility = true, items = listOf(MainItems.Loading), searchQuery = EMPTY_STRING))
                 searchQuery.emit(EMPTY_STRING)
-                fetchCategories(isFirstLoad = false)
+                fetchCategories()
             }
 
             is MainAction.Items -> {
@@ -66,14 +66,13 @@ class MainReducer(
             is MainAction.OnQuestionClick -> sendQuestion(questionId = action.questionId)
 
             is MainAction.OnExpandClick -> {
-                val oldExpendState = oldState.expendMap[action.name] ?: false
-                val newMap = oldState.expendMap
-                newMap[action.name] = !oldExpendState
-
                 if (action.isCategory) {
                     val newCategories = oldState.categories.map { it.copy(isExpand = it.name == action.name) }
-                    sendAction(MainAction.Categories(categories = newCategories, isFirstLoad = true))
+                    sendAction(MainAction.Categories(categories = newCategories))
                 } else {
+                    val oldExpendState = oldState.expendMap[action.name] ?: false
+                    val newMap = oldState.expendMap
+                    newMap[action.name] = !oldExpendState
                     saveState(oldState.copy(expendMap = newMap))
                 }
             }
@@ -83,9 +82,9 @@ class MainReducer(
         }
     }
 
-    private fun fetchCategories(isFirstLoad: Boolean) = launchIO {
+    private fun fetchCategories() = launchIO {
         getCategories()
-            .map { MainAction.Categories(categories = it, isFirstLoad = isFirstLoad) }
+            .map { MainAction.Categories(categories = it) }
             .collect(::sendAction)
     }
 

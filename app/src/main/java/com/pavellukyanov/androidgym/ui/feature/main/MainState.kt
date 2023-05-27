@@ -25,7 +25,7 @@ sealed class MainAction : Action() {
 
     data class Items(val items: List<MainItems>) : MainAction()
 
-    data class Categories(val categories: List<Category>, val isFirstLoad: Boolean) : MainAction()
+    data class Categories(val categories: List<Category>) : MainAction()
 
     data class OnQuestionClick(val questionId: Int) : MainAction()
 
