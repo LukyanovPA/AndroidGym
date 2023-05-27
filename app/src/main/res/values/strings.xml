@@ -15,5 +15,8 @@
 
     //Content Descriptions
     <string name="decs_button_back">Кнопка назад</string>
+    <string name="decs_button_menu">Кнопка меню</string>
     <string name="decs_button_favourites">Кнопка добавить, или удалить из избранного</string>
+    <string name="decs_button_search">Кнопка искать</string>
+    <string name="decs_button_clear">Кнопка очистить строку поиска</string>
 </resources>

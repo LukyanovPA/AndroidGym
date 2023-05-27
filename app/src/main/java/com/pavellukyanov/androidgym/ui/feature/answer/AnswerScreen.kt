@@ -27,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -113,15 +114,15 @@ private fun AnswerScreenContent(
                 onClick = { onAction(AnswerAction.OnFavouritesClick(state = if (answer != null) !answer.isFavourites else false)) },
                 shape = CircleShape,
                 contentPadding = PaddingValues(0.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorLightGreen)
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
             ) {
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
-                        .padding(bottom = 2.dp),
+                        .padding(bottom = 2.dp)
+                        .alpha(0.6f),
                     painter = painterResource(id = if (answer?.isFavourites == true) R.drawable.ic_favourites else R.drawable.ic_is_not_favourites),
-                    contentDescription = stringResource(id = R.string.decs_button_favourites),
-                    tint = Color.Yellow
+                    contentDescription = stringResource(id = R.string.decs_button_favourites)
                 )
             }
         }

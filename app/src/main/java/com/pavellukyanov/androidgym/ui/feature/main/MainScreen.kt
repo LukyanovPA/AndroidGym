@@ -115,7 +115,7 @@ private fun MainScreenContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Menu,
-                        contentDescription = "Button back"
+                        contentDescription = stringResource(id = R.string.decs_button_menu)
                     )
                 }
             }

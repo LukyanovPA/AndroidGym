@@ -36,7 +36,9 @@ fun ErrorDialog(
             onDismissRequest = {
                 showDialog.value = false
             },
-            title = { Text(text = stringResource(R.string.any_screen_error, errorCode)) },
+            title = {
+                Text(text = stringResource(R.string.any_screen_error, errorCode))
+                    },
             text = { Text(errorText) },
             buttons = {
                 Button(
