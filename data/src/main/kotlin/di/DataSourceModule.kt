@@ -4,6 +4,8 @@ import dataSources.local.LocalCache
 import dataSources.local.LocalCacheImpl
 import dataSources.local.LocalQuestions
 import dataSources.local.LocalQuestionsDataSource
+import dataSources.network.NetworkAnswerFeedback
+import dataSources.network.NetworkAnswerFeedbackImpl
 import dataSources.network.NetworkQuestions
 import dataSources.network.NetworkQuestionsDataSource
 import dataSources.network.NetworkTimestamp
@@ -18,4 +20,5 @@ internal val dataSourceModule = module {
     //Network
     single<NetworkQuestions> { NetworkQuestionsDataSource(httpClient = get()) }
     single<NetworkTimestamp> { NetworkTimestampImpl(httpClient = get()) }
+    single<NetworkAnswerFeedback> { NetworkAnswerFeedbackImpl(httpClient = get()) }
 }

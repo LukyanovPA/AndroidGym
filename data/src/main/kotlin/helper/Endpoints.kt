@@ -18,4 +18,12 @@ internal object Endpoints {
 
         const val lastUpdate = cache + "lastUpdate"
     }
+
+    object AnswerFeedback {
+        private const val answerFeedback = "answerFeedback/"
+
+        const val create = answerFeedback + "create"
+        const val getAll = answerFeedback + "getAll"
+        const val changeStatus = answerFeedback + "changeStatus"
+    }
 }
