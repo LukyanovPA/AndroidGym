@@ -17,6 +17,8 @@ sealed class AnswerAction : Action() {
     object GoBack : AnswerAction()
 
     data class OnFavouritesClick(val state: Boolean) : AnswerAction()
+
+    data class OnCreateFeedbackClick(val comment: String) : AnswerAction()
 }
 
 sealed class AnswerEffect : Effect() {
