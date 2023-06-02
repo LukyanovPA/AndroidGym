@@ -50,7 +50,6 @@ import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
-import com.pavellukyanov.androidgym.ui.wiget.VersionFooter
 import entity.questions.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
@@ -161,8 +160,6 @@ private fun MainScreenContent(
                         .wrapContentHeight()
                 ) { onAction(it) }
             }
-            Spacer(modifier = Modifier.height(26.dp))
-            VersionFooter()
         }
     }
 }
