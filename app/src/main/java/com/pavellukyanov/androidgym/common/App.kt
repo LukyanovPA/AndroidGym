@@ -1,5 +1,7 @@
 package com.pavellukyanov.androidgym.common
 
+import Constants.METRICA_KEY
+import SecretValues
 import android.app.Application
 import com.pavellukyanov.androidgym.app.BuildConfig
 import com.pavellukyanov.androidgym.common.di.reducerModule
@@ -10,6 +12,7 @@ import di.storageModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.java.KoinJavaComponent
 import timber.log.Timber
 
 class App : Application() {
@@ -35,7 +38,8 @@ class App : Application() {
     }
 
     private fun initAppMetrica() {
-        val config = YandexMetricaConfig.newConfigBuilder("685b17a8-a791-4e49-8033-b3669fae7272").build()
+        val secret by KoinJavaComponent.inject<SecretValues>(SecretValues::class.java)
+        val config = YandexMetricaConfig.newConfigBuilder(secret.getValue(METRICA_KEY)).build()
         YandexMetrica.activate(this, config)
         YandexMetrica.enableActivityAutoTracking(this)
     }

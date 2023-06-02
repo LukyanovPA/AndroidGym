@@ -1,8 +1,12 @@
 package helper
 
+import Constants.BASE_URL
+import SecretValues
+import org.koin.java.KoinJavaComponent
+
 internal object Endpoints {
-    private const val API = ":8080/api/"
-    const val BASE_URL_DEVICE = "http://192.168.1.65$API"
+    private val secret by KoinJavaComponent.inject<SecretValues>(SecretValues::class.java)
+    val BASE_URL_DEVICE = secret.getValue(BASE_URL)
 
     object Questions {
         private const val question = "questions/"
