@@ -17,6 +17,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -91,6 +93,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
+
+    // Google
+    val crash = platform("com.google.firebase:firebase-bom:32.1.0")
+    implementation(crash)
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-systemuicontroller:$systemuicontroller")
