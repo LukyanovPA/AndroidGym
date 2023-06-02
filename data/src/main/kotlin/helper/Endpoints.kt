@@ -2,10 +2,12 @@ package helper
 
 import Constants.BASE_URL
 import SecretValues
-import org.koin.java.KoinJavaComponent
+import android.annotation.SuppressLint
+import org.koin.java.KoinJavaComponent.getKoin
 
 internal object Endpoints {
-    private val secret by KoinJavaComponent.inject<SecretValues>(SecretValues::class.java)
+    @SuppressLint("StaticFieldLeak")
+    private val secret: SecretValues = getKoin().get()
     val BASE_URL_DEVICE = secret.getValue(BASE_URL)
 
     object Questions {
@@ -27,7 +29,5 @@ internal object Endpoints {
         private const val answerFeedback = "answerFeedback/"
 
         const val create = answerFeedback + "create"
-        const val getAll = answerFeedback + "getAll"
-        const val changeStatus = answerFeedback + "changeStatus"
     }
 }

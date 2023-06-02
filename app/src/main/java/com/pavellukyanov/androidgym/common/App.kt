@@ -9,10 +9,10 @@ import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
 import di.getModules
 import di.storageModule
+import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.java.KoinJavaComponent
 import timber.log.Timber
 
 class App : Application() {
@@ -38,7 +38,7 @@ class App : Application() {
     }
 
     private fun initAppMetrica() {
-        val secret by KoinJavaComponent.inject<SecretValues>(SecretValues::class.java)
+        val secret: SecretValues = getKoin().get()
         val config = YandexMetricaConfig.newConfigBuilder(secret.getValue(METRICA_KEY)).build()
         YandexMetrica.activate(this, config)
         YandexMetrica.enableActivityAutoTracking(this)
