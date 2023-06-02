@@ -31,8 +31,6 @@ sealed class MainAction : Action() {
 
     data class OnExpandClick(val name: String, val isCategory: Boolean) : MainAction()
 
-    object AddQuestion : MainAction()
-
     object OpenMenu : MainAction()
 }
 

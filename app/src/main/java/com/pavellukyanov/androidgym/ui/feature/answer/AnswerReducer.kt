@@ -1,6 +1,12 @@
 package com.pavellukyanov.androidgym.ui.feature.answer
 
 import com.pavellukyanov.androidgym.base.Reducer
+import com.pavellukyanov.androidgym.helper.AnalyticsClient
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.COMMENT
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.FAVOURITES
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.QUESTION
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEND_COMMENT
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.ANSWER
 import entity.answer.Answer
 import kotlinx.coroutines.flow.map
 import useCase.answer.GetAnswer
@@ -16,10 +22,23 @@ class AnswerReducer(
     override suspend fun reduce(oldState: AnswerState, action: AnswerAction) {
         when (action) {
             is AnswerAction.FetchAnswer -> fetchAnswer()
-            is AnswerAction.Answer -> saveState(oldState.copy(answer = action.answer))
+
+            is AnswerAction.Answer -> {
+                launchCPU { AnalyticsClient.trackEvent(screen = ANSWER, event = QUESTION + action.answer.question) }
+                saveState(oldState.copy(answer = action.answer))
+            }
+
+            is AnswerAction.OnCommentLinkClick -> AnalyticsClient.trackEvent(screen = ANSWER, event = COMMENT)
             is AnswerAction.GoBack -> sendEffect(AnswerEffect.GoBack)
-            is AnswerAction.OnFavouritesClick -> onFavouritesUpdate(answer = oldState.answer!!.copy(isFavourites = action.state))
-            is AnswerAction.OnCreateFeedbackClick -> onCreateAnswerFeedback(answerId = oldState.answer!!.id, comment = action.comment)
+            is AnswerAction.OnFavouritesClick -> {
+                launchCPU { AnalyticsClient.trackEvent(screen = ANSWER, event = FAVOURITES) }
+                onFavouritesUpdate(answer = oldState.answer!!.copy(isFavourites = action.state))
+            }
+
+            is AnswerAction.OnCreateFeedbackClick -> {
+                launchCPU { AnalyticsClient.trackEvent(screen = ANSWER, event = SEND_COMMENT) }
+                onCreateAnswerFeedback(answerId = oldState.answer!!.id, comment = action.comment)
+            }
         }
     }
 

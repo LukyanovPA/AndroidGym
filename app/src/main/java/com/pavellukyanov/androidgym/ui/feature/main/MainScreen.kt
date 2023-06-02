@@ -109,7 +109,7 @@ private fun MainScreenContent(
                 Button(
                     modifier = Modifier
                         .size(40.dp),
-                    onClick = { onAction(MainAction.AddQuestion) },
+                    onClick = { onAction(MainAction.OpenMenu) },
                     shape = CircleShape,
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)

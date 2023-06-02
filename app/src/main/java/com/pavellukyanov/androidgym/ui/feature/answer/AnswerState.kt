@@ -19,6 +19,8 @@ sealed class AnswerAction : Action() {
     data class OnFavouritesClick(val state: Boolean) : AnswerAction()
 
     data class OnCreateFeedbackClick(val comment: String) : AnswerAction()
+
+    object OnCommentLinkClick : AnswerAction()
 }
 
 sealed class AnswerEffect : Effect() {

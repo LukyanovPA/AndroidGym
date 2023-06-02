@@ -7,8 +7,8 @@ object Destinations {
         const val ERROR = ui + "error"
     }
 
-    object Categories {
-        const val CATEGORIES = ui + "main"
+    object Main {
+        const val MAIN = ui + "main"
     }
 
     object Answer {
