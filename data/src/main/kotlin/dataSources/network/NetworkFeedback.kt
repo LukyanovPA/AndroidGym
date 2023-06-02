@@ -10,12 +10,14 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.path
 
-internal interface NetworkAnswerFeedback : suspend (CreateAnswerFeedbackRequest) -> Unit
+internal interface NetworkFeedback {
+    suspend fun createAnswerComment(request: CreateAnswerFeedbackRequest)
+}
 
-internal class NetworkAnswerFeedbackImpl(
+internal class NetworkFeedbackImpl(
     private val httpClient: HttpClient
-) : NetworkAnswerFeedback {
-    override suspend fun invoke(request: CreateAnswerFeedbackRequest): Unit =
+) : NetworkFeedback {
+    override suspend fun createAnswerComment(request: CreateAnswerFeedbackRequest) =
         httpClient.post {
             url { path(Endpoints.AnswerFeedback.create) }
             setBody(request)
