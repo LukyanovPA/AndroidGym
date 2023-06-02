@@ -40,6 +40,11 @@ internal class QuestionRepositoryImpl(
                 }
             }
 
+    override suspend fun setFavouritesState(answerId: Int, state: Boolean) {
+        val updatedAnswer = localQuestions.getAnswer(id = answerId).copy(isFavourites = state)
+        localQuestions.setFavouritesState(answer = updatedAnswer)
+    }
+
     private suspend fun checkUpdates(point: CachePoint) {
         cacheHelper.checkUpdates(point = point)
     }

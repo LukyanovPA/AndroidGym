@@ -11,4 +11,5 @@ interface QuestionRepository {
     suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>>
     suspend fun getAllQuestions(): Flow<List<QuestionEntity>>
     suspend fun getAnswer(questionId: Int): Flow<AnswerEntity>
+    suspend fun setFavouritesState(answerId: Int, state: Boolean)
 }

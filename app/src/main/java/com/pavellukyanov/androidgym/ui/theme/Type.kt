@@ -15,7 +15,7 @@ val Typography = Typography(
             Font(R.font.ubuntu_regular)
         ),
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 18.sp
     )
     /* Other default text styles to override
     button = TextStyle(

@@ -96,9 +96,9 @@ fun SearchTextField(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.search_placeholder),
-                    color = Color.Black,
+                    color = Color.LightGray,
                     fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp,
+                    letterSpacing = 1.sp
                 )
             },
             trailingIcon = {
@@ -123,7 +123,7 @@ fun SearchTextField(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowCircleRight,
-                            contentDescription = "Search",
+                            contentDescription = stringResource(id = R.string.decs_button_search),
                             modifier = Modifier
                                 .rotate(-30f)
                         )
@@ -135,7 +135,7 @@ fun SearchTextField(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Clear,
-                            contentDescription = "clear text",
+                            contentDescription = stringResource(id = R.string.decs_button_clear),
                             tint = Color.Black,
                             modifier = Modifier
                                 .padding(start = 8.dp)

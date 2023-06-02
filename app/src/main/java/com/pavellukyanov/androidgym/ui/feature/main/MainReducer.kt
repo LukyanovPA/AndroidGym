@@ -2,12 +2,19 @@ package com.pavellukyanov.androidgym.ui.feature.main
 
 import Constants.EMPTY_STRING
 import com.pavellukyanov.androidgym.base.Reducer
+import com.pavellukyanov.androidgym.helper.AnalyticsClient
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_CATEGORY
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_MENU
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_SUBCATEGORY
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEARCH
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.MAIN
 import entity.questions.MainItems
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import useCase.answer.SendQuestionId
 import useCase.questions.GetCategories
 import useCase.questions.Search
@@ -26,12 +33,9 @@ class MainReducer(
 
     override suspend fun reduce(oldState: MainState, action: MainAction) {
         when (action) {
-            is MainAction.FetchMain -> {
-                saveState(oldState.copy(items = listOf(MainItems.Loading)))
-                fetchCategories(isFirstLoad = true)
-            }
-
+            is MainAction.FetchMain -> fetchCategories()
             is MainAction.Search -> {
+                launchCPU { AnalyticsClient.trackEvent(MAIN, SEARCH) }
                 searchQuery.emit(action.query)
                 saveState(oldState.copy(categoriesVisibility = false, searchQuery = searchQuery.value))
             }
@@ -39,7 +43,7 @@ class MainReducer(
             is MainAction.ClearSearch -> {
                 saveState(oldState.copy(categoriesVisibility = true, items = listOf(MainItems.Loading), searchQuery = EMPTY_STRING))
                 searchQuery.emit(EMPTY_STRING)
-                fetchCategories(isFirstLoad = false)
+                fetchCategories()
             }
 
             is MainAction.Items -> {
@@ -66,35 +70,38 @@ class MainReducer(
             is MainAction.OnQuestionClick -> sendQuestion(questionId = action.questionId)
 
             is MainAction.OnExpandClick -> {
-                val oldExpendState = oldState.expendMap[action.name] ?: false
-                val newMap = oldState.expendMap
-                newMap[action.name] = !oldExpendState
-
                 if (action.isCategory) {
+                    launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_CATEGORY + action.name) }
                     val newCategories = oldState.categories.map { it.copy(isExpand = it.name == action.name) }
-                    sendAction(MainAction.Categories(categories = newCategories, isFirstLoad = true))
+                    sendAction(MainAction.Categories(categories = newCategories))
                 } else {
+                    launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_SUBCATEGORY + action.name) }
+                    val oldExpendState = oldState.expendMap[action.name] ?: false
+                    val newMap = oldState.expendMap
+                    newMap[action.name] = !oldExpendState
                     saveState(oldState.copy(expendMap = newMap))
                 }
             }
 
-            is MainAction.AddQuestion -> {}
-            is MainAction.OpenMenu -> {}
+            is MainAction.OpenMenu -> {
+                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_MENU) }
+            }
         }
     }
 
-    private fun fetchCategories(isFirstLoad: Boolean) = launchIO {
+    private fun fetchCategories() = launchIO {
         getCategories()
-            .map { MainAction.Categories(categories = it, isFirstLoad = isFirstLoad) }
+            .map { categories -> MainAction.Categories(categories = categories) }
             .collect(::sendAction)
     }
 
     @OptIn(FlowPreview::class)
     private fun onSearch() = launchIO {
         searchQuery
+            .onStart { listOf(MainItems.Loading) }
             .debounce(300.milliseconds)
             .flatMapMerge { query -> search(query) }
-            .map { MainAction.Items(items = it) }
+            .map { items -> MainAction.Items(items = items) }
             .collect(::sendAction)
     }
 

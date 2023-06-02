@@ -56,18 +56,17 @@ fun SubcategoryItemContent(
                     .padding(start = 16.dp)
             )
         }
-
-        AnimatedVisibility(
-            visible = subcategoriesIsExpanded,
-            enter = fadeIn(),
-            exit = fadeOut()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                val height = subcategory.questions.size * 32
+            val height = subcategory.questions.size * 32
 
+            this@Column.AnimatedVisibility(
+                visible = subcategoriesIsExpanded,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 LazyColumn(
                     modifier = Modifier
                         .height(height.dp)

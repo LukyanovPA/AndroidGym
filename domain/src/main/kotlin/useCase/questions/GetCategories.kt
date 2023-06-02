@@ -13,7 +13,7 @@ interface GetCategories : suspend () -> Flow<List<Category>>
 internal class GetCategoriesImpl(
     private val repo: QuestionRepository
 ) : GetCategories {
-    override suspend fun invoke(): Flow<List<Category>> =
+    override suspend operator fun invoke(): Flow<List<Category>> =
         combine(
             repo.getAllCategories(),
             repo.getAllSubcategories(),

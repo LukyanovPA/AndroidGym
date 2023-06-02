@@ -25,6 +25,8 @@ internal interface LocalQuestions {
     suspend fun getAnswers(questionId: Int): Flow<List<AnswerEntity>>
     suspend fun insertAnswers(answers: List<AnswerEntity>)
     suspend fun deleteAllAnswers()
+    suspend fun getAnswer(id: Int): AnswerEntity
+    suspend fun setFavouritesState(answer: AnswerEntity)
 }
 
 internal class LocalQuestionsDataSource(
@@ -64,5 +66,12 @@ internal class LocalQuestionsDataSource(
 
     override suspend fun deleteAllAnswers() {
         db.answers().deleteAll()
+    }
+
+    override suspend fun getAnswer(id: Int): AnswerEntity =
+        db.answers().getAnswer(id = id)
+
+    override suspend fun setFavouritesState(answer: AnswerEntity) {
+        db.answers().update(answer = answer)
     }
 }

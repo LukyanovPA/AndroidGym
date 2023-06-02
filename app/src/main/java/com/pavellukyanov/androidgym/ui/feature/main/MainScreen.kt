@@ -108,14 +108,14 @@ private fun MainScreenContent(
                 Button(
                     modifier = Modifier
                         .size(40.dp),
-                    onClick = { onAction(MainAction.AddQuestion) },
+                    onClick = { onAction(MainAction.OpenMenu) },
                     shape = CircleShape,
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Menu,
-                        contentDescription = "Button back"
+                        contentDescription = stringResource(id = R.string.decs_button_menu)
                     )
                 }
             }
@@ -182,7 +182,7 @@ private fun ItemsList(
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 4.dp, end = 4.dp, top = 8.dp, bottom = 8.dp)
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
             ) {
                 items(
                     items = state.categories,
@@ -200,7 +200,7 @@ private fun ItemsList(
 
         LazyColumn(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
                 .fillMaxSize()
         ) {
             items(

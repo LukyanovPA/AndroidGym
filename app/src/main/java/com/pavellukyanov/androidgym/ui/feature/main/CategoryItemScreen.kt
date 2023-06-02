@@ -31,7 +31,7 @@ fun CategoryItemContent(
 ) {
     Box(
         modifier = Modifier
-            .padding(start = 8.dp, end = 8.dp)
+            .padding(start = 4.dp, end = 4.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(color = if (category.isExpand) Color.Yellow else ColorLightGreen)
     ) {
@@ -46,7 +46,7 @@ fun CategoryItemContent(
                 text = category.name,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
-                fontSize = 24.sp,
+                fontSize = 26.sp,
                 letterSpacing = 1.sp,
                 textAlign = TextAlign.Start
             )
@@ -59,12 +59,12 @@ fun CategoryItemContent(
                 Text(
                     text = category.questionsCount.toString(),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     color = Color.DarkGray
                 )
                 Text(
                     text = stringResource(R.string.question_count),
-                    fontSize = 12.sp,
+                    fontSize = 10.sp,
                     color = Color.DarkGray
                 )
             }
