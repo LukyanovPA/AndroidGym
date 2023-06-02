@@ -96,9 +96,9 @@ fun SearchTextField(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.search_placeholder),
-                    color = Color.Black,
+                    color = Color.LightGray,
                     fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp,
+                    letterSpacing = 1.sp
                 )
             },
             trailingIcon = {

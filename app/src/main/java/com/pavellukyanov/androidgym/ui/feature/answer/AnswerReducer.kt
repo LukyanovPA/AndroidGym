@@ -34,7 +34,8 @@ class AnswerReducer(
     }
 
     private fun onCreateAnswerFeedback(answerId: Int, comment: String) = launchIO {
-        //TODO добавить тост
-        createAnswerFeedback(answerId, comment)
+        createAnswerFeedback(answerId, comment).also {
+            sendEffect(AnswerEffect.ShowSendCommentCompleteNotify)
+        }
     }
 }

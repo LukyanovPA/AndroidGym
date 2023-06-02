@@ -31,7 +31,7 @@ fun CategoryItemContent(
 ) {
     Box(
         modifier = Modifier
-            .padding(start = 8.dp, end = 8.dp)
+            .padding(start = 4.dp, end = 4.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(color = if (category.isExpand) Color.Yellow else ColorLightGreen)
     ) {

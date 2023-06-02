@@ -12,6 +12,9 @@
     <string name="answer_question_title">Вопрос: %s</string>
     <string name="main_title">Вопросы с собеседований\nAndroid Developer</string>
     <string name="answer_title">Вопрос</string>
+    <string name="answer_comment_title">Нашли ошибку?</string>
+    <string name="answer_comment_placeholder">Опишите проблему</string>
+    <string name="send_comment_button_title">Отправить</string>
 
     //Content Descriptions
     <string name="decs_button_back">Кнопка назад</string>

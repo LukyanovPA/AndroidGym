@@ -10,11 +10,13 @@ val timber_version: String by project
 val desugar_version: String by project
 val rich_editor: String by project
 val systemuicontroller: String by project
+val app_metrica: String by project
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -85,7 +87,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:$compose_version")
     implementation("androidx.compose.foundation:foundation-layout:$compose_version")
     implementation("com.google.android.material:compose-theme-adapter:$material_dapter_version")
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
@@ -106,4 +108,7 @@ dependencies {
 
     //RichEditor
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:$rich_editor")
+
+    //Yandex AppMetrica
+    implementation("com.yandex.android:mobmetricalib:$app_metrica")
 }

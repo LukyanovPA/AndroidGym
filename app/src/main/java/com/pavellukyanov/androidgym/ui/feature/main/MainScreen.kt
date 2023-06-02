@@ -50,6 +50,7 @@ import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
+import com.pavellukyanov.androidgym.ui.wiget.VersionFooter
 import entity.questions.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
@@ -160,6 +161,8 @@ private fun MainScreenContent(
                         .wrapContentHeight()
                 ) { onAction(it) }
             }
+            Spacer(modifier = Modifier.height(26.dp))
+            VersionFooter()
         }
     }
 }
@@ -182,7 +185,7 @@ private fun ItemsList(
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 4.dp, end = 4.dp, top = 8.dp, bottom = 8.dp)
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
             ) {
                 items(
                     items = state.categories,
@@ -200,7 +203,7 @@ private fun ItemsList(
 
         LazyColumn(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
                 .fillMaxSize()
         ) {
             items(

@@ -23,4 +23,6 @@ sealed class AnswerAction : Action() {
 
 sealed class AnswerEffect : Effect() {
     object GoBack : AnswerEffect()
+
+    object ShowSendCommentCompleteNotify : AnswerEffect()
 }
