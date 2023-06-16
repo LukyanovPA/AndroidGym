@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,10 +46,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pavellukyanov.androidgym.app.BuildConfig
 import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
+import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
 import entity.questions.MainItems
@@ -60,17 +64,28 @@ fun MainScreen(
     vm: MainReducer = koinViewModel()
 ) {
     val state by vm.state.asUiState()
+    val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
         vm.sendAction(MainAction.FetchMain)
         vm.effect.receiveAsFlow().collect { effect ->
             when (effect) {
                 is MainEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
+                is MainEffect.OnMenuClicked -> scaffoldState.drawerState.open()
+                is MainEffect.GoToFavourites -> {
+                    scaffoldState.drawerState.close()
+                    navController.navigate(Destinations.Favourites.FAVOURITES)
+                }
             }
         }
     }
 
-    Scaffold { padding ->
+    Scaffold(
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            MenuContent(onAction = { vm.sendAction(it) })
+        }
+    ) { padding ->
         state.receive<MainState> { currentState ->
             MainScreenContent(state = currentState, padding = padding, onAction = { vm.sendAction(it) })
         }
@@ -108,7 +123,7 @@ private fun MainScreenContent(
                 Button(
                     modifier = Modifier
                         .size(40.dp),
-                    onClick = { onAction(MainAction.OpenMenu) },
+                    onClick = { onAction(MainAction.OnMenuClick) },
                     shape = CircleShape,
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
@@ -240,5 +255,32 @@ private fun ItemsList(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun MenuContent(
+    onAction: (MainAction) -> Unit
+) {
+    Text(
+        modifier = Modifier.padding(16.dp),
+        text = stringResource(id = R.string.app_name_with_version, BuildConfig.VERSION_NAME),
+        color = Color.Black,
+        fontSize = 14.sp
+    )
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(color = ColorLightGreen)
+            .clickable { onAction(MainAction.OnFavouriteClick) }
+    ) {
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = stringResource(id = R.string.favourites_title),
+            color = Color.Black,
+            fontSize = 18.sp
+        )
     }
 }

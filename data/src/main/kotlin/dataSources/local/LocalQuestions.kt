@@ -7,6 +7,7 @@ import database.entity.QuestionEntity
 import database.entity.SubcategoryEntity
 import ext.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal interface LocalQuestions {
     //Category
@@ -27,6 +28,7 @@ internal interface LocalQuestions {
     suspend fun deleteAllAnswers()
     suspend fun getAnswer(id: Int): AnswerEntity
     suspend fun setFavouritesState(answer: AnswerEntity)
+    suspend fun getAllFavouritesAnswers(): Flow<List<AnswerEntity>>
 }
 
 internal class LocalQuestionsDataSource(
@@ -57,7 +59,7 @@ internal class LocalQuestionsDataSource(
     }
 
     override suspend fun getAnswers(questionId: Int): Flow<List<AnswerEntity>> =
-        db.answers().getAll(questionId = questionId)
+        db.answers().getAllByQuestionId(questionId = questionId)
             .IO()
 
     override suspend fun insertAnswers(answers: List<AnswerEntity>) {
@@ -69,9 +71,15 @@ internal class LocalQuestionsDataSource(
     }
 
     override suspend fun getAnswer(id: Int): AnswerEntity =
-        db.answers().getAnswer(id = id)
+        db.answers().getAnswerById(id = id)
 
     override suspend fun setFavouritesState(answer: AnswerEntity) {
         db.answers().update(answer = answer)
     }
+
+    override suspend fun getAllFavouritesAnswers(): Flow<List<AnswerEntity>> =
+        db.answers().getAll()
+            .map { answers ->
+                answers.filter { it.isFavourites }
+            }.IO()
 }

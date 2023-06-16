@@ -24,6 +24,8 @@ object AnalyticsClient {
     object ScreenNames {
         const val MAIN = "main_screen"
         const val ANSWER = "answer_screen"
+        const val MAIN_MENU = "main_menu"
+        const val FAVOURITES = "favourites"
     }
 
     object Events {
@@ -35,5 +37,6 @@ object AnalyticsClient {
         const val FAVOURITES = "on_favourites"
         const val COMMENT = "on_comment_click"
         const val SEND_COMMENT = "on_send_comment"
+        const val CLICK_FAVOURITES = "click_favourites"
     }
 }

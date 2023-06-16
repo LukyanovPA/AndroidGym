@@ -45,6 +45,9 @@ internal class QuestionRepositoryImpl(
         localQuestions.setFavouritesState(answer = updatedAnswer)
     }
 
+    override suspend fun getAllFavouritesAnswers(): Flow<List<AnswerEntity>> =
+        localQuestions.getAllFavouritesAnswers()
+
     private suspend fun checkUpdates(point: CachePoint) {
         cacheHelper.checkUpdates(point = point)
     }

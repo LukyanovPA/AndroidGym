@@ -31,9 +31,15 @@ sealed class MainAction : Action() {
 
     data class OnExpandClick(val name: String, val isCategory: Boolean) : MainAction()
 
-    object OpenMenu : MainAction()
+    object OnMenuClick : MainAction()
+
+    object OnFavouriteClick : MainAction()
 }
 
 sealed class MainEffect : Effect() {
     object GoToAnswer : MainEffect()
+
+    object OnMenuClicked : MainEffect()
+
+    object GoToFavourites : MainEffect()
 }

@@ -3,15 +3,10 @@ package com.pavellukyanov.androidgym
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.pavellukyanov.androidgym.app.BuildConfig
 import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.ui.theme.AndroidGymTheme
 import com.pavellukyanov.androidgym.ui.wiget.NavigationGraph

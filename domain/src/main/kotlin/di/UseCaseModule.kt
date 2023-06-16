@@ -1,6 +1,8 @@
 package di
 
 import org.koin.dsl.module
+import useCase.answer.GetAllFavouritesAnswers
+import useCase.answer.GetAllFavouritesAnswersImpl
 import useCase.answer.GetAnswer
 import useCase.answer.GetAnswerImpl
 import useCase.answer.SendQuestionId
@@ -24,4 +26,5 @@ internal val useCaseModule = module {
     single<GetAnswer> { GetAnswerImpl(repo = get(), questionIdStorage = get()) }
     single<UpdateFavouritesState> { UpdateFavouritesStateImpl(repo = get()) }
     single<CreateAnswerFeedback> { CreateAnswerFeedbackImpl(repository = get()) }
+    single<GetAllFavouritesAnswers> { GetAllFavouritesAnswersImpl(repo = get()) }
 }

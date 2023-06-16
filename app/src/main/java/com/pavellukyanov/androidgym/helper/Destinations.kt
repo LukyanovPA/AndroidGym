@@ -14,4 +14,8 @@ object Destinations {
     object Answer {
         const val ANSWER = ui + "answer"
     }
+
+    object Favourites {
+        const val FAVOURITES = ui + "favourites"
+    }
 }

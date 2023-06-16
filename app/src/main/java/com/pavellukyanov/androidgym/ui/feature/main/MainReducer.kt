@@ -4,10 +4,12 @@ import Constants.EMPTY_STRING
 import com.pavellukyanov.androidgym.base.Reducer
 import com.pavellukyanov.androidgym.helper.AnalyticsClient
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_CATEGORY
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_FAVOURITES
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_MENU
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_SUBCATEGORY
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEARCH
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.MAIN
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.MAIN_MENU
 import entity.questions.MainItems
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,8 +85,14 @@ class MainReducer(
                 }
             }
 
-            is MainAction.OpenMenu -> {
-                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_MENU) }
+            is MainAction.OnMenuClick -> {
+                AnalyticsClient.trackEvent(MAIN, CLICK_MENU)
+                sendEffect(MainEffect.OnMenuClicked)
+            }
+
+            is MainAction.OnFavouriteClick -> {
+                AnalyticsClient.trackEvent(MAIN_MENU, CLICK_FAVOURITES)
+                sendEffect(MainEffect.GoToFavourites)
             }
         }
     }
