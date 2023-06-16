@@ -6,18 +6,20 @@ import com.pavellukyanov.androidgym.base.Effect
 import com.pavellukyanov.androidgym.base.State
 import entity.questions.Category
 import entity.questions.MainItems
+import entity.questions.Question
+import entity.questions.Subcategory
 
 
 data class MainState(
-    val categories: List<Category> = listOf(),
-    val categoriesVisibility: Boolean = true,
+//    val categories: List<Category> = listOf(),
+//    val categoriesVisibility: Boolean = true,
     val items: List<MainItems> = listOf(),
     val searchQuery: String = EMPTY_STRING,
-    val expendMap: HashMap<String, Boolean> = hashMapOf()
+//    val expendMap: HashMap<String, Boolean> = hashMapOf()
 ) : State()
 
 sealed class MainAction : Action() {
-    object FetchMain : MainAction()
+//    object FetchMain : MainAction()
 
     data class Search(val query: String) : MainAction()
 
@@ -25,11 +27,15 @@ sealed class MainAction : Action() {
 
     data class Items(val items: List<MainItems>) : MainAction()
 
-    data class Categories(val categories: List<Category>) : MainAction()
+//    data class Categories(val categories: List<Category>) : MainAction()
 
-    data class OnQuestionClick(val questionId: Int) : MainAction()
+    data class OnCategoryClick(val category: Category) : MainAction()
 
-    data class OnExpandClick(val name: String, val isCategory: Boolean) : MainAction()
+    data class OnSubcategoryClick(val subcategory: Subcategory) : MainAction()
+
+    data class OnQuestionClick(val question: Question) : MainAction()
+
+//    data class OnExpandClick(val name: String, val isCategory: Boolean) : MainAction()
 
     object OnMenuClick : MainAction()
 
@@ -42,4 +48,8 @@ sealed class MainEffect : Effect() {
     object OnMenuClicked : MainEffect()
 
     object GoToFavourites : MainEffect()
+
+    object GoToCategory : MainEffect()
+
+    object GoToSubcategory : MainEffect()
 }

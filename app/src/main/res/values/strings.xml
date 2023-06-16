@@ -17,6 +17,9 @@
     <string name="send_comment_button_title">Отправить</string>
     <string name="app_name_with_version">AndroidGym v%s</string>
     <string name="favourites_title">Избранное</string>
+    <string name="category_title">категория</string>
+    <string name="subcategory_title">подкатегория</string>
+    <string name="question_title">вопрос</string>
 
     //Content Descriptions
     <string name="decs_button_back">Кнопка назад</string>

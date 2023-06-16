@@ -53,13 +53,13 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun FavouritesScreen(
     navController: NavController,
-    vm: FavouritesReducer = koinViewModel()
+    reducer: FavouritesReducer = koinViewModel()
 ) {
-    val state by vm.state.asUiState()
+    val state by reducer.state.asUiState()
 
     LaunchedEffect(key1 = true) {
-        vm.sendAction(FavouritesAction.Fetch)
-        vm.effect.receiveAsFlow().collect { effect ->
+        reducer.sendAction(FavouritesAction.Fetch)
+        reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
                 is FavouritesEffect.GoBack -> navController.popBackStack()
                 is FavouritesEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
@@ -69,7 +69,7 @@ fun FavouritesScreen(
 
     Scaffold { padding ->
         state.receive<FavouritesState> { currentState ->
-            FavouritesContent(state = currentState, padding = padding, onAction = { vm.sendAction(it) })
+            FavouritesContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
         }
     }
 }

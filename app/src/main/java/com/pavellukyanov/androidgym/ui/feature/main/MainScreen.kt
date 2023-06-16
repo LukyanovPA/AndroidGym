@@ -1,8 +1,5 @@
 package com.pavellukyanov.androidgym.ui.feature.main
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -52,8 +47,11 @@ import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
+import com.pavellukyanov.androidgym.ui.wiget.CategoryItemContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
+import com.pavellukyanov.androidgym.ui.wiget.QuestionItemContent
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
+import com.pavellukyanov.androidgym.ui.wiget.SubcategoryItemContent
 import entity.questions.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
@@ -61,14 +59,13 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainScreen(
     navController: NavController,
-    vm: MainReducer = koinViewModel()
+    reducer: MainReducer = koinViewModel()
 ) {
-    val state by vm.state.asUiState()
+    val state by reducer.state.asUiState()
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        vm.sendAction(MainAction.FetchMain)
-        vm.effect.receiveAsFlow().collect { effect ->
+        reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
                 is MainEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
                 is MainEffect.OnMenuClicked -> scaffoldState.drawerState.open()
@@ -76,6 +73,9 @@ fun MainScreen(
                     scaffoldState.drawerState.close()
                     navController.navigate(Destinations.Favourites.FAVOURITES)
                 }
+
+                is MainEffect.GoToCategory -> {}
+                is MainEffect.GoToSubcategory -> {}
             }
         }
     }
@@ -83,11 +83,11 @@ fun MainScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
-            MenuContent(onAction = { vm.sendAction(it) })
+            MenuContent(onAction = { reducer.sendAction(it) })
         }
     ) { padding ->
         state.receive<MainState> { currentState ->
-            MainScreenContent(state = currentState, padding = padding, onAction = { vm.sendAction(it) })
+            MainScreenContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
         }
     }
 }
@@ -156,6 +156,7 @@ private fun MainScreenContent(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
                         .clip(RoundedCornerShape(40.dp)),
+                    placeholderText = R.string.search_placeholder,
                     onSearchClick = { onAction(MainAction.Search(query = it)) },
                     onClearClick = { onAction(MainAction.ClearSearch) }
                 )
@@ -185,72 +186,48 @@ private fun ItemsList(
     modifier: Modifier = Modifier,
     onAction: (MainAction) -> Unit
 ) {
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .fillMaxHeight()
+            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+            .fillMaxSize()
     ) {
-        this@Column.AnimatedVisibility(
-            visible = state.categoriesVisibility,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-            ) {
-                items(
-                    items = state.categories,
-                    key = { it.id }
-                ) { item ->
+        items(
+            items = state.items,
+            key = { it.id }
+        ) { item ->
+            when (item) {
+                is MainItems.CategoryItem -> {
                     CategoryItemContent(
-                        category = item,
-                        onExpandedClick = { category ->
-                            onAction(MainAction.OnExpandClick(name = category.name, isCategory = true))
-                        }
+                        category = item.category,
+                        onAction = { onAction(MainAction.OnCategoryClick(category = it)) }
                     )
                 }
-            }
-        }
 
-        LazyColumn(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
-                .fillMaxSize()
-        ) {
-            items(
-                items = state.items,
-                key = { it.id }
-            ) { item ->
-                when (item) {
-                    is MainItems.Loading -> LoadingScreen()
-                    is MainItems.SubcategoryItem -> {
-                        SubcategoryItemContent(
-                            subcategory = item.subcategory,
-                            isExpend = state.expendMap[item.subcategory.name] ?: false,
-                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) },
-                            onExpandedClick = { onAction(MainAction.OnExpandClick(name = it, isCategory = false)) }
+                is MainItems.Loading -> LoadingScreen()
+                is MainItems.SubcategoryItem -> {
+                    SubcategoryItemContent(
+                        subcategory = item.subcategory,
+                        onAction = { onAction(MainAction.OnSubcategoryClick(subcategory = it)) }
+                    )
+                }
+
+                is MainItems.QuestionItem -> {
+                    QuestionItemContent(
+                        question = item.question,
+                        onAction = { onAction(MainAction.OnQuestionClick(it)) }
+                    )
+                }
+
+                is MainItems.NotFoundItem -> {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .padding(start = 16.dp, end = 16.dp, top = 32.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.search_not_found),
+                            textAlign = TextAlign.Center
                         )
-                    }
-
-                    is MainItems.QuestionItem -> {
-                        QuestionItemContent(
-                            question = item.question,
-                            onQuestionClick = { onAction(MainAction.OnQuestionClick(it)) }
-                        )
-                    }
-
-                    is MainItems.NotFoundItem -> {
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier
-                                .padding(start = 16.dp, end = 16.dp, top = 32.dp)
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.search_not_found),
-                                textAlign = TextAlign.Center
-                            )
-                        }
                     }
                 }
             }

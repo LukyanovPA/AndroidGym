@@ -7,6 +7,5 @@ data class Subcategory(
     val id: Int,
     val categoryId: Int,
     val categoryName: String,
-    val name: String,
-    val questions: List<Question>
+    val name: String
 )

@@ -9,23 +9,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowCircleRight
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,8 +29,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -54,11 +50,14 @@ import com.pavellukyanov.androidgym.app.R
 fun SearchTextField(
     searchQuery: String,
     modifier: Modifier = Modifier,
+    placeholderText: Int,
     onSearchClick: (String) -> Unit,
     onClearClick: () -> Unit
 ) {
     var text by remember { mutableStateOf(searchQuery) }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     Box(modifier = modifier) {
         OutlinedTextField(
@@ -67,6 +66,7 @@ fun SearchTextField(
                 text = it
 
                 if (text.isEmpty() || text.isBlank()) {
+                    focusManager.clearFocus()
                     keyboardController?.hide()
                     onClearClick()
                 } else {
@@ -80,6 +80,7 @@ fun SearchTextField(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
+                    focusManager.clearFocus()
                     keyboardController?.hide()
                     onSearchClick(text)
                 }
@@ -95,7 +96,7 @@ fun SearchTextField(
             ),
             placeholder = {
                 Text(
-                    text = stringResource(id = R.string.search_placeholder),
+                    text = stringResource(id = placeholderText),
                     color = Color.LightGray,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.sp
@@ -108,26 +109,6 @@ fun SearchTextField(
                     modifier = Modifier
                         .padding(end = 16.dp)
                 ) {
-                    Button(
-                        modifier = Modifier
-                            .size(40.dp),
-                        onClick = {
-                            if (text.isNotBlank()) {
-                                keyboardController?.hide()
-                                onSearchClick(text)
-                            }
-                        },
-                        shape = CircleShape,
-                        contentPadding = PaddingValues(0.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowCircleRight,
-                            contentDescription = stringResource(id = R.string.decs_button_search),
-                            modifier = Modifier
-                                .rotate(-30f)
-                        )
-                    }
                     this.AnimatedVisibility(
                         visible = text.isNotEmpty(),
                         enter = fadeIn(),
@@ -140,6 +121,7 @@ fun SearchTextField(
                             modifier = Modifier
                                 .padding(start = 8.dp)
                                 .clickable {
+                                    focusManager.clearFocus()
                                     text = EMPTY_STRING
                                     keyboardController?.hide()
                                     onClearClick()
@@ -150,9 +132,10 @@ fun SearchTextField(
             },
             modifier = Modifier
                 .background(color = Color.White)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color.Black,
+                focusedBorderColor = Color.Yellow,
                 unfocusedBorderColor = Color.Black
             )
         )

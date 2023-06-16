@@ -32,6 +32,7 @@ object AnalyticsClient {
         const val SEARCH = "on_search"
         const val CLICK_CATEGORY = "click_category: "
         const val CLICK_SUBCATEGORY = "click_subcategory: "
+        const val CLICK_QUESTION = "click_question: "
         const val CLICK_MENU = "on_menu"
         const val QUESTION = "view_question: "
         const val FAVOURITES = "on_favourites"

@@ -1,6 +1,6 @@
 package di
 
-import entity.answer.QuestionIdStorage
+import entity.answer.IdStorage
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -16,5 +16,5 @@ internal fun domainModule() = listOf(
 )
 
 internal val storageModule = module {
-    singleOf(::QuestionIdStorage)
+    singleOf(::IdStorage)
 }

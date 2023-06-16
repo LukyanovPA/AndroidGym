@@ -4,12 +4,12 @@ import com.pavellukyanov.androidgym.base.Reducer
 import entity.answer.Answer
 import kotlinx.coroutines.flow.map
 import useCase.answer.GetAllFavouritesAnswers
-import useCase.answer.SendQuestionId
+import useCase.answer.SendId
 import useCase.answer.UpdateFavouritesState
 
 class FavouritesReducer(
     private val getAllFavouritesAnswers: GetAllFavouritesAnswers,
-    private val sendQuestionId: SendQuestionId,
+    private val sendId: SendId,
     private val updateFavouritesState: UpdateFavouritesState,
 ) : Reducer<FavouritesState, FavouritesAction, FavouritesEffect>(FavouritesState()) {
 
@@ -30,7 +30,7 @@ class FavouritesReducer(
     }
 
     private fun sendQuestion(questionId: Int) = launchCPU {
-        sendQuestionId(questionId).also {
+        sendId(questionId).also {
             sendEffect(FavouritesEffect.GoToAnswer)
         }
     }

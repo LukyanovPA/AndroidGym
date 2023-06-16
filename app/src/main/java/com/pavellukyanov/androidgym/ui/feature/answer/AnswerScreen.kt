@@ -72,14 +72,14 @@ private const val SEND_COMMENT_COMPLETE = "Ваш комментарий отп�
 @Composable
 fun AnswerScreen(
     navController: NavController,
-    vm: AnswerReducer = koinViewModel()
+    reducer: AnswerReducer = koinViewModel()
 ) {
-    val state by vm.state.asUiState()
+    val state by reducer.state.asUiState()
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        vm.sendAction(AnswerAction.FetchAnswer)
-        vm.effect.receiveAsFlow().collect { effect ->
+        reducer.sendAction(AnswerAction.FetchAnswer)
+        reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
                 is AnswerEffect.GoBack -> navController.popBackStack()
                 is AnswerEffect.ShowSendCommentCompleteNotify -> {
@@ -93,7 +93,7 @@ fun AnswerScreen(
 
     Scaffold(scaffoldState = scaffoldState) { padding ->
         state.receive<AnswerState> { currentState ->
-            AnswerScreenContent(state = currentState, padding = padding, onAction = { vm.sendAction(it) })
+            AnswerScreenContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
         }
     }
 }

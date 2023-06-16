@@ -6,6 +6,7 @@ import com.pavellukyanov.androidgym.helper.AnalyticsClient
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_CATEGORY
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_FAVOURITES
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_MENU
+import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_QUESTION
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_SUBCATEGORY
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEARCH
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.MAIN
@@ -17,15 +18,13 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import useCase.answer.SendQuestionId
-import useCase.questions.GetCategories
+import useCase.answer.SendId
 import useCase.questions.Search
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainReducer(
-    private val getCategories: GetCategories,
     private val search: Search,
-    private val sendQuestionId: SendQuestionId
+    private val sendId: SendId
 ) : Reducer<MainState, MainAction, MainEffect>(MainState()) {
     private val searchQuery = MutableStateFlow(EMPTY_STRING)
 
@@ -35,54 +34,32 @@ class MainReducer(
 
     override suspend fun reduce(oldState: MainState, action: MainAction) {
         when (action) {
-            is MainAction.FetchMain -> fetchCategories()
             is MainAction.Search -> {
                 launchCPU { AnalyticsClient.trackEvent(MAIN, SEARCH) }
                 searchQuery.emit(action.query)
-                saveState(oldState.copy(categoriesVisibility = false, searchQuery = searchQuery.value))
+                saveState(oldState.copy(searchQuery = searchQuery.value))
             }
 
             is MainAction.ClearSearch -> {
-                saveState(oldState.copy(categoriesVisibility = true, items = listOf(MainItems.Loading), searchQuery = EMPTY_STRING))
                 searchQuery.emit(EMPTY_STRING)
-                fetchCategories()
+                saveState(oldState.copy(items = listOf(MainItems.Loading), searchQuery = EMPTY_STRING))
             }
 
-            is MainAction.Items -> {
-                val newItems = if (searchQuery.value.isEmpty()) {
-                    action.items
-                        .filterIsInstance<MainItems.SubcategoryItem>()
-                        .filter { item ->
-                            item.subcategory.categoryName.contains(oldState.categories.find { it.isExpand }?.name.orEmpty(), true)
-                        }
-                } else {
-                    action.items
-                }
-                saveState(oldState.copy(items = newItems))
+            is MainAction.Items -> saveState(oldState.copy(items = action.items))
+
+            is MainAction.OnQuestionClick -> {
+                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_QUESTION + action.question.question) }
+                onSendId(id = action.question.id, action = action)
             }
 
-            is MainAction.Categories -> {
-                val newItems = action.categories.find { it.isExpand }
-                    ?.let { category ->
-                        if (category.subcategories.isNotEmpty()) MainItems.SubcategoryItem.map(category.subcategories) else listOf(MainItems.NotFoundItem)
-                    }
-                saveState(oldState.copy(categories = action.categories, items = (newItems as List<MainItems>)))
+            is MainAction.OnSubcategoryClick -> {
+                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_SUBCATEGORY + action.subcategory.name) }
+                onSendId(id = action.subcategory.id, action = action)
             }
 
-            is MainAction.OnQuestionClick -> sendQuestion(questionId = action.questionId)
-
-            is MainAction.OnExpandClick -> {
-                if (action.isCategory) {
-                    launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_CATEGORY + action.name) }
-                    val newCategories = oldState.categories.map { it.copy(isExpand = it.name == action.name) }
-                    sendAction(MainAction.Categories(categories = newCategories))
-                } else {
-                    launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_SUBCATEGORY + action.name) }
-                    val oldExpendState = oldState.expendMap[action.name] ?: false
-                    val newMap = oldState.expendMap
-                    newMap[action.name] = !oldExpendState
-                    saveState(oldState.copy(expendMap = newMap))
-                }
+            is MainAction.OnCategoryClick -> {
+                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_CATEGORY + action.category.name) }
+                onSendId(id = action.category.id, action = action)
             }
 
             is MainAction.OnMenuClick -> {
@@ -97,12 +74,6 @@ class MainReducer(
         }
     }
 
-    private fun fetchCategories() = launchIO {
-        getCategories()
-            .map { categories -> MainAction.Categories(categories = categories) }
-            .collect(::sendAction)
-    }
-
     @OptIn(FlowPreview::class)
     private fun onSearch() = launchIO {
         searchQuery
@@ -113,9 +84,15 @@ class MainReducer(
             .collect(::sendAction)
     }
 
-    private fun sendQuestion(questionId: Int) = launchCPU {
-        sendQuestionId(questionId).also {
-            sendEffect(MainEffect.GoToAnswer)
+    private fun onSendId(id: Int, action: MainAction) = launchCPU {
+        sendId(id).also {
+            sendEffect(
+                when (action) {
+                    is MainAction.OnQuestionClick -> MainEffect.GoToAnswer
+                    is MainAction.OnCategoryClick -> MainEffect.GoToCategory
+                    else -> MainEffect.GoToSubcategory
+                }
+            )
         }
     }
 }

@@ -1,7 +1,7 @@
 package useCase.answer
 
 import entity.answer.Answer
-import entity.answer.QuestionIdStorage
+import entity.answer.IdStorage
 import ext.CPU
 import helper.map
 import kotlinx.coroutines.FlowPreview
@@ -14,11 +14,11 @@ interface GetAnswer : suspend () -> Flow<Answer>
 
 internal class GetAnswerImpl(
     private val repo: QuestionRepository,
-    private val questionIdStorage: QuestionIdStorage
+    private val idStorage: IdStorage
 ) : GetAnswer {
     @OptIn(FlowPreview::class)
     override suspend operator fun invoke(): Flow<Answer> =
-        questionIdStorage.get()
+        idStorage.get()
             .flatMapMerge { questionId ->
                 repo.getAnswer(questionId = questionId)
                     .map { it.map() }
