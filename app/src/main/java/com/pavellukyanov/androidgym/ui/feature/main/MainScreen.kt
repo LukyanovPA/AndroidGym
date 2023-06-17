@@ -103,7 +103,6 @@ private fun MainScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
         ) {
             Spacer(modifier = Modifier.height(26.dp))
             Row(

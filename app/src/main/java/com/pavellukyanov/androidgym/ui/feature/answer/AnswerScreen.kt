@@ -18,10 +18,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -91,7 +93,9 @@ fun AnswerScreen(
         }
     }
 
-    Scaffold(scaffoldState = scaffoldState) { padding ->
+    Scaffold(
+        scaffoldState = scaffoldState
+    ) { padding ->
         state.receive<AnswerState> { currentState ->
             AnswerScreenContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
         }
@@ -112,179 +116,185 @@ private fun AnswerScreenContent(
     Column(
         modifier = Modifier
             .padding(padding)
-            .padding(start = 16.dp, end = 16.dp)
-            .fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Button(
-                modifier = Modifier.size(40.dp),
-                onClick = { onAction(AnswerAction.GoBack) },
-                shape = CircleShape,
-                contentPadding = PaddingValues(0.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorLightGreen)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(id = R.string.decs_button_back)
-                )
-            }
-            Text(
-                textAlign = TextAlign.Center,
-                text = stringResource(id = R.string.answer_title),
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp
-            )
-            Button(
-                modifier = Modifier.size(40.dp),
-                onClick = { onAction(AnswerAction.OnFavouritesClick(state = if (state.answer != null) !state.answer.isFavourites else false)) },
-                shape = CircleShape,
-                contentPadding = PaddingValues(0.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(25.dp)
-                        .padding(bottom = 2.dp)
-                        .alpha(0.6f),
-                    painter = painterResource(id = if (state.answer?.isFavourites == true) R.drawable.ic_favourites else R.drawable.ic_is_not_favourites),
-                    contentDescription = stringResource(id = R.string.decs_button_favourites)
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = state.answer?.question.orEmpty(),
-            fontWeight = FontWeight.Bold,
-            color = Color.DarkGray,
-            textAlign = TextAlign.Center,
-            fontSize = 22.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(20.dp))
-                .background(color = Color.Yellow)
-        ) {
-            AndroidView(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                factory = { context -> TextView(context) },
-                update = { it.text = HtmlCompat.fromHtml(state.answer?.answer.orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT) }
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(20.dp))
-                .background(color = ColorLightGreen)
+                .verticalScroll(rememberScrollState())
+                .weight(weight = 1f, fill = false)
+                .padding(start = 16.dp, end = 16.dp)
+                .fillMaxSize()
         ) {
-            Text(
-                text = stringResource(id = R.string.answer_category_title, state.answer?.categoryName.orEmpty()),
-                fontWeight = FontWeight.Normal,
-                color = Color.DarkGray,
-                textAlign = TextAlign.Start,
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
-            )
-            Text(
-                text = stringResource(id = R.string.answer_subcategory_title, state.answer?.subcategoryName.orEmpty()),
-                fontWeight = FontWeight.Normal,
-                color = Color.DarkGray,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 8.dp, bottom = 16.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            textAlign = TextAlign.End,
-            text = stringResource(id = R.string.answer_comment_title),
-            color = Color.Blue,
-            fontWeight = if (!commentIsOpen) FontWeight.Bold else FontWeight.Normal,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { commentIsOpen = !commentIsOpen }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            this@Column.AnimatedVisibility(
-                visible = commentIsOpen,
-                enter = fadeIn(),
-                exit = fadeOut()
+                    .fillMaxWidth()
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                Button(
+                    modifier = Modifier.size(40.dp),
+                    onClick = { onAction(AnswerAction.GoBack) },
+                    shape = CircleShape,
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorLightGreen)
                 ) {
-                    OutlinedTextField(
-                        value = comment,
-                        onValueChange = {
-                            comment = it
-                        },
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done,
-                            capitalization = KeyboardCapitalization.Sentences
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                keyboardController?.hide()
-                            }
-                        ),
-                        shape = RoundedCornerShape(16.dp),
-                        textStyle = TextStyle(
-                            color = Color.Black,
-                            fontFamily = FontFamily(
-                                Font(R.font.ubuntu_regular)
-                            ),
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 16.sp
-                        ),
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.answer_comment_placeholder),
-                                color = Color.LightGray
-                            )
-                        },
-                        modifier = Modifier
-                            .background(color = Color.White)
-                            .fillMaxWidth()
-                            .height(150.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Black,
-                            unfocusedBorderColor = Color.Black
-                        )
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.decs_button_back)
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = {
-                            onAction(AnswerAction.OnCreateFeedbackClick(comment = comment))
-                            commentIsOpen = !commentIsOpen
-                            comment = EMPTY_STRING
-                        },
-                        enabled = comment.isNotEmpty(),
-                        shape = RoundedCornerShape(16.dp),
-                        contentPadding = PaddingValues(0.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = if (comment.isNotEmpty()) Color.Yellow else ColorLightGreen)
+                }
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = stringResource(id = R.string.answer_title),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 28.sp
+                )
+                Button(
+                    modifier = Modifier.size(40.dp),
+                    onClick = { onAction(AnswerAction.OnFavouritesClick(state = if (state.answer != null) !state.answer.isFavourites else false)) },
+                    shape = CircleShape,
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(25.dp)
+                            .padding(bottom = 2.dp)
+                            .alpha(0.6f),
+                        painter = painterResource(id = if (state.answer?.isFavourites == true) R.drawable.ic_favourites else R.drawable.ic_is_not_favourites),
+                        contentDescription = stringResource(id = R.string.decs_button_favourites)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = state.answer?.question.orEmpty(),
+                fontWeight = FontWeight.Bold,
+                color = Color.DarkGray,
+                textAlign = TextAlign.Center,
+                fontSize = 22.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(color = Color.Yellow)
+            ) {
+                AndroidView(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    factory = { context -> TextView(context) },
+                    update = { it.text = HtmlCompat.fromHtml(state.answer?.answer.orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT) }
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(color = ColorLightGreen)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.answer_category_title, state.answer?.categoryName.orEmpty()),
+                    fontWeight = FontWeight.Normal,
+                    color = Color.DarkGray,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 16.dp)
+                )
+                Text(
+                    text = stringResource(id = R.string.answer_subcategory_title, state.answer?.subcategoryName.orEmpty()),
+                    fontWeight = FontWeight.Normal,
+                    color = Color.DarkGray,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 8.dp, bottom = 16.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                textAlign = TextAlign.End,
+                text = stringResource(id = R.string.answer_comment_title),
+                color = Color.Blue,
+                fontWeight = if (!commentIsOpen) FontWeight.Bold else FontWeight.Normal,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { commentIsOpen = !commentIsOpen }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                this@Column.AnimatedVisibility(
+                    visible = commentIsOpen,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
                     ) {
-                        Text(
-                            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-                            text = stringResource(id = R.string.send_comment_button_title),
-                            fontWeight = if (comment.isNotEmpty()) FontWeight.Bold else FontWeight.Normal
+                        OutlinedTextField(
+                            value = comment,
+                            onValueChange = {
+                                comment = it
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Done,
+                                capitalization = KeyboardCapitalization.Sentences
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    keyboardController?.hide()
+                                }
+                            ),
+                            shape = RoundedCornerShape(16.dp),
+                            textStyle = TextStyle(
+                                color = Color.Black,
+                                fontFamily = FontFamily(
+                                    Font(R.font.ubuntu_regular)
+                                ),
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp
+                            ),
+                            placeholder = {
+                                Text(
+                                    text = stringResource(id = R.string.answer_comment_placeholder),
+                                    color = Color.LightGray
+                                )
+                            },
+                            modifier = Modifier
+                                .background(color = Color.White)
+                                .fillMaxWidth()
+                                .height(150.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            )
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(
+                            onClick = {
+                                onAction(AnswerAction.OnCreateFeedbackClick(comment = comment))
+                                commentIsOpen = !commentIsOpen
+                                comment = EMPTY_STRING
+                            },
+                            enabled = comment.isNotEmpty(),
+                            shape = RoundedCornerShape(16.dp),
+                            contentPadding = PaddingValues(0.dp),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = if (comment.isNotEmpty()) Color.Yellow else ColorLightGreen)
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                                text = stringResource(id = R.string.send_comment_button_title),
+                                fontWeight = if (comment.isNotEmpty()) FontWeight.Bold else FontWeight.Normal
+                            )
+                        }
                     }
                 }
             }
