@@ -1,4 +1,4 @@
-package useCase.answerfeedback
+package useCase.feedback
 
 import repository.FeedbackRepository
 

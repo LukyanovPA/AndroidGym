@@ -37,7 +37,7 @@ class CategoryReducer(
             is CategoryAction.Search -> {
                 saveState(oldState.copy(searchQuery = searchQuery.value))
                 searchQuery.emit(action.query)
-                launchCPU { AnalyticsClient.trackEvent(CATEGORY, SEARCH) }
+                AnalyticsClient.trackEvent(CATEGORY, SEARCH)
             }
 
             is CategoryAction.ClearSearch -> {
@@ -50,8 +50,8 @@ class CategoryReducer(
             }
 
             is CategoryAction.OnSubcategoryClick -> {
-                onSendId(id = action.subcategory.id)
-                launchCPU { AnalyticsClient.trackEvent(CATEGORY, CLICK_SUBCATEGORY + action.subcategory.name) }
+                onSendId(id = action.subcategory.id, subcategoryName = action.subcategory.name)
+                AnalyticsClient.trackEvent(CATEGORY, CLICK_SUBCATEGORY + action.subcategory.name)
             }
 
             is CategoryAction.OnMenuClick -> {
@@ -77,9 +77,9 @@ class CategoryReducer(
             .collect(::sendAction)
     }
 
-    private fun onSendId(id: Int) = launchCPU {
+    private fun onSendId(id: Int, subcategoryName: String) = launchCPU {
         sendId(id).also {
-            sendEffect(CategoryEffect.GoToSubcategory)
+            sendEffect(CategoryEffect.GoToSubcategory(subcategoryName = subcategoryName))
         }
     }
 }

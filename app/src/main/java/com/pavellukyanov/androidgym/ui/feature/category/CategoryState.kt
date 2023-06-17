@@ -38,5 +38,5 @@ sealed class CategoryEffect : Effect() {
 
     object GoToFavourites : CategoryEffect()
 
-    object GoToSubcategory : CategoryEffect()
+    data class GoToSubcategory(val subcategoryName: String) : CategoryEffect()
 }

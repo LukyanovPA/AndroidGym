@@ -1,4 +1,4 @@
-package com.pavellukyanov.androidgym.ui.feature.category
+package com.pavellukyanov.androidgym.ui.feature.subcategory
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,28 +25,28 @@ import com.pavellukyanov.androidgym.ui.wiget.HeaderContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import com.pavellukyanov.androidgym.ui.wiget.MenuContent
 import com.pavellukyanov.androidgym.ui.wiget.NotFoundContent
-import com.pavellukyanov.androidgym.ui.wiget.SubcategoryItemContent
+import com.pavellukyanov.androidgym.ui.wiget.QuestionItemContent
 import entity.main.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CategoryScreen(
-    categoryName: String,
+fun SubcategoryScreen(
+    subcategoryName: String,
     navController: NavController,
-    reducer: CategoryReducer = koinViewModel()
+    reducer: SubcategoryReducer = koinViewModel()
 ) {
     val state by reducer.state.asUiState()
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        reducer.sendAction(CategoryAction.SetCategoryName(categoryName = categoryName))
+        reducer.sendAction(SubcategoryAction.SetSubcategoryName(subcategoryName = subcategoryName))
         reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
-                is CategoryEffect.GoToSubcategory -> navController.navigate(Destinations.Subcategory.SUBCATEGORY + effect.subcategoryName)
-                is CategoryEffect.GoBack -> navController.popBackStack()
-                is CategoryEffect.OnMenuClicked -> scaffoldState.drawerState.open()
-                is CategoryEffect.GoToFavourites -> {
+                is SubcategoryEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
+                is SubcategoryEffect.GoBack -> navController.popBackStack()
+                is SubcategoryEffect.OnMenuClicked -> scaffoldState.drawerState.open()
+                is SubcategoryEffect.GoToFavourites -> {
                     scaffoldState.drawerState.close()
                     navController.navigate(Destinations.Favourites.FAVOURITES)
                 }
@@ -58,21 +58,21 @@ fun CategoryScreen(
         scaffoldState = scaffoldState,
         drawerContent = {
             MenuContent(
-                favouriteAction = CategoryAction.OnFavouriteClick,
-                onAction = { reducer.sendAction(it as CategoryAction.OnFavouriteClick) })
+                favouriteAction = SubcategoryAction.OnFavouriteClick,
+                onAction = { reducer.sendAction(it as SubcategoryAction.OnFavouriteClick) })
         }
     ) { padding ->
-        state.receive<CategoryState> { currentState ->
-            CategoryContent(state = currentState, paddingValues = padding, onAction = { reducer.sendAction(it) })
+        state.receive<SubcategoryState> { currentState ->
+            SubcategoryContent(state = currentState, paddingValues = padding, onAction = { reducer.sendAction(it) })
         }
     }
 }
 
 @Composable
-private fun CategoryContent(
-    state: CategoryState,
+private fun SubcategoryContent(
+    state: SubcategoryState,
     paddingValues: PaddingValues,
-    onAction: (CategoryAction) -> Unit
+    onAction: (SubcategoryAction) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -80,15 +80,15 @@ private fun CategoryContent(
             .padding(paddingValues)
     ) {
         HeaderContent(
-            title = state.categoryName,
+            title = state.subcategoryName,
             searchQuery = state.searchQuery,
-            placeholderText = R.string.category_search_placeholder,
-            onBackClick = { onAction(CategoryAction.OnBackClick) },
-            onMenuClick = { onAction(CategoryAction.OnMenuClick) },
-            onSearchClick = { onAction(CategoryAction.Search(query = it)) },
-            onClearClick = { onAction(CategoryAction.ClearSearch) }
+            placeholderText = R.string.subcategory_search_placeholder,
+            onBackClick = { onAction(SubcategoryAction.OnBackClick) },
+            onMenuClick = { onAction(SubcategoryAction.OnMenuClick) },
+            onSearchClick = { onAction(SubcategoryAction.Search(query = it)) },
+            onClearClick = { onAction(SubcategoryAction.ClearSearch) }
         )
-        CategoriesListContent(
+        SubcategoryListContent(
             state = state,
             modifier = Modifier
                 .fillMaxSize()
@@ -99,10 +99,10 @@ private fun CategoryContent(
 }
 
 @Composable
-private fun CategoriesListContent(
-    state: CategoryState,
+private fun SubcategoryListContent(
+    state: SubcategoryState,
     modifier: Modifier = Modifier,
-    onAction: (CategoryAction) -> Unit
+    onAction: (SubcategoryAction) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -110,14 +110,14 @@ private fun CategoriesListContent(
             .fillMaxSize()
     ) {
         items(
-            items = state.subcategories,
+            items = state.questions,
             key = { it.id }
         ) { item ->
             when (item) {
-                is MainItems.SubcategoryItem -> {
-                    SubcategoryItemContent(
-                        subcategory = item.subcategory,
-                        onAction = { onAction(CategoryAction.OnSubcategoryClick(subcategory = it)) }
+                is MainItems.QuestionItem -> {
+                    QuestionItemContent(
+                        question = item.question,
+                        onAction = { onAction(SubcategoryAction.OnQuestionClick(it)) }
                     )
                 }
 

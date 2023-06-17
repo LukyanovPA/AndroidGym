@@ -5,6 +5,7 @@ object Destinations {
 
     object Arguments {
         const val CATEGORY_ARG = "categoryName"
+        const val SUBCATEGORY_ARG = "subcategoryName"
     }
 
     object Error {
@@ -25,6 +26,11 @@ object Destinations {
 
     object Category {
         const val CATEGORY = ui + "category/"
-        const val CATEGORY_ROUTE = ui + "category/{categoryName}"
+        const val CATEGORY_ROUTE = ui + "category/{${Arguments.CATEGORY_ARG}}"
+    }
+
+    object Subcategory {
+        const val SUBCATEGORY = ui + "subcategory/"
+        const val SUBCATEGORY_ROUTE = ui + "subcategory/{${Arguments.SUBCATEGORY_ARG}}"
     }
 }

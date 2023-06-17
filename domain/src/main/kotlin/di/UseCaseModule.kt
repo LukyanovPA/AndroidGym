@@ -1,20 +1,22 @@
 package di
 
 import org.koin.dsl.module
-import useCase.answer.GetAllFavouritesAnswers
-import useCase.answer.GetAllFavouritesAnswersImpl
 import useCase.answer.GetAnswer
 import useCase.answer.GetAnswerImpl
 import useCase.answer.SendId
 import useCase.answer.SendIdImpl
-import useCase.answer.UpdateFavouritesState
-import useCase.answer.UpdateFavouritesStateImpl
-import useCase.answerfeedback.CreateAnswerFeedback
-import useCase.answerfeedback.CreateAnswerFeedbackImpl
 import useCase.category.GetSubcategories
 import useCase.category.GetSubcategoriesImpl
-import useCase.questions.GlobalSearch
-import useCase.questions.GlobalSearchImpl
+import useCase.favourites.GetAllFavouritesAnswers
+import useCase.favourites.GetAllFavouritesAnswersImpl
+import useCase.favourites.UpdateFavouritesState
+import useCase.favourites.UpdateFavouritesStateImpl
+import useCase.feedback.CreateAnswerFeedback
+import useCase.feedback.CreateAnswerFeedbackImpl
+import useCase.questions.GetQuestions
+import useCase.questions.GetQuestionsImpl
+import useCase.search.GlobalSearch
+import useCase.search.GlobalSearchImpl
 
 internal val useCaseModule = module {
     //Questions
@@ -29,4 +31,7 @@ internal val useCaseModule = module {
 
     //Category
     single<GetSubcategories> { GetSubcategoriesImpl(repo = get(), idStorage = get()) }
+
+    //Subcategory
+    single<GetQuestions> { GetQuestionsImpl(repo = get(), idStorage = get()) }
 }

@@ -27,6 +27,7 @@ object AnalyticsClient {
         const val MAIN_MENU = "main_menu"
         const val FAVOURITES = "favourites"
         const val CATEGORY = "category"
+        const val SUBCATEGORY = "subcategory"
     }
 
     object Events {

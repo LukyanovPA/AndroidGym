@@ -1,4 +1,4 @@
-package useCase.questions
+package useCase.search
 
 import entity.main.MainItems
 import ext.CPU

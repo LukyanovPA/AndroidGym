@@ -42,5 +42,5 @@ sealed class MainEffect : Effect() {
 
     data class GoToCategory(val categoryName: String) : MainEffect()
 
-    object GoToSubcategory : MainEffect()
+    data class GoToSubcategory(val subcategoryName: String) : MainEffect()
 }

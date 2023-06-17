@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import useCase.answer.SendId
-import useCase.questions.GlobalSearch
+import useCase.search.GlobalSearch
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainReducer(
@@ -35,9 +35,9 @@ class MainReducer(
     override suspend fun reduce(oldState: MainState, action: MainAction) {
         when (action) {
             is MainAction.Search -> {
-                launchCPU { AnalyticsClient.trackEvent(MAIN, SEARCH) }
                 searchQuery.emit(action.query)
                 saveState(oldState.copy(searchQuery = searchQuery.value))
+                AnalyticsClient.trackEvent(MAIN, SEARCH)
             }
 
             is MainAction.ClearSearch -> {
@@ -48,28 +48,28 @@ class MainReducer(
             is MainAction.Items -> saveState(oldState.copy(items = action.items))
 
             is MainAction.OnQuestionClick -> {
-                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_QUESTION + action.question.question) }
                 onSendId(id = action.question.id, action = action)
+                AnalyticsClient.trackEvent(MAIN, CLICK_QUESTION + action.question.question)
             }
 
             is MainAction.OnSubcategoryClick -> {
-                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_SUBCATEGORY + action.subcategory.name) }
                 onSendId(id = action.subcategory.id, action = action)
+                AnalyticsClient.trackEvent(MAIN, CLICK_SUBCATEGORY + action.subcategory.name)
             }
 
             is MainAction.OnCategoryClick -> {
-                launchCPU { AnalyticsClient.trackEvent(MAIN, CLICK_CATEGORY + action.category.name) }
                 onSendId(id = action.category.id, action = action)
+                AnalyticsClient.trackEvent(MAIN, CLICK_CATEGORY + action.category.name)
             }
 
             is MainAction.OnMenuClick -> {
-                AnalyticsClient.trackEvent(MAIN, CLICK_MENU)
                 sendEffect(MainEffect.OnMenuClicked)
+                AnalyticsClient.trackEvent(MAIN, CLICK_MENU)
             }
 
             is MainAction.OnFavouriteClick -> {
-                AnalyticsClient.trackEvent(MAIN_MENU, CLICK_FAVOURITES)
                 sendEffect(MainEffect.GoToFavourites)
+                AnalyticsClient.trackEvent(MAIN_MENU, CLICK_FAVOURITES)
             }
         }
     }
@@ -90,7 +90,8 @@ class MainReducer(
                 when (action) {
                     is MainAction.OnQuestionClick -> MainEffect.GoToAnswer
                     is MainAction.OnCategoryClick -> MainEffect.GoToCategory(categoryName = action.category.name)
-                    else -> MainEffect.GoToSubcategory
+                    is MainAction.OnSubcategoryClick -> MainEffect.GoToSubcategory(subcategoryName = action.subcategory.name)
+                    else -> return@also
                 }
             )
         }

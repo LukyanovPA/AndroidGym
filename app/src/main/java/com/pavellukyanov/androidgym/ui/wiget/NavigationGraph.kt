@@ -17,6 +17,7 @@ import com.pavellukyanov.androidgym.ui.feature.category.CategoryScreen
 import com.pavellukyanov.androidgym.ui.feature.error.ErrorScreen
 import com.pavellukyanov.androidgym.ui.feature.favourites.FavouritesScreen
 import com.pavellukyanov.androidgym.ui.feature.main.MainScreen
+import com.pavellukyanov.androidgym.ui.feature.subcategory.SubcategoryScreen
 
 @Composable
 fun NavigationGraph(
@@ -55,6 +56,19 @@ fun NavigationGraph(
             val categoryName = backStackEntry.arguments?.getString(Destinations.Arguments.CATEGORY_ARG) ?: EMPTY_STRING
             AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.CATEGORY)
             CategoryScreen(categoryName = categoryName, navController = navController)
+        }
+        composable(
+            route = Destinations.Subcategory.SUBCATEGORY_ROUTE,
+            arguments = listOf(
+                navArgument(name = Destinations.Arguments.SUBCATEGORY_ARG) {
+                    type = NavType.StringType
+                    defaultValue = EMPTY_STRING
+                }
+            )
+        ) { backStackEntry ->
+            val subcategoryName = backStackEntry.arguments?.getString(Destinations.Arguments.SUBCATEGORY_ARG) ?: EMPTY_STRING
+            AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.SUBCATEGORY)
+            SubcategoryScreen(subcategoryName = subcategoryName, navController = navController)
         }
     }
 }

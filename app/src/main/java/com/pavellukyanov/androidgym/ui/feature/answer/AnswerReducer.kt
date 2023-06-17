@@ -10,8 +10,8 @@ import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.ANSWER
 import entity.models.Answer
 import kotlinx.coroutines.flow.map
 import useCase.answer.GetAnswer
-import useCase.answer.UpdateFavouritesState
-import useCase.answerfeedback.CreateAnswerFeedback
+import useCase.favourites.UpdateFavouritesState
+import useCase.feedback.CreateAnswerFeedback
 
 class AnswerReducer(
     private val getAnswer: GetAnswer,

@@ -14,4 +14,7 @@ interface QuestionsDao {
 
     @Query("SELECT * FROM questions")
     fun getAll(): Flow<List<QuestionEntity>>
+
+    @Query("SELECT * FROM questions WHERE subcategoryId = :subcategoryId")
+    fun getQuestionsBySubcategoryId(subcategoryId: Int): Flow<List<QuestionEntity>>
 }

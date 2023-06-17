@@ -1,4 +1,4 @@
-package useCase.answer
+package useCase.favourites
 
 import repository.QuestionRepository
 

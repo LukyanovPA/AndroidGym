@@ -1,4 +1,4 @@
-package useCase.answer
+package useCase.favourites
 
 import entity.models.Answer
 import ext.CPU

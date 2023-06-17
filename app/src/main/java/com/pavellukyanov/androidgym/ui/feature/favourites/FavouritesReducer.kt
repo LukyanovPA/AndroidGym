@@ -3,9 +3,9 @@ package com.pavellukyanov.androidgym.ui.feature.favourites
 import com.pavellukyanov.androidgym.base.Reducer
 import entity.models.Answer
 import kotlinx.coroutines.flow.map
-import useCase.answer.GetAllFavouritesAnswers
 import useCase.answer.SendId
-import useCase.answer.UpdateFavouritesState
+import useCase.favourites.GetAllFavouritesAnswers
+import useCase.favourites.UpdateFavouritesState
 
 class FavouritesReducer(
     private val getAllFavouritesAnswers: GetAllFavouritesAnswers,
