@@ -1,9 +1,7 @@
 package com.pavellukyanov.androidgym.ui.feature.category
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -12,14 +10,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.pavellukyanov.androidgym.app.R
@@ -29,6 +24,7 @@ import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.wiget.HeaderContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import com.pavellukyanov.androidgym.ui.wiget.MenuContent
+import com.pavellukyanov.androidgym.ui.wiget.NotFoundContent
 import com.pavellukyanov.androidgym.ui.wiget.SubcategoryItemContent
 import entity.main.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -125,19 +121,7 @@ private fun CategoriesListContent(
                     )
                 }
 
-                is MainItems.NotFoundItem -> {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp, top = 32.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.search_not_found),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-
+                is MainItems.NotFoundItem -> NotFoundContent()
                 else -> LoadingScreen()
             }
         }

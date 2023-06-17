@@ -36,7 +36,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -47,6 +46,7 @@ import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.wiget.CategoryItemContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import com.pavellukyanov.androidgym.ui.wiget.MenuContent
+import com.pavellukyanov.androidgym.ui.wiget.NotFoundContent
 import com.pavellukyanov.androidgym.ui.wiget.QuestionItemContent
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
 import com.pavellukyanov.androidgym.ui.wiget.SubcategoryItemContent
@@ -215,18 +215,7 @@ private fun ItemsList(
                     )
                 }
 
-                is MainItems.NotFoundItem -> {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp, top = 32.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.search_not_found),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
+                is MainItems.NotFoundItem -> NotFoundContent()
             }
         }
     }
