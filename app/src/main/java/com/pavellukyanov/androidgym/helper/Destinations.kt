@@ -4,8 +4,11 @@ object Destinations {
     private const val ui = "ui/feature/"
 
     object Arguments {
-        const val CATEGORY_ARG = "categoryName"
-        const val SUBCATEGORY_ARG = "subcategoryName"
+        const val CATEGORY_NAME_ARG = "categoryName"
+        const val CATEGORY_ID_ARG = "categoryId"
+        const val SUBCATEGORY_NAME_ARG = "subcategoryName"
+        const val SUBCATEGORY_ID_ARG = "subcategoryId"
+        const val QUESTION_ID_ARG = "questionId"
     }
 
     object Error {
@@ -17,7 +20,8 @@ object Destinations {
     }
 
     object Answer {
-        const val ANSWER = ui + "answer"
+        fun nav(questionId: Int): String = ui + "answer/$questionId"
+        const val ANSWER = ui + "answer/{${Arguments.QUESTION_ID_ARG}}"
     }
 
     object Favourites {
@@ -25,12 +29,12 @@ object Destinations {
     }
 
     object Category {
-        const val CATEGORY = ui + "category/"
-        const val CATEGORY_ROUTE = ui + "category/{${Arguments.CATEGORY_ARG}}"
+        fun nav(categoryName: String, categoryId: Int): String = ui + "category/$categoryName/$categoryId"
+        const val CATEGORY_ROUTE = ui + "category/{${Arguments.CATEGORY_NAME_ARG}}/{${Arguments.CATEGORY_ID_ARG}}"
     }
 
     object Subcategory {
-        const val SUBCATEGORY = ui + "subcategory/"
-        const val SUBCATEGORY_ROUTE = ui + "subcategory/{${Arguments.SUBCATEGORY_ARG}}"
+        fun nav(subcategoryName: String, subcategoryId: Int): String = ui + "subcategory/$subcategoryName/$subcategoryId"
+        const val SUBCATEGORY_ROUTE = ui + "subcategory/{${Arguments.SUBCATEGORY_NAME_ARG}}/{${Arguments.SUBCATEGORY_ID_ARG}}"
     }
 }

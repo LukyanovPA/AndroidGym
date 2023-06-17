@@ -1,18 +1,21 @@
 package com.pavellukyanov.androidgym.ui.feature.answer
 
+import Constants.INT_MINUS_ONE
 import com.pavellukyanov.androidgym.base.Action
 import com.pavellukyanov.androidgym.base.Effect
 import com.pavellukyanov.androidgym.base.State
 import entity.models.Answer
 
 data class AnswerState(
-    val answer: Answer? = null
+    val answer: Answer? = null,
+    val answerId: Int = INT_MINUS_ONE,
+    val isLoading: Boolean = true
 ) : State()
 
 sealed class AnswerAction : Action() {
-    object FetchAnswer : AnswerAction()
+    data class FetchAnswer(val questionId: Int) : AnswerAction()
 
-    data class Answer(val answer: entity.models.Answer) : AnswerAction()
+    data class SetAnswer(val answer: Answer) : AnswerAction()
 
     object GoBack : AnswerAction()
 

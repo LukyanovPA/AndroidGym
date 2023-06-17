@@ -9,9 +9,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val reducerModule = module {
-    viewModel { MainReducer(globalSearch = get(), sendId = get()) }
+    viewModel { MainReducer(globalSearch = get()) }
     viewModel { AnswerReducer(getAnswer = get(), updateFavouritesState = get(), createAnswerFeedback = get()) }
-    viewModel { FavouritesReducer(getAllFavouritesAnswers = get(), sendId = get(), updateFavouritesState = get()) }
-    viewModel { CategoryReducer(getSubcategories = get(), sendId = get()) }
-    viewModel { SubcategoryReducer(getQuestions = get(), sendId = get()) }
+    viewModel { FavouritesReducer(getAllFavouritesAnswers = get(), updateFavouritesState = get()) }
+    viewModel { CategoryReducer(getSubcategories = get()) }
+    viewModel { SubcategoryReducer(getQuestions = get()) }
 }

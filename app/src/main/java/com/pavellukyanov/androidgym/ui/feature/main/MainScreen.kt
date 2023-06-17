@@ -63,17 +63,29 @@ fun MainScreen(
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
+        reducer.sendAction(MainAction.Fetch)
         reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
-                is MainEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
+                is MainEffect.GoToAnswer -> navController.navigate(Destinations.Answer.nav(questionId = effect.questionId))
                 is MainEffect.OnMenuClicked -> scaffoldState.drawerState.open()
                 is MainEffect.GoToFavourites -> {
                     scaffoldState.drawerState.close()
                     navController.navigate(Destinations.Favourites.FAVOURITES)
                 }
 
-                is MainEffect.GoToCategory -> navController.navigate(Destinations.Category.CATEGORY + effect.categoryName)
-                is MainEffect.GoToSubcategory -> {}
+                is MainEffect.GoToCategory -> navController.navigate(
+                    Destinations.Category.nav(
+                        categoryName = effect.category.name,
+                        categoryId = effect.category.id
+                    )
+                )
+
+                is MainEffect.GoToSubcategory -> navController.navigate(
+                    Destinations.Subcategory.nav(
+                        subcategoryName = effect.subcategory.name,
+                        subcategoryId = effect.subcategory.id
+                    )
+                )
             }
         }
     }

@@ -33,6 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SubcategoryScreen(
     subcategoryName: String,
+    subcategoryId: Int,
     navController: NavController,
     reducer: SubcategoryReducer = koinViewModel()
 ) {
@@ -40,10 +41,10 @@ fun SubcategoryScreen(
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        reducer.sendAction(SubcategoryAction.SetSubcategoryName(subcategoryName = subcategoryName))
+        reducer.sendAction(SubcategoryAction.SetSubcategoryValues(subcategoryName = subcategoryName, subcategoryId = subcategoryId))
         reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
-                is SubcategoryEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
+                is SubcategoryEffect.GoToAnswer -> navController.navigate(Destinations.Answer.nav(questionId = effect.questionId))
                 is SubcategoryEffect.GoBack -> navController.popBackStack()
                 is SubcategoryEffect.OnMenuClicked -> scaffoldState.drawerState.open()
                 is SubcategoryEffect.GoToFavourites -> {

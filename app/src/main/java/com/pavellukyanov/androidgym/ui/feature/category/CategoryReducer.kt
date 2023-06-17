@@ -9,29 +9,31 @@ import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_SUBCATEG
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEARCH
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.CATEGORY
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.MAIN_MENU
+import entity.main.MainItems
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
-import useCase.answer.SendId
 import useCase.category.GetSubcategories
 import kotlin.time.Duration.Companion.milliseconds
 
 class CategoryReducer(
-    private val getSubcategories: GetSubcategories,
-    private val sendId: SendId
+    private val getSubcategories: GetSubcategories
 ) : Reducer<CategoryState, CategoryAction, CategoryEffect>(CategoryState()) {
     private val searchQuery = MutableStateFlow(EMPTY_STRING)
 
-    init {
-        onSearch()
-    }
-
     override suspend fun reduce(oldState: CategoryState, action: CategoryAction) {
         when (action) {
-            is CategoryAction.SetCategoryName -> {
-                saveState(oldState.copy(categoryName = action.categoryName))
+            is CategoryAction.SetCategoryValues -> {
+                saveState(
+                    oldState.copy(
+                        subcategories = listOf(MainItems.Loading),
+                        categoryName = action.categoryName,
+                        categoryId = action.categoryId
+                    )
+                )
+                onSearch(categoryId = action.categoryId)
             }
 
             is CategoryAction.Search -> {
@@ -50,7 +52,7 @@ class CategoryReducer(
             }
 
             is CategoryAction.OnSubcategoryClick -> {
-                onSendId(id = action.subcategory.id, subcategoryName = action.subcategory.name)
+                sendEffect(CategoryEffect.GoToSubcategory(subcategory = action.subcategory))
                 AnalyticsClient.trackEvent(CATEGORY, CLICK_SUBCATEGORY + action.subcategory.name)
             }
 
@@ -69,17 +71,11 @@ class CategoryReducer(
     }
 
     @OptIn(FlowPreview::class)
-    private fun onSearch() = launchIO {
+    private fun onSearch(categoryId: Int) = launchIO {
         searchQuery
             .debounce(300.milliseconds)
-            .flatMapMerge { query -> getSubcategories(query) }
+            .flatMapMerge { query -> getSubcategories(query, categoryId) }
             .map { items -> CategoryAction.SetItems(items = items) }
             .collect(::sendAction)
-    }
-
-    private fun onSendId(id: Int, subcategoryName: String) = launchCPU {
-        sendId(id).also {
-            sendEffect(CategoryEffect.GoToSubcategory(subcategoryName = subcategoryName))
-        }
     }
 }

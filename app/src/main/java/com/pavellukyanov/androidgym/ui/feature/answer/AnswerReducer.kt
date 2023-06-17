@@ -21,30 +21,33 @@ class AnswerReducer(
 
     override suspend fun reduce(oldState: AnswerState, action: AnswerAction) {
         when (action) {
-            is AnswerAction.FetchAnswer -> fetchAnswer()
+            is AnswerAction.FetchAnswer -> {
+                saveState(oldState.copy(answerId = action.questionId))
+                fetchAnswer(questionId = action.questionId)
+            }
 
-            is AnswerAction.Answer -> {
-                launchCPU { AnalyticsClient.trackEvent(screen = ANSWER, event = QUESTION + action.answer.question) }
-                saveState(oldState.copy(answer = action.answer))
+            is AnswerAction.SetAnswer -> {
+                saveState(oldState.copy(answer = action.answer, isLoading = false))
+                AnalyticsClient.trackEvent(screen = ANSWER, event = QUESTION + action.answer.question)
             }
 
             is AnswerAction.OnCommentLinkClick -> AnalyticsClient.trackEvent(screen = ANSWER, event = COMMENT)
             is AnswerAction.GoBack -> sendEffect(AnswerEffect.GoBack)
             is AnswerAction.OnFavouritesClick -> {
-                launchCPU { AnalyticsClient.trackEvent(screen = ANSWER, event = FAVOURITES) }
                 onFavouritesUpdate(answer = oldState.answer!!.copy(isFavourites = action.state))
+                AnalyticsClient.trackEvent(screen = ANSWER, event = FAVOURITES)
             }
 
             is AnswerAction.OnCreateFeedbackClick -> {
-                launchCPU { AnalyticsClient.trackEvent(screen = ANSWER, event = SEND_COMMENT) }
                 onCreateAnswerFeedback(answerId = oldState.answer!!.id, comment = action.comment)
+                AnalyticsClient.trackEvent(screen = ANSWER, event = SEND_COMMENT)
             }
         }
     }
 
-    private fun fetchAnswer() = launchIO {
-        getAnswer()
-            .map { answer -> AnswerAction.Answer(answer = answer) }
+    private fun fetchAnswer(questionId: Int) = launchIO {
+        getAnswer(questionId)
+            .map { answer -> AnswerAction.SetAnswer(answer = answer) }
             .collect(::sendAction)
     }
 

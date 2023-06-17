@@ -47,6 +47,7 @@ import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
+import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
 
@@ -62,14 +63,15 @@ fun FavouritesScreen(
         reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
                 is FavouritesEffect.GoBack -> navController.popBackStack()
-                is FavouritesEffect.GoToAnswer -> navController.navigate(Destinations.Answer.ANSWER)
+                is FavouritesEffect.GoToAnswer -> navController.navigate(Destinations.Answer.nav(questionId = effect.questionId))
             }
         }
     }
 
     Scaffold { padding ->
         state.receive<FavouritesState> { currentState ->
-            FavouritesContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
+            if (currentState.isLoading) LoadingScreen()
+            else FavouritesContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
         }
     }
 }

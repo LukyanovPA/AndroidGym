@@ -66,6 +66,7 @@ import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
+import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
 
@@ -73,6 +74,7 @@ private const val SEND_COMMENT_COMPLETE = "Ваш комментарий отп�
 
 @Composable
 fun AnswerScreen(
+    questionId: Int,
     navController: NavController,
     reducer: AnswerReducer = koinViewModel()
 ) {
@@ -80,7 +82,7 @@ fun AnswerScreen(
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        reducer.sendAction(AnswerAction.FetchAnswer)
+        reducer.sendAction(AnswerAction.FetchAnswer(questionId = questionId))
         reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
                 is AnswerEffect.GoBack -> navController.popBackStack()
@@ -97,7 +99,8 @@ fun AnswerScreen(
         scaffoldState = scaffoldState
     ) { padding ->
         state.receive<AnswerState> { currentState ->
-            AnswerScreenContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
+            if (currentState.isLoading) LoadingScreen()
+            else AnswerScreenContent(state = currentState, padding = padding, onAction = { reducer.sendAction(it) })
         }
     }
 }

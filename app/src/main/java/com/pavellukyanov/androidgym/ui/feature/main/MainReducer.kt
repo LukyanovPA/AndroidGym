@@ -18,22 +18,21 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import useCase.answer.SendId
 import useCase.search.GlobalSearch
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainReducer(
-    private val globalSearch: GlobalSearch,
-    private val sendId: SendId
+    private val globalSearch: GlobalSearch
 ) : Reducer<MainState, MainAction, MainEffect>(MainState()) {
     private val searchQuery = MutableStateFlow(EMPTY_STRING)
 
-    init {
-        onSearch()
-    }
-
     override suspend fun reduce(oldState: MainState, action: MainAction) {
         when (action) {
+            is MainAction.Fetch -> {
+                saveState(oldState.copy(items = listOf(MainItems.Loading)))
+                onSearch()
+            }
+
             is MainAction.Search -> {
                 searchQuery.emit(action.query)
                 saveState(oldState.copy(searchQuery = searchQuery.value))
@@ -48,17 +47,17 @@ class MainReducer(
             is MainAction.Items -> saveState(oldState.copy(items = action.items))
 
             is MainAction.OnQuestionClick -> {
-                onSendId(id = action.question.id, action = action)
+                sendEffect(MainEffect.GoToAnswer(questionId = action.question.id))
                 AnalyticsClient.trackEvent(MAIN, CLICK_QUESTION + action.question.question)
             }
 
             is MainAction.OnSubcategoryClick -> {
-                onSendId(id = action.subcategory.id, action = action)
+                MainEffect.GoToSubcategory(subcategory = action.subcategory)
                 AnalyticsClient.trackEvent(MAIN, CLICK_SUBCATEGORY + action.subcategory.name)
             }
 
             is MainAction.OnCategoryClick -> {
-                onSendId(id = action.category.id, action = action)
+                sendEffect(MainEffect.GoToCategory(category = action.category))
                 AnalyticsClient.trackEvent(MAIN, CLICK_CATEGORY + action.category.name)
             }
 
@@ -82,18 +81,5 @@ class MainReducer(
             .flatMapMerge { query -> globalSearch(query) }
             .map { items -> MainAction.Items(items = items) }
             .collect(::sendAction)
-    }
-
-    private fun onSendId(id: Int, action: MainAction) = launchCPU {
-        sendId(id).also {
-            sendEffect(
-                when (action) {
-                    is MainAction.OnQuestionClick -> MainEffect.GoToAnswer
-                    is MainAction.OnCategoryClick -> MainEffect.GoToCategory(categoryName = action.category.name)
-                    is MainAction.OnSubcategoryClick -> MainEffect.GoToSubcategory(subcategoryName = action.subcategory.name)
-                    else -> return@also
-                }
-            )
-        }
     }
 }

@@ -6,7 +6,8 @@ import com.pavellukyanov.androidgym.base.State
 import entity.models.Answer
 
 data class FavouritesState(
-    val favourites: List<Answer> = listOf()
+    val favourites: List<Answer> = listOf(),
+    val isLoading: Boolean = true
 ) : State()
 
 sealed class FavouritesAction : Action() {
@@ -19,5 +20,5 @@ sealed class FavouritesAction : Action() {
 
 sealed class FavouritesEffect : Effect() {
     object GoBack : FavouritesEffect()
-    object GoToAnswer : FavouritesEffect()
+    data class GoToAnswer(val questionId: Int) : FavouritesEffect()
 }

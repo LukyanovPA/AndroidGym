@@ -1,6 +1,7 @@
 package com.pavellukyanov.androidgym.ui.wiget
 
 import Constants.EMPTY_STRING
+import Constants.INT_MINUS_ONE
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -36,9 +37,18 @@ fun NavigationGraph(
             AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.MAIN)
             MainScreen(navController = navController)
         }
-        composable(route = Destinations.Answer.ANSWER) {
+        composable(
+            route = Destinations.Answer.ANSWER,
+            arguments = listOf(
+                navArgument(name = Destinations.Arguments.QUESTION_ID_ARG) {
+                    type = NavType.IntType
+                    defaultValue = INT_MINUS_ONE
+                }
+            )
+        ) { backStackEntry ->
+            val questionId = backStackEntry.arguments?.getInt(Destinations.Arguments.QUESTION_ID_ARG) ?: INT_MINUS_ONE
             AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.ANSWER)
-            AnswerScreen(navController = navController)
+            AnswerScreen(questionId = questionId, navController = navController)
         }
         composable(route = Destinations.Favourites.FAVOURITES) {
             AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.FAVOURITES)
@@ -47,28 +57,38 @@ fun NavigationGraph(
         composable(
             route = Destinations.Category.CATEGORY_ROUTE,
             arguments = listOf(
-                navArgument(name = Destinations.Arguments.CATEGORY_ARG) {
+                navArgument(name = Destinations.Arguments.CATEGORY_NAME_ARG) {
                     type = NavType.StringType
                     defaultValue = EMPTY_STRING
+                },
+                navArgument(name = Destinations.Arguments.CATEGORY_ID_ARG) {
+                    type = NavType.IntType
+                    defaultValue = INT_MINUS_ONE
                 }
             )
         ) { backStackEntry ->
-            val categoryName = backStackEntry.arguments?.getString(Destinations.Arguments.CATEGORY_ARG) ?: EMPTY_STRING
+            val categoryName = backStackEntry.arguments?.getString(Destinations.Arguments.CATEGORY_NAME_ARG) ?: EMPTY_STRING
+            val categoryId = backStackEntry.arguments?.getInt(Destinations.Arguments.CATEGORY_ID_ARG) ?: INT_MINUS_ONE
             AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.CATEGORY)
-            CategoryScreen(categoryName = categoryName, navController = navController)
+            CategoryScreen(categoryName = categoryName, categoryId = categoryId, navController = navController)
         }
         composable(
             route = Destinations.Subcategory.SUBCATEGORY_ROUTE,
             arguments = listOf(
-                navArgument(name = Destinations.Arguments.SUBCATEGORY_ARG) {
+                navArgument(name = Destinations.Arguments.SUBCATEGORY_NAME_ARG) {
                     type = NavType.StringType
                     defaultValue = EMPTY_STRING
+                },
+                navArgument(name = Destinations.Arguments.SUBCATEGORY_ID_ARG) {
+                    type = NavType.IntType
+                    defaultValue = INT_MINUS_ONE
                 }
             )
         ) { backStackEntry ->
-            val subcategoryName = backStackEntry.arguments?.getString(Destinations.Arguments.SUBCATEGORY_ARG) ?: EMPTY_STRING
+            val subcategoryName = backStackEntry.arguments?.getString(Destinations.Arguments.SUBCATEGORY_NAME_ARG) ?: EMPTY_STRING
+            val subcategoryId = backStackEntry.arguments?.getInt(Destinations.Arguments.SUBCATEGORY_ID_ARG) ?: INT_MINUS_ONE
             AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.SUBCATEGORY)
-            SubcategoryScreen(subcategoryName = subcategoryName, navController = navController)
+            SubcategoryScreen(subcategoryName = subcategoryName, subcategoryId = subcategoryId, navController = navController)
         }
     }
 }

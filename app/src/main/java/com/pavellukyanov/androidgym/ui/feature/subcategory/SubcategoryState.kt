@@ -1,6 +1,7 @@
 package com.pavellukyanov.androidgym.ui.feature.subcategory
 
 import Constants.EMPTY_STRING
+import Constants.INT_MINUS_ONE
 import com.pavellukyanov.androidgym.base.Action
 import com.pavellukyanov.androidgym.base.Effect
 import com.pavellukyanov.androidgym.base.State
@@ -10,11 +11,12 @@ import entity.models.Question
 data class SubcategoryState(
     val questions: List<MainItems> = listOf(),
     val subcategoryName: String = EMPTY_STRING,
+    val subcategoryId: Int = INT_MINUS_ONE,
     val searchQuery: String = EMPTY_STRING
 ) : State()
 
 sealed class SubcategoryAction : Action() {
-    data class SetSubcategoryName(val subcategoryName: String) : SubcategoryAction()
+    data class SetSubcategoryValues(val subcategoryName: String, val subcategoryId: Int) : SubcategoryAction()
 
     data class Search(val query: String) : SubcategoryAction()
 
@@ -38,5 +40,5 @@ sealed class SubcategoryEffect : Effect() {
 
     object GoToFavourites : SubcategoryEffect()
 
-    object GoToAnswer : SubcategoryEffect()
+    data class GoToAnswer(val questionId: Int) : SubcategoryEffect()
 }

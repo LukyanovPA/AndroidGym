@@ -4,8 +4,8 @@ import Constants.EMPTY_STRING
 import com.pavellukyanov.androidgym.base.Action
 import com.pavellukyanov.androidgym.base.Effect
 import com.pavellukyanov.androidgym.base.State
-import entity.models.Category
 import entity.main.MainItems
+import entity.models.Category
 import entity.models.Question
 import entity.models.Subcategory
 
@@ -16,6 +16,7 @@ data class MainState(
 ) : State()
 
 sealed class MainAction : Action() {
+    object Fetch : MainAction()
     data class Search(val query: String) : MainAction()
 
     object ClearSearch : MainAction()
@@ -34,13 +35,13 @@ sealed class MainAction : Action() {
 }
 
 sealed class MainEffect : Effect() {
-    object GoToAnswer : MainEffect()
+    data class GoToAnswer(val questionId: Int) : MainEffect()
 
     object OnMenuClicked : MainEffect()
 
     object GoToFavourites : MainEffect()
 
-    data class GoToCategory(val categoryName: String) : MainEffect()
+    data class GoToCategory(val category: Category) : MainEffect()
 
-    data class GoToSubcategory(val subcategoryName: String) : MainEffect()
+    data class GoToSubcategory(val subcategory: Subcategory) : MainEffect()
 }
