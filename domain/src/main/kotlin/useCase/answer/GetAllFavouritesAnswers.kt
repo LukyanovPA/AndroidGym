@@ -1,6 +1,6 @@
 package useCase.answer
 
-import entity.answer.Answer
+import entity.models.Answer
 import ext.CPU
 import helper.map
 import kotlinx.coroutines.flow.Flow

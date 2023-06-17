@@ -4,7 +4,8 @@
     //Common
     <string name="any_screen_error">Ошибка: %s</string>
     <string name="any_screen_ok">OK</string>
-    <string name="search_placeholder">Поиск…</string>
+    <string name="global_search_placeholder">Поиск…</string>
+    <string name="category_search_placeholder">Поиск по подкатегориям…</string>
     <string name="search_not_found">По вашему запросу ничего не найдено</string>
     <string name="question_count">/ вопросов</string>
     <string name="answer_category_title">Категория: %s</string>

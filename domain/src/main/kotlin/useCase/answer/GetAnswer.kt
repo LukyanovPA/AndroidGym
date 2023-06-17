@@ -1,7 +1,7 @@
 package useCase.answer
 
-import entity.answer.Answer
-import entity.answer.IdStorage
+import entity.models.Answer
+import helper.IdStorage
 import ext.CPU
 import helper.map
 import kotlinx.coroutines.FlowPreview

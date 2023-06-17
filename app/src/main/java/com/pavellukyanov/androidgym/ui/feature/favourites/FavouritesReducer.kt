@@ -1,7 +1,7 @@
 package com.pavellukyanov.androidgym.ui.feature.favourites
 
 import com.pavellukyanov.androidgym.base.Reducer
-import entity.answer.Answer
+import entity.models.Answer
 import kotlinx.coroutines.flow.map
 import useCase.answer.GetAllFavouritesAnswers
 import useCase.answer.SendId

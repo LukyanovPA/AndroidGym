@@ -1,6 +1,6 @@
 package useCase.answer
 
-import entity.answer.IdStorage
+import helper.IdStorage
 
 interface SendId : suspend (Int) -> Unit
 

@@ -11,7 +11,7 @@ import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.CLICK_SUBCATEG
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEARCH
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.MAIN
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.MAIN_MENU
-import entity.questions.MainItems
+import entity.main.MainItems
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -19,11 +19,11 @@ import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import useCase.answer.SendId
-import useCase.questions.Search
+import useCase.questions.GlobalSearch
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainReducer(
-    private val search: Search,
+    private val globalSearch: GlobalSearch,
     private val sendId: SendId
 ) : Reducer<MainState, MainAction, MainEffect>(MainState()) {
     private val searchQuery = MutableStateFlow(EMPTY_STRING)
@@ -79,7 +79,7 @@ class MainReducer(
         searchQuery
             .onStart { listOf(MainItems.Loading) }
             .debounce(300.milliseconds)
-            .flatMapMerge { query -> search(query) }
+            .flatMapMerge { query -> globalSearch(query) }
             .map { items -> MainAction.Items(items = items) }
             .collect(::sendAction)
     }
@@ -89,7 +89,7 @@ class MainReducer(
             sendEffect(
                 when (action) {
                     is MainAction.OnQuestionClick -> MainEffect.GoToAnswer
-                    is MainAction.OnCategoryClick -> MainEffect.GoToCategory
+                    is MainAction.OnCategoryClick -> MainEffect.GoToCategory(categoryName = action.category.name)
                     else -> MainEffect.GoToSubcategory
                 }
             )

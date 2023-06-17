@@ -7,7 +7,7 @@ import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.FAVOURITES
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.QUESTION
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEND_COMMENT
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.ANSWER
-import entity.answer.Answer
+import entity.models.Answer
 import kotlinx.coroutines.flow.map
 import useCase.answer.GetAnswer
 import useCase.answer.UpdateFavouritesState

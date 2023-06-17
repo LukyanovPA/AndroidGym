@@ -63,7 +63,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
     packagingOptions {
         resources {
@@ -75,6 +75,8 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":utils"))
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.10.1")
 
     //Android
     val composeBom = platform("androidx.compose:compose-bom:2023.04.01")

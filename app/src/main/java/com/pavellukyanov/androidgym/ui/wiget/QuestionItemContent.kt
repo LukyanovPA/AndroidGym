@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
-import entity.questions.Question
+import entity.models.Question
 
 @Composable
 fun QuestionItemContent(

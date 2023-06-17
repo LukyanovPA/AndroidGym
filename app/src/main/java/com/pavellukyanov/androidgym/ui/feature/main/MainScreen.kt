@@ -1,7 +1,6 @@
 package com.pavellukyanov.androidgym.ui.feature.main
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,18 +40,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.pavellukyanov.androidgym.app.BuildConfig
 import com.pavellukyanov.androidgym.app.R
 import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
-import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
 import com.pavellukyanov.androidgym.ui.wiget.CategoryItemContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
+import com.pavellukyanov.androidgym.ui.wiget.MenuContent
 import com.pavellukyanov.androidgym.ui.wiget.QuestionItemContent
 import com.pavellukyanov.androidgym.ui.wiget.SearchTextField
 import com.pavellukyanov.androidgym.ui.wiget.SubcategoryItemContent
-import entity.questions.MainItems
+import entity.main.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
 
@@ -74,7 +72,7 @@ fun MainScreen(
                     navController.navigate(Destinations.Favourites.FAVOURITES)
                 }
 
-                is MainEffect.GoToCategory -> {}
+                is MainEffect.GoToCategory -> navController.navigate(Destinations.Category.CATEGORY + effect.categoryName)
                 is MainEffect.GoToSubcategory -> {}
             }
         }
@@ -83,7 +81,7 @@ fun MainScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
-            MenuContent(onAction = { reducer.sendAction(it) })
+            MenuContent(favouriteAction = MainAction.OnFavouriteClick, onAction = { reducer.sendAction(it as MainAction.OnFavouriteClick) })
         }
     ) { padding ->
         state.receive<MainState> { currentState ->
@@ -156,7 +154,7 @@ private fun MainScreenContent(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
                         .clip(RoundedCornerShape(40.dp)),
-                    placeholderText = R.string.search_placeholder,
+                    placeholderText = R.string.global_search_placeholder,
                     onSearchClick = { onAction(MainAction.Search(query = it)) },
                     onClearClick = { onAction(MainAction.ClearSearch) }
                 )
@@ -232,32 +230,5 @@ private fun ItemsList(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun MenuContent(
-    onAction: (MainAction) -> Unit
-) {
-    Text(
-        modifier = Modifier.padding(16.dp),
-        text = stringResource(id = R.string.app_name_with_version, BuildConfig.VERSION_NAME),
-        color = Color.Black,
-        fontSize = 14.sp
-    )
-    Box(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(color = ColorLightGreen)
-            .clickable { onAction(MainAction.OnFavouriteClick) }
-    ) {
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = stringResource(id = R.string.favourites_title),
-            color = Color.Black,
-            fontSize = 18.sp
-        )
     }
 }

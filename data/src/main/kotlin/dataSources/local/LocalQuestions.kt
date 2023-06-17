@@ -17,6 +17,7 @@ internal interface LocalQuestions {
     //Subcategory
     suspend fun getAllSubcategories(): Flow<List<SubcategoryEntity>>
     suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>)
+    suspend fun getSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>>
 
     //Question
     suspend fun getAllQuestions(): Flow<List<QuestionEntity>>
@@ -49,6 +50,9 @@ internal class LocalQuestionsDataSource(
     override suspend fun insertSubcategories(subcategories: List<SubcategoryEntity>) {
         db.subcategories().insert(subcategories = subcategories)
     }
+
+    override suspend fun getSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>> =
+        db.subcategories().getSubcategoriesByCategoryId(categoryId = categoryId)
 
     override suspend fun getAllQuestions(): Flow<List<QuestionEntity>> =
         db.questions().getAll()

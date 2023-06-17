@@ -1,4 +1,4 @@
-package entity.answer
+package entity.models
 
 import kotlinx.serialization.Serializable
 

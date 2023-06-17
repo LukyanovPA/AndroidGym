@@ -1,5 +1,8 @@
-package entity.questions
+package entity.main
 
+import entity.models.Category
+import entity.models.Question
+import entity.models.Subcategory
 import java.util.Random
 
 sealed class MainItems {

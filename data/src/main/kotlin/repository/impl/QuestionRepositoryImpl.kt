@@ -26,6 +26,10 @@ internal class QuestionRepositoryImpl(
         localQuestions.getAllSubcategories()
             .onStart { checkUpdates(point = CachePoint.SUBCATEGORY) }
 
+    override suspend fun getSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>> =
+        localQuestions.getSubcategoriesByCategoryId(categoryId = categoryId)
+            .onStart { checkUpdates(point = CachePoint.SUBCATEGORY) }
+
     override suspend fun getAllQuestions(): Flow<List<QuestionEntity>> =
         localQuestions.getAllQuestions()
             .onStart { checkUpdates(point = CachePoint.QUESTIONS) }

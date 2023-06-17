@@ -11,12 +11,14 @@ import useCase.answer.UpdateFavouritesState
 import useCase.answer.UpdateFavouritesStateImpl
 import useCase.answerfeedback.CreateAnswerFeedback
 import useCase.answerfeedback.CreateAnswerFeedbackImpl
-import useCase.questions.Search
-import useCase.questions.SearchImpl
+import useCase.category.GetSubcategories
+import useCase.category.GetSubcategoriesImpl
+import useCase.questions.GlobalSearch
+import useCase.questions.GlobalSearchImpl
 
 internal val useCaseModule = module {
     //Questions
-    single<Search> { SearchImpl(repo = get()) }
+    single<GlobalSearch> { GlobalSearchImpl(repo = get()) }
 
     //Answer
     single<SendId> { SendIdImpl(idStorage = get()) }
@@ -24,4 +26,7 @@ internal val useCaseModule = module {
     single<UpdateFavouritesState> { UpdateFavouritesStateImpl(repo = get()) }
     single<CreateAnswerFeedback> { CreateAnswerFeedbackImpl(repository = get()) }
     single<GetAllFavouritesAnswers> { GetAllFavouritesAnswersImpl(repo = get()) }
+
+    //Category
+    single<GetSubcategories> { GetSubcategoriesImpl(repo = get(), idStorage = get()) }
 }

@@ -1,15 +1,19 @@
 package com.pavellukyanov.androidgym.ui.wiget
 
+import Constants.EMPTY_STRING
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.pavellukyanov.androidgym.helper.AnalyticsClient
 import com.pavellukyanov.androidgym.helper.Destinations
 import com.pavellukyanov.androidgym.ui.feature.answer.AnswerScreen
+import com.pavellukyanov.androidgym.ui.feature.category.CategoryScreen
 import com.pavellukyanov.androidgym.ui.feature.error.ErrorScreen
 import com.pavellukyanov.androidgym.ui.feature.favourites.FavouritesScreen
 import com.pavellukyanov.androidgym.ui.feature.main.MainScreen
@@ -38,6 +42,19 @@ fun NavigationGraph(
         composable(route = Destinations.Favourites.FAVOURITES) {
             AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.FAVOURITES)
             FavouritesScreen(navController = navController)
+        }
+        composable(
+            route = Destinations.Category.CATEGORY_ROUTE,
+            arguments = listOf(
+                navArgument(name = Destinations.Arguments.CATEGORY_ARG) {
+                    type = NavType.StringType
+                    defaultValue = EMPTY_STRING
+                }
+            )
+        ) { backStackEntry ->
+            val categoryName = backStackEntry.arguments?.getString(Destinations.Arguments.CATEGORY_ARG) ?: EMPTY_STRING
+            AnalyticsClient.trackScreen(screen = AnalyticsClient.ScreenNames.CATEGORY)
+            CategoryScreen(categoryName = categoryName, navController = navController)
         }
     }
 }

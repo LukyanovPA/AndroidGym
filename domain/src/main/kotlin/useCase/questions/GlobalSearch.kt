@@ -1,6 +1,6 @@
 package useCase.questions
 
-import entity.questions.MainItems
+import entity.main.MainItems
 import ext.CPU
 import helper.map
 import kotlinx.coroutines.flow.Flow
@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import repository.QuestionRepository
 
-interface Search : suspend (String) -> Flow<List<MainItems>>
+interface GlobalSearch : suspend (String) -> Flow<List<MainItems>>
 
-internal class SearchImpl(
+internal class GlobalSearchImpl(
     private val repo: QuestionRepository
-) : Search {
+) : GlobalSearch {
 
     override suspend operator fun invoke(query: String): Flow<List<MainItems>> =
         if (query.isEmpty()) {
