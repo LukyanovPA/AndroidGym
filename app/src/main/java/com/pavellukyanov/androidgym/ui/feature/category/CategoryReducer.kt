@@ -67,6 +67,7 @@ class CategoryReducer(
             }
 
             is CategoryAction.OnBackClick -> sendEffect(CategoryEffect.GoBack)
+            is CategoryAction.OnMainClick -> sendEffect(CategoryEffect.GoToMain)
         }
     }
 

@@ -23,6 +23,7 @@ import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.wiget.HeaderContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
+import com.pavellukyanov.androidgym.ui.wiget.MenuActions
 import com.pavellukyanov.androidgym.ui.wiget.MenuContent
 import com.pavellukyanov.androidgym.ui.wiget.NotFoundContent
 import com.pavellukyanov.androidgym.ui.wiget.QuestionItemContent
@@ -44,6 +45,7 @@ fun SubcategoryScreen(
         reducer.sendAction(SubcategoryAction.SetSubcategoryValues(subcategoryName = subcategoryName, subcategoryId = subcategoryId))
         reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
+                is SubcategoryEffect.GoToMain -> navController.navigate(Destinations.Main.MAIN)
                 is SubcategoryEffect.GoToAnswer -> navController.navigate(Destinations.Answer.nav(questionId = effect.questionId))
                 is SubcategoryEffect.GoBack -> navController.popBackStack()
                 is SubcategoryEffect.OnMenuClicked -> scaffoldState.drawerState.open()
@@ -58,9 +60,12 @@ fun SubcategoryScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
-            MenuContent(
-                favouriteAction = SubcategoryAction.OnFavouriteClick,
-                onAction = { reducer.sendAction(it as SubcategoryAction.OnFavouriteClick) })
+            MenuContent { action ->
+                when (action) {
+                    is MenuActions.Favourites -> reducer.sendAction(SubcategoryAction.OnFavouriteClick)
+                    is MenuActions.Main -> reducer.sendAction(SubcategoryAction.OnMainClick)
+                }
+            }
         }
     ) { padding ->
         state.receive<SubcategoryState> { currentState ->

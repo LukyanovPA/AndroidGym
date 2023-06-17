@@ -22,6 +22,7 @@
     <string name="category_title">категория</string>
     <string name="subcategory_title">подкатегория</string>
     <string name="question_title">вопрос</string>
+    <string name="main_screen_title">Домой</string>
 
     //Content Descriptions
     <string name="decs_button_back">Кнопка назад</string>

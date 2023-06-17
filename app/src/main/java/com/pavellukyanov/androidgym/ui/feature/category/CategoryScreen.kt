@@ -23,6 +23,7 @@ import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.wiget.HeaderContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
+import com.pavellukyanov.androidgym.ui.wiget.MenuActions
 import com.pavellukyanov.androidgym.ui.wiget.MenuContent
 import com.pavellukyanov.androidgym.ui.wiget.NotFoundContent
 import com.pavellukyanov.androidgym.ui.wiget.SubcategoryItemContent
@@ -51,6 +52,7 @@ fun CategoryScreen(
                     )
                 )
 
+                is CategoryEffect.GoToMain -> navController.navigate(Destinations.Main.MAIN)
                 is CategoryEffect.GoBack -> navController.popBackStack()
                 is CategoryEffect.OnMenuClicked -> scaffoldState.drawerState.open()
                 is CategoryEffect.GoToFavourites -> {
@@ -64,9 +66,12 @@ fun CategoryScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
-            MenuContent(
-                favouriteAction = CategoryAction.OnFavouriteClick,
-                onAction = { reducer.sendAction(it as CategoryAction.OnFavouriteClick) })
+            MenuContent { action ->
+                when (action) {
+                    is MenuActions.Favourites -> reducer.sendAction(CategoryAction.OnFavouriteClick)
+                    is MenuActions.Main -> reducer.sendAction(CategoryAction.OnMainClick)
+                }
+            }
         }
     ) { padding ->
         state.receive<CategoryState> { currentState ->

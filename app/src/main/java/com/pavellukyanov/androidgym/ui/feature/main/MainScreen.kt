@@ -45,6 +45,7 @@ import com.pavellukyanov.androidgym.helper.ext.asUiState
 import com.pavellukyanov.androidgym.helper.ext.receive
 import com.pavellukyanov.androidgym.ui.wiget.CategoryItemContent
 import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
+import com.pavellukyanov.androidgym.ui.wiget.MenuActions
 import com.pavellukyanov.androidgym.ui.wiget.MenuContent
 import com.pavellukyanov.androidgym.ui.wiget.NotFoundContent
 import com.pavellukyanov.androidgym.ui.wiget.QuestionItemContent
@@ -93,7 +94,12 @@ fun MainScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
-            MenuContent(favouriteAction = MainAction.OnFavouriteClick, onAction = { reducer.sendAction(it as MainAction.OnFavouriteClick) })
+            MenuContent(mainVisibility = false) { action ->
+                when (action) {
+                    is MenuActions.Favourites -> reducer.sendAction(MainAction.OnFavouriteClick)
+                    is MenuActions.Main -> reducer.sendAction(MainAction.Fetch)
+                }
+            }
         }
     ) { padding ->
         state.receive<MainState> { currentState ->

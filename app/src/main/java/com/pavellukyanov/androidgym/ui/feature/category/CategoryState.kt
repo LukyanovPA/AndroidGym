@@ -30,6 +30,8 @@ sealed class CategoryAction : Action() {
 
     object OnFavouriteClick : CategoryAction()
 
+    object OnMainClick : CategoryAction()
+
     object OnBackClick : CategoryAction()
 }
 
@@ -39,6 +41,8 @@ sealed class CategoryEffect : Effect() {
     object OnMenuClicked : CategoryEffect()
 
     object GoToFavourites : CategoryEffect()
+
+    object GoToMain : CategoryEffect()
 
     data class GoToSubcategory(val subcategory: Subcategory) : CategoryEffect()
 }
