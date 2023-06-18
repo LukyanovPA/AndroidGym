@@ -70,14 +70,13 @@ import com.pavellukyanov.androidgym.ui.wiget.LoadingScreen
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
 
-private const val SEND_COMMENT_COMPLETE = "Ваш комментарий отправлен"
-
 @Composable
 fun AnswerScreen(
     questionId: Int,
     navController: NavController,
     reducer: AnswerReducer = koinViewModel()
 ) {
+    val sendCommentMessage = stringResource(id = R.string.send_answer_feedback_complete)
     val state by reducer.state.asUiState()
     val scaffoldState = rememberScaffoldState()
 
@@ -88,7 +87,7 @@ fun AnswerScreen(
                 is AnswerEffect.GoBack -> navController.popBackStack()
                 is AnswerEffect.ShowSendCommentCompleteNotify -> {
                     scaffoldState.snackbarHostState.showSnackbar(
-                        message = SEND_COMMENT_COMPLETE,
+                        message = sendCommentMessage,
                     )
                 }
             }

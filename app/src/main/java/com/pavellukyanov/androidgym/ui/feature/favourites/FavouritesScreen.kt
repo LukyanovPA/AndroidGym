@@ -54,8 +54,6 @@ import entity.main.MainItems
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.koinViewModel
 
-private const val FAV_TITLE = "Избранное"
-
 @Composable
 fun FavouritesScreen(
     navController: NavController,
@@ -109,7 +107,7 @@ private fun FavouritesContent(
             .padding(padding)
     ) {
         HeaderContent(
-            title = FAV_TITLE,
+            title = stringResource(id = R.string.favourites_title),
             searchQuery = state.searchQuery,
             placeholderText = R.string.favourites_search_placeholder,
             onBackClick = { onAction(FavouritesAction.GoBack) },

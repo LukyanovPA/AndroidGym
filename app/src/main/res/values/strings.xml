@@ -24,6 +24,7 @@
     <string name="subcategory_title">подкатегория</string>
     <string name="question_title">вопрос</string>
     <string name="main_screen_title">Домой</string>
+    <string name="send_answer_feedback_complete">Ваш комментарий отправлен</string>
 
     //Content Descriptions
     <string name="decs_button_back">Кнопка назад</string>
