@@ -45,7 +45,11 @@ fun SubcategoryScreen(
         reducer.sendAction(SubcategoryAction.SetSubcategoryValues(subcategoryName = subcategoryName, subcategoryId = subcategoryId))
         reducer.effect.receiveAsFlow().collect { effect ->
             when (effect) {
-                is SubcategoryEffect.GoToMain -> navController.navigate(Destinations.Main.MAIN)
+                is SubcategoryEffect.GoToMain -> {
+                    scaffoldState.drawerState.close()
+                    navController.navigate(Destinations.Main.MAIN)
+                }
+
                 is SubcategoryEffect.GoToAnswer -> navController.navigate(Destinations.Answer.nav(questionId = effect.questionId))
                 is SubcategoryEffect.GoBack -> navController.popBackStack()
                 is SubcategoryEffect.OnMenuClicked -> scaffoldState.drawerState.open()

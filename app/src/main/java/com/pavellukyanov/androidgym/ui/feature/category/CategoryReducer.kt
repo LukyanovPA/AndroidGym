@@ -43,7 +43,7 @@ class CategoryReducer(
             }
 
             is CategoryAction.ClearSearch -> {
-                saveState(oldState.copy(subcategories = listOf(), searchQuery = EMPTY_STRING))
+                saveState(oldState.copy(subcategories = listOf(MainItems.Loading), searchQuery = EMPTY_STRING))
                 searchQuery.emit(EMPTY_STRING)
             }
 

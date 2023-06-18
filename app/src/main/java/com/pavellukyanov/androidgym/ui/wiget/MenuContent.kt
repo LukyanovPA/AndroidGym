@@ -34,6 +34,7 @@ import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
 @Composable
 fun MenuContent(
     mainVisibility: Boolean = true,
+    favouritesVisibility: Boolean = true,
     onAction: (MenuActions) -> Unit
 ) {
     Column(
@@ -82,34 +83,40 @@ fun MenuContent(
                 )
             }
         }
-        Column(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                .wrapContentHeight()
+        AnimatedVisibility(
+            visible = favouritesVisibility,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onAction(MenuActions.Favourites) }
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    .wrapContentHeight()
             ) {
-                Icon(
-                    modifier = Modifier.size(18.dp),
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = stringResource(id = R.string.any_image)
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = stringResource(id = R.string.favourites_title),
-                    color = Color.Black,
-                    fontSize = 18.sp
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onAction(MenuActions.Favourites) }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(18.dp),
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = stringResource(id = R.string.any_image)
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = stringResource(id = R.string.favourites_title),
+                        color = Color.Black,
+                        fontSize = 18.sp
+                    )
+                }
+                Divider(
+                    modifier = Modifier.padding(6.dp),
+                    color = ColorLightGreen
                 )
             }
-            Divider(
-                modifier = Modifier.padding(6.dp),
-                color = ColorLightGreen
-            )
         }
     }
 }

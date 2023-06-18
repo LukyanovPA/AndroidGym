@@ -52,7 +52,11 @@ fun CategoryScreen(
                     )
                 )
 
-                is CategoryEffect.GoToMain -> navController.navigate(Destinations.Main.MAIN)
+                is CategoryEffect.GoToMain -> {
+                    scaffoldState.drawerState.close()
+                    navController.navigate(Destinations.Main.MAIN)
+                }
+
                 is CategoryEffect.GoBack -> navController.popBackStack()
                 is CategoryEffect.OnMenuClicked -> scaffoldState.drawerState.open()
                 is CategoryEffect.GoToFavourites -> {

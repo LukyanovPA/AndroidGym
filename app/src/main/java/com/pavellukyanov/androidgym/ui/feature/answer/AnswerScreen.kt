@@ -155,7 +155,7 @@ private fun AnswerScreenContent(
                 )
                 Button(
                     modifier = Modifier.size(40.dp),
-                    onClick = { onAction(AnswerAction.OnFavouritesClick(state = if (state.answer != null) !state.answer.isFavourites else false)) },
+                    onClick = { state.answer?.let { onAction(AnswerAction.OnFavouritesClick(questionId = it.questionId)) } },
                     shape = CircleShape,
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)

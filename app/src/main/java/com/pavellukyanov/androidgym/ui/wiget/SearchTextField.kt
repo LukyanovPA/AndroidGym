@@ -99,7 +99,8 @@ fun SearchTextField(
                     text = stringResource(id = placeholderText),
                     color = Color.LightGray,
                     fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.sp,
+                    fontSize = 16.sp
                 )
             },
             trailingIcon = {

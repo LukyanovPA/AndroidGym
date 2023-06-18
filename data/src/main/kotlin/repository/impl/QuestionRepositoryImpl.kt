@@ -48,12 +48,12 @@ internal class QuestionRepositoryImpl(
                 }
             }
 
-    override suspend fun setFavouritesState(answerId: Int, state: Boolean) {
-        val updatedAnswer = localQuestions.getAnswer(id = answerId).copy(isFavourites = state)
-        localQuestions.setFavouritesState(answer = updatedAnswer)
+    override suspend fun setFavouritesState(questionId: Int) {
+        val question = localQuestions.getQuestion(id = questionId)
+        localQuestions.setFavouritesState(question = question.copy(isFavourites = !question.isFavourites))
     }
 
-    override suspend fun getAllFavouritesAnswers(): Flow<List<AnswerEntity>> =
+    override suspend fun getAllFavouritesAnswers(): Flow<List<QuestionEntity>> =
         localQuestions.getAllFavouritesAnswers()
 
     private suspend fun checkUpdates(point: CachePoint) {

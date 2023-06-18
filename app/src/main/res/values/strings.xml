@@ -7,6 +7,7 @@
     <string name="global_search_placeholder">Поиск…</string>
     <string name="category_search_placeholder">Поиск по подкатегориям…</string>
     <string name="subcategory_search_placeholder">Поиск по вопросам…</string>
+    <string name="favourites_search_placeholder">Поиск по избранному…</string>
     <string name="search_not_found">По вашему запросу ничего не найдено</string>
     <string name="question_count">/ вопросов</string>
     <string name="answer_category_title">Категория: %s</string>

@@ -43,7 +43,7 @@ class SubcategoryReducer(
             }
 
             is SubcategoryAction.ClearSearch -> {
-                saveState(oldState.copy(questions = listOf(), searchQuery = EMPTY_STRING))
+                saveState(oldState.copy(questions = listOf(MainItems.Loading), searchQuery = EMPTY_STRING))
                 searchQuery.emit(EMPTY_STRING)
             }
 
@@ -57,8 +57,8 @@ class SubcategoryReducer(
             }
 
             is SubcategoryAction.OnMenuClick -> {
-                AnalyticsClient.trackEvent(SUBCATEGORY, CLICK_MENU)
                 sendEffect(SubcategoryEffect.OnMenuClicked)
+                AnalyticsClient.trackEvent(SUBCATEGORY, CLICK_MENU)
             }
 
             is SubcategoryAction.OnFavouriteClick -> {

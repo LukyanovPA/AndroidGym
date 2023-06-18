@@ -7,7 +7,6 @@ import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.FAVOURITES
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.QUESTION
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.Events.SEND_COMMENT
 import com.pavellukyanov.androidgym.helper.AnalyticsClient.ScreenNames.ANSWER
-import entity.models.Answer
 import kotlinx.coroutines.flow.map
 import useCase.answer.GetAnswer
 import useCase.favourites.UpdateFavouritesState
@@ -34,7 +33,7 @@ class AnswerReducer(
             is AnswerAction.OnCommentLinkClick -> AnalyticsClient.trackEvent(screen = ANSWER, event = COMMENT)
             is AnswerAction.GoBack -> sendEffect(AnswerEffect.GoBack)
             is AnswerAction.OnFavouritesClick -> {
-                onFavouritesUpdate(answer = oldState.answer!!.copy(isFavourites = action.state))
+                onFavouritesUpdate(questionId = action.questionId)
                 AnalyticsClient.trackEvent(screen = ANSWER, event = FAVOURITES)
             }
 
@@ -51,8 +50,8 @@ class AnswerReducer(
             .collect(::sendAction)
     }
 
-    private fun onFavouritesUpdate(answer: Answer) = launchIO {
-        updateFavouritesState(answer.id, answer.isFavourites)
+    private fun onFavouritesUpdate(questionId: Int) = launchIO {
+        updateFavouritesState(questionId)
     }
 
     private fun onCreateAnswerFeedback(answerId: Int, comment: String) = launchIO {

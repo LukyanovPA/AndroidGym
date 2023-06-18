@@ -32,10 +32,11 @@ fun QuestionEntity.map(): Question =
         categoryName = categoryName,
         subcategoryId = subcategoryId,
         subcategoryName = subcategoryName,
-        question = question
+        question = question,
+        isFavourites = isFavourites
     )
 
-fun AnswerEntity.map(): Answer =
+fun AnswerEntity.map(isFavourites: Boolean): Answer =
     Answer(
         id = id,
         categoryId = categoryId,
