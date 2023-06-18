@@ -21,7 +21,7 @@ import timber.log.Timber
 
 abstract class Reducer<STATE : State, ACTION : Action, EFFECT : Effect>(initState: STATE) : ViewModel() {
     private val _state: MutableStateFlow<STATE> = MutableStateFlow(initState)
-    private val errorStorage by KoinJavaComponent.inject<ErrorStorage>(ErrorStorage::class.java)
+    private val errorStorage: ErrorStorage = KoinJavaComponent.getKoin().get()
     private val errorHandler = CoroutineExceptionHandler { context, exception ->
         Timber.tag(TAG).e("Context: $context, Exception: $exception")
         handleError(exception)

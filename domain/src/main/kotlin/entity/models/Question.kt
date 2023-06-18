@@ -1,4 +1,4 @@
-package entity.questions
+package entity.models
 
 import kotlinx.serialization.Serializable
 
@@ -9,5 +9,6 @@ data class Question(
     val categoryName: String,
     val subcategoryId: Int,
     val subcategoryName: String,
-    val question: String
+    val question: String,
+    val isFavourites: Boolean
 )

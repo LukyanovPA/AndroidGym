@@ -7,15 +7,18 @@ val serialization_version: String by project
 val koin_version: String by project
 val koin_compose_version: String by project
 val timber_version: String by project
-val glide_compose_version: String by project
 val desugar_version: String by project
 val rich_editor: String by project
 val systemuicontroller: String by project
+val app_metrica: String by project
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -60,7 +63,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
     packagingOptions {
         resources {
@@ -72,6 +75,8 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":utils"))
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.10.1")
 
     //Android
     val composeBom = platform("androidx.compose:compose-bom:2023.04.01")
@@ -86,10 +91,16 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:$compose_version")
     implementation("androidx.compose.foundation:foundation-layout:$compose_version")
     implementation("com.google.android.material:compose-theme-adapter:$material_dapter_version")
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
+
+    // Google
+    val crash = platform("com.google.firebase:firebase-bom:32.1.0")
+    implementation(crash)
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-systemuicontroller:$systemuicontroller")
@@ -105,9 +116,9 @@ dependencies {
     //Timber
     implementation("com.jakewharton.timber:timber:$timber_version")
 
-    //Glide
-    implementation("com.github.bumptech.glide:compose:$glide_compose_version")
-
     //RichEditor
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:$rich_editor")
+
+    //Yandex AppMetrica
+    implementation("com.yandex.android:mobmetricalib:$app_metrica")
 }

@@ -3,19 +3,36 @@ package di
 import org.koin.dsl.module
 import useCase.answer.GetAnswer
 import useCase.answer.GetAnswerImpl
-import useCase.answer.SendQuestionId
-import useCase.answer.SendQuestionIdImpl
-import useCase.questions.GetCategories
-import useCase.questions.GetCategoriesImpl
-import useCase.questions.Search
-import useCase.questions.SearchImpl
+import useCase.category.GetSubcategories
+import useCase.category.GetSubcategoriesImpl
+import useCase.favourites.GetAllFavouritesAnswers
+import useCase.favourites.GetAllFavouritesAnswersImpl
+import useCase.favourites.UpdateFavouritesState
+import useCase.favourites.UpdateFavouritesStateImpl
+import useCase.feedback.CreateAnswerFeedback
+import useCase.feedback.CreateAnswerFeedbackImpl
+import useCase.questions.GetQuestions
+import useCase.questions.GetQuestionsImpl
+import useCase.search.GlobalSearch
+import useCase.search.GlobalSearchImpl
 
 internal val useCaseModule = module {
-    //Questions
-    single<Search> { SearchImpl(repo = get()) }
-    single<GetCategories> { GetCategoriesImpl(repo = get()) }
+    //Main
+    single<GlobalSearch> { GlobalSearchImpl(repo = get()) }
 
     //Answer
-    single<SendQuestionId> { SendQuestionIdImpl(questionIdStorage = get()) }
-    single<GetAnswer> { GetAnswerImpl(repo = get(), questionIdStorage = get()) }
+    single<GetAnswer> { GetAnswerImpl(repo = get()) }
+
+    //Category
+    single<GetSubcategories> { GetSubcategoriesImpl(repo = get()) }
+
+    //Subcategory
+    single<GetQuestions> { GetQuestionsImpl(repo = get()) }
+
+    //Favourites
+    single<UpdateFavouritesState> { UpdateFavouritesStateImpl(repo = get()) }
+    single<GetAllFavouritesAnswers> { GetAllFavouritesAnswersImpl(repo = get()) }
+
+    //Feedback
+    single<CreateAnswerFeedback> { CreateAnswerFeedbackImpl(repository = get()) }
 }

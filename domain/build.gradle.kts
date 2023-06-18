@@ -43,6 +43,8 @@ android {
 dependencies {
     api(project(":data"))
     api(project(":utils"))
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.10.1")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugar_version")
 
     //Serialization

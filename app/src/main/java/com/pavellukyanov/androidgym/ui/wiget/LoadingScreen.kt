@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.pavellukyanov.androidgym.ui.theme.Tesla
+import com.pavellukyanov.androidgym.ui.theme.ColorLightGreen
 
 @Composable
 fun LoadingScreen(
@@ -25,7 +25,7 @@ fun LoadingScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(20.dp),
-            color = Tesla,
+            color = ColorLightGreen,
             strokeWidth = 4.dp
         )
     }

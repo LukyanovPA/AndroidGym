@@ -16,5 +16,11 @@ interface AnswersDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM answers WHERE questionId = :questionId")
-    fun getAll(questionId: Int): Flow<List<AnswerEntity>>
+    fun getAllByQuestionId(questionId: Int): Flow<List<AnswerEntity>>
+
+    @Query("SELECT * FROM answers WHERE id = :id")
+    suspend fun getAnswerById(id: Int): AnswerEntity
+
+    @Query("SELECT * FROM answers")
+    fun getAll(): Flow<List<AnswerEntity>>
 }

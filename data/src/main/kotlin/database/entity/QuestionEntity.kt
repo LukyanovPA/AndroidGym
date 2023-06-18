@@ -13,5 +13,6 @@ data class QuestionEntity(
     val categoryName: String,
     val subcategoryId: Int,
     val subcategoryName: String,
-    val question: String
+    val question: String,
+    val isFavourites: Boolean = false
 )

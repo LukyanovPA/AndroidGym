@@ -4,12 +4,33 @@
     //Common
     <string name="any_screen_error">Ошибка: %s</string>
     <string name="any_screen_ok">OK</string>
-    <string name="search_placeholder">Поиск...</string>
+    <string name="global_search_placeholder">Поиск…</string>
+    <string name="category_search_placeholder">Поиск по подкатегориям…</string>
+    <string name="subcategory_search_placeholder">Поиск по вопросам…</string>
+    <string name="favourites_search_placeholder">Поиск по избранному…</string>
     <string name="search_not_found">По вашему запросу ничего не найдено</string>
     <string name="question_count">/ вопросов</string>
     <string name="answer_category_title">Категория: %s</string>
     <string name="answer_subcategory_title">Подкатегория: %s</string>
     <string name="answer_question_title">Вопрос: %s</string>
-    <string name="answer_title">Ответ:</string>
     <string name="main_title">Вопросы с собеседований\nAndroid Developer</string>
+    <string name="answer_title">Вопрос</string>
+    <string name="answer_comment_title">Нашли ошибку?</string>
+    <string name="answer_comment_placeholder">Опишите проблему</string>
+    <string name="send_comment_button_title">Отправить</string>
+    <string name="app_name_with_version">AndroidGym v%s</string>
+    <string name="favourites_title">Избранное</string>
+    <string name="category_title">категория</string>
+    <string name="subcategory_title">подкатегория</string>
+    <string name="question_title">вопрос</string>
+    <string name="main_screen_title">Домой</string>
+    <string name="send_answer_feedback_complete">Ваш комментарий отправлен</string>
+
+    //Content Descriptions
+    <string name="decs_button_back">Кнопка назад</string>
+    <string name="decs_button_menu">Кнопка меню</string>
+    <string name="decs_button_favourites">Кнопка добавить, или удалить из избранного</string>
+    <string name="decs_button_search">Кнопка искать</string>
+    <string name="decs_button_clear">Кнопка очистить строку поиска</string>
+    <string name="any_image">Изображение</string>
 </resources>

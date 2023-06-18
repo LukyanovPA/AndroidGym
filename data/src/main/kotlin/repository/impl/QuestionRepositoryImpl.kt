@@ -26,8 +26,16 @@ internal class QuestionRepositoryImpl(
         localQuestions.getAllSubcategories()
             .onStart { checkUpdates(point = CachePoint.SUBCATEGORY) }
 
+    override suspend fun getSubcategoriesByCategoryId(categoryId: Int): Flow<List<SubcategoryEntity>> =
+        localQuestions.getSubcategoriesByCategoryId(categoryId = categoryId)
+            .onStart { checkUpdates(point = CachePoint.SUBCATEGORY) }
+
     override suspend fun getAllQuestions(): Flow<List<QuestionEntity>> =
         localQuestions.getAllQuestions()
+            .onStart { checkUpdates(point = CachePoint.QUESTIONS) }
+
+    override suspend fun getQuestionsBySubcategoryId(subcategoryId: Int): Flow<List<QuestionEntity>> =
+        localQuestions.getQuestionsBySubcategoryId(subcategoryId = subcategoryId)
             .onStart { checkUpdates(point = CachePoint.QUESTIONS) }
 
     @OptIn(FlowPreview::class)
@@ -39,6 +47,14 @@ internal class QuestionRepositoryImpl(
                     if (list.isNotEmpty()) emit(list.first())
                 }
             }
+
+    override suspend fun setFavouritesState(questionId: Int) {
+        val question = localQuestions.getQuestion(id = questionId)
+        localQuestions.setFavouritesState(question = question.copy(isFavourites = !question.isFavourites))
+    }
+
+    override suspend fun getAllFavouritesAnswers(): Flow<List<QuestionEntity>> =
+        localQuestions.getAllFavouritesAnswers()
 
     private suspend fun checkUpdates(point: CachePoint) {
         cacheHelper.checkUpdates(point = point)
